@@ -36,7 +36,8 @@ const UserList = () => {
     if (currentUser?.role === "admin") {
       loadUsers();
     }
-  }, [currentUser]);
+  }, [currentUser, editingUser]);
+  
 
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -73,19 +74,14 @@ const UserList = () => {
         throw new Error("No tienes permisos para gestionar usuarios");
       }
   
-      let updatedUsers;
       if (userData.id) {
-        // Actualiza el usuario en la lista directamente en el estado
-        const updatedUser = await userService.updateUser(userData.id, userData);
-        updatedUsers = users.map((user) =>
-          user.id === userData.id ? { ...user, ...updatedUser } : user
-        );
+        await userService.updateUser(userData.id, userData);
       } else {
-        const newUser = await userService.createUser(userData);
-        updatedUsers = [...users, newUser];
+        await userService.createUser(userData);
       }
+      
+      await loadUsers();
   
-      setUsers(updatedUsers); // Actualiza los usuarios sin recargar la página
       setShowCreateModal(false);
       setEditingUser(null);
       setNotification({
@@ -100,6 +96,8 @@ const UserList = () => {
       });
     }
   };
+  
+  
   
   
 

@@ -26,20 +26,20 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
+    if (!formData.name || !formData.nit || !formData.email) {
+      alert("Por favor, completa todos los campos obligatorios.");
+      setIsLoading(false);
+      return;
+    }
+  
     const companyData = {
       ...formData,
       id: editCompany?.id,
       status: formData.status || "active",
       companyType: formData.companyType || "mediana",
     };
-
-    if (!companyData.nit) {
-      alert("El NIT es obligatorio");
-      setIsLoading(false);
-      return;
-    }
-
+  
     try {
       if (editCompany) {
         await companyService.updateCompany(editCompany.id, companyData);
@@ -49,15 +49,17 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
           throw new Error("La empresa no fue creada correctamente.");
         }
       }
-
-      onSave();
+  
+      onSave(); 
       onClose();
-    } catch {
-      onClose();
+    } catch (error) {
+      console.error("Error al guardar empresa:", error);
+      alert("Ocurrió un error al guardar la empresa. Por favor, inténtalo de nuevo.");
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

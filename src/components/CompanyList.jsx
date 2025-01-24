@@ -37,32 +37,11 @@ const CompanyList = () => {
     if (user) {
       loadCompanies();
     }
-  }, [user]);
+  }, [user]);  
 
   const handleDeleteClick = (company) => {
     setCompanyToDelete(company);
     setShowConfirmModal(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    try {
-      await companyService.deleteCompany(companyToDelete.id);
-      setCompanies((prevCompanies) =>
-        prevCompanies.filter((c) => c.id !== companyToDelete.id)
-      );
-      setNotification({
-        message: "Empresa eliminada exitosamente",
-        type: "success",
-      });
-    } catch (err) {
-      setNotification({
-        message: err.message,
-        type: "error",
-      });
-    } finally {
-      setShowConfirmModal(false);
-      setCompanyToDelete(null);
-    }
   };
 
   const handleEditCompany = (company) => {
@@ -70,39 +49,45 @@ const CompanyList = () => {
     setShowCreateModal(true);
   };
 
-  const handleSaveCompany = async (companyData) => {
+  const handleSaveCompany = async () => {
     try {
-      setError(null);
-      if (!user?.role === "admin") {
-        throw new Error("No tienes permisos para gestionar empresas");
-      }
-
-      if (companyData.id) {
-        const updatedCompany = await companyService.updateCompany(
-          companyData.id,
-          companyData
-        );
-        setCompanies((prev) =>
-          prev.map((company) =>
-            company.id === companyData.id ? updatedCompany : company
-          )
-        );
-      } else {
-        const newCompany = await companyService.createCompany(companyData);
-        console.log("Nueva empresa creada:", newCompany);
-        setCompanies((prev) => [...prev, newCompany]);
-      }
-
-      setShowCreateModal(false);
-      setEditingCompany(null);
-    } catch (err) {
-      console.error("Error al guardar empresa:", err);
-      setError(err.message);
-      setTimeout(() => {
-        setError(null);
-      }, 2000);
+      await loadCompanies(); 
+      setNotification({
+        message: "Empresa guardada exitosamente",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Error al guardar empresa:", error);
+      setError("Ocurrió un error al recargar la lista de empresas.");
     }
   };
+   
+  
+  
+  const handleConfirmDelete = async () => {
+    try {
+      await companyService.deleteCompany(companyToDelete.id);
+      // Eliminar directamente del estado
+      setCompanies((prevCompanies) =>
+        prevCompanies.filter((company) => company.id !== companyToDelete.id)
+      );
+  
+      setNotification({
+        message: "Empresa eliminada exitosamente",
+        type: "success",
+      });
+    } catch (err) {
+      setNotification({
+        message: err.message || "Error al eliminar empresa",
+        type: "error",
+      });
+    } finally {
+      setShowConfirmModal(false);
+      setCompanyToDelete(null);
+    }
+  };
+  
+  
 
   const handleCardClick = (company) => {
     setSelectedCompany(selectedCompany?.id === company.id ? null : company);
