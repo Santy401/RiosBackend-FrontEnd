@@ -3,26 +3,75 @@ body {
   margin: 0;
   overflow: hidden;
   display: grid;
+  grid-template-rows: 1fr; 
 }
-main::-webkit-scrollbar {
-  display: none;
-}
+
 .bigC {
   display: grid;
-  grid-template-columns: 20% 1fr;
+  grid-template-columns: auto 1fr; 
 }
+
 .asideNv {
   position: relative;
   background-color: #fff;
-  width: 40vh;
+  width: 250px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  top: 0px;
+  justify-content: space-between;
   height: 100vh;
   padding: 15px;
-  border-right: 1px solid #ecedee;
+  border-right: 1px solid #ffffff;
+  transition: width 0.3s ease, opacity 0.3s ease;
 }
+
+.asideNv.hidden {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+main {
+  overflow-y: scroll;
+  height: 100vh;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+main.overScroll {
+  width: calc(100% - 0px);
+}
+
+main.collapsed {
+  margin-left: 0; 
+  width: 100%;
+}
+
+.toggle-menu {
+  position: absolute;
+  top: 10px;
+  left: -40px; 
+  z-index: 10;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-menu:hover {
+  background-color: #0056b3;
+  transform: scale(1.1); 
+}
+
+.toggle-menu i {
+  font-size: 20px;
+}
+
 .asideNv h5 {
   margin: 0;
   font-weight: 800;
@@ -138,4 +187,42 @@ main::-webkit-scrollbar {
 .bottomItems button:nth-child(2):hover {
   transform: translateY(-4%);
   color: rgb(250, 17, 0);
+}
+
+.asideNv {
+  width: 250px; 
+  transition: width 0.3s ease, opacity 0.3s ease; 
+  background-color: #ffffff; 
+  overflow: hidden;
+}
+
+.asideNv.hidden {
+  width: 0;
+  opacity: 0; 
+}
+
+.toggle-menu {
+  opacity: 0.1;
+  position: absolute;
+  top: 9px;
+  left: 3px;
+  scale: 81%;
+  z-index: 1000;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  transition: 400ms;
+}
+
+.toggle-menu:hover {
+  opacity: 1;
+  background-color: #0056b3;
 }

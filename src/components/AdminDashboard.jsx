@@ -13,6 +13,7 @@ const AdminDashboard = () => {
   const [activeList, setActiveList] = useState("users");
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
   const handleChangeComponent = (Component) => {
     setActiveComponent(Component);
@@ -47,18 +48,14 @@ const AdminDashboard = () => {
 
   return (
     <div className="bigC">
-      <aside className="asideNv">
+      <aside className={`asideNv ${isSidebarVisible ? "" : "hidden"}`}>
         <div className="topItems">
           <div className="itemBar0">
             <h5>
-              <i className="fa-solid fa-user-tie"></i>Admin.Task
+              <i className="fa-solid fa-user-tie"></i> Admin.Task
             </h5>
           </div>
           <div className="itemBar1"> </div>
-          <div className="searchAlignIcon">
-            <i className="fa-solid fa-magnifying-glass"></i>
-            <input type="search" name="" id="" placeholder="Busca" />
-          </div>
           <div className="itemsMedie">
             <div>
               <i className="fa-solid fa-table-columns"></i>
@@ -82,7 +79,7 @@ const AdminDashboard = () => {
         </div>
         <div className="bottomItems">
           <button>
-            <i className="fa-solid fa-gear"></i> Configuracion
+            <i className="fa-solid fa-gear"></i> Configuración
           </button>
           <button onClick={handleLogout}>
             <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
@@ -94,10 +91,23 @@ const AdminDashboard = () => {
           overflowY: "scroll",
           height: "105vh",
           position: "relative",
-          left: "3%",
+          left: isSidebarVisible ? "20px" : "20px",
+          width: isSidebarVisible ? "calc(100% - 0px)" : "100%",
+          transition: "all 0.3s ease",
         }}
         className="overScroll"
       >
+        <button
+          className="toggle-menu"
+          onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+        >
+          <i
+            className={`fa-solid ${
+              isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"
+            }`}
+          ></i>
+        </button>
+
         {activeComponent === "dashboard" && <DashboardAdmin />}
         {activeComponent === "lists" && (
           <div className="lists-container">
