@@ -1,0 +1,256 @@
+.boxTask1 {
+  border: 1px solid #c1c2c469;
+  margin: 15px;
+  border-radius: 10px;
+}
+
+.user-profile-image {
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%; 
+}
+
+.topBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  background-color: #fcfcfd;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid #c1c2c469;
+}
+
+.topBox button {
+  padding: 7px 10px;
+  font-size: 10px;
+  margin-left: 7px;
+  background-color: #55e;
+  color: #f1f1f1;
+  border: 1px solid #55e6;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 200ms ease;
+}
+.topBox button:hover {
+  transform: translateY(-2px);
+  background-color: #537eda;
+}
+
+.alignItemsL {
+  display: flex;
+  flex-direction: column;
+}
+.alignItemsL h4 {
+  margin: 0 0 0 10px;
+  font-size: 16px;
+}
+.activity span {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #98a2b3;
+  cursor: default;
+}
+.MediunBox {
+  padding: 15px 20px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  border-bottom: 1px solid #c1c2c469;
+}
+.MediunBox span:nth-child(1) {
+  background-color: rgba(185, 71, 71, 0.562);
+  padding: 6px;
+  font-size: 12px;
+  border: 1px solid red;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.MediunBox span:nth-child(2) {
+  background-color: #e9e9e9;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #b9b9b9;
+}
+.fa-spinner {
+  color: #f7f7f7;
+}
+
+.task-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.task-header h3 {
+  margin: 0;
+}
+
+.task-info span {
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.status .badge {
+  background-color: #f4b400;
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-left: 10px;
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.task-table th,
+.task-table td {
+  padding: 11px 20px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  word-wrap: break-word;
+  max-width: 123px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.task-table thead {
+  background-color: #fcfcfd;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.task-table th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+tr {
+  color: #667085;
+  font-size: 14px;
+}
+
+.priority {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.priority.normal {
+  color: #4285f4;
+  background-color: #e8f0fe;
+}
+
+.user-email-container {
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  z-index: 10000;
+  top: 50%;
+  left: 0%;
+  transform: translate(-45%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 7px;
+  white-space: nowrap;
+  z-index: 1;
+  transition: 500ms;
+}
+
+.fa-user {
+  font-size: 17px;
+}
+
+.user-email-container:hover .tooltip:hover {
+  background-color: #667085;
+  font-size: 9px;
+}
+
+.user-email-container:hover .tooltip {
+  visibility: visible;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.task-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.task-table th,
+.task-table td {
+  border: 1px solid #ddd;
+
+  padding: 8px;
+}
+
+.task-table th {
+  background-color: #f2f2f2;
+
+  text-align: center;
+}
+
+.dropdown {
+  position: relative;
+}
+.dropbtn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dropdown-content {
+  position: absolute;
+  left: -280%;
+  background-color: #667085;
+  display: flex;
+  padding: 5px;
+  border: 1px solid #667085;
+  border-radius: 4px;
+  flex-direction: column;
+  z-index: 2;
+}
+.dropdown-content button {
+  margin-top: 5px;
+  font-size: 11px;
+  background-color: transparent;
+  color: #e9e9e9;
+  border: none;
+  cursor: pointer;
+  transition: 300ms;
+}
+.dropdown-content button:hover {
+  transform: translateY(-1px);
+  color: #ddd;
+  border-bottom: 1px solid #0f141d;
+}

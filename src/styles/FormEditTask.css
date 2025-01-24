@@ -1,0 +1,108 @@
+.form1 {
+  position: absolute;
+  top: 0%;
+  right: 0;
+  background-color: #fefeff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 100;
+}
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.74); 
+  z-index: 1; 
+}
+.titleTask {
+  padding: 10px 5px 1px 5px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin: 30px 40px;
+  border-bottom: 1px solid #000;
+  font-size: 15px;
+  position: relative;
+  left: -20px;
+  width: 85%;
+}
+.textArea textarea {
+    width: 86%;
+    font-size: 16px;
+    margin: 10px 10px;
+    resize: none;
+    height: 30vh;
+    padding: 10px;
+    font-weight: 100;
+    border-radius: 5px;
+    transition: 500ms;
+}
+.textArea textarea::-webkit-scrollbar:focus {
+    display: none;
+}
+.textArea textarea:focus {
+    outline-color: #55e;
+}
+.titleTask:focus {
+    outline: none;
+}
+
+.bt-accions {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputsEdit {
+    display: flex;
+    margin: 0 30px;
+    flex-direction: column;
+}
+.inputsEdit div {
+    display: flex;
+}
+.inputsEdit input {
+    font-size: 14px;
+}
+.inputsEdit select {
+    width: 117%;
+    font-size: 12px;
+    text-overflow: ellipsis;
+}
+.inputsEdit div:nth-child(1) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.inputsEdit div + div {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    display: flex;
+    align-items: end;
+}
+
+.bt-accions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.bt-accions button {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #55e;
+  color: #f1f1f1;
+  margin: 10px 10px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.bt-accions button:hover {
+  background-color: #33c;
+  border-radius: 1px;
+}

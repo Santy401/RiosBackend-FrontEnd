@@ -1,0 +1,74 @@
+.deleteAP {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  right: 37%;
+  z-index: 100;
+  transform: translate(72%, -12%);
+  border-radius: 10px 0px 10px 10px;
+  left: 20%;
+  top: 37%;
+}
+
+.section {
+  width: 40%;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  padding-bottom: 30%;
+}
+
+.deleteButton {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #e60000;
+}
+
+.listItem span {
+  flex-grow: 1;
+}
+
+.bt-AP {
+  z-index: 100;
+  position: absolute;
+  right: 22px;
+  border-radius: 5px;
+  border: 1px solid #55e;
+  padding: 6px;
+  transition: 700ms;
+  cursor: pointer;
+  background-color: #55e;
+  color: #fff;
+}
+.bt-AP:hover {
+  background-color: rgb(12, 12, 238);
+}

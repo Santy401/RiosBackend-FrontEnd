@@ -1,0 +1,77 @@
+body {
+    background-color: var(--background-color);
+}
+
+.formLogin {
+    background-color: var(--panel-color);
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    text-align: center;
+    transition: 500ms;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    justify-content: flex-start;
+}
+
+.inputs-login {
+    display: grid;
+}
+.inputs-login input {
+    padding-right:90px ;
+    padding-top: 10px;
+    padding-left: 10px;
+    font-weight: bold;
+    padding-bottom:10px ;
+    max-width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-left:none ;
+    border-right:none ;
+    border-top:1px solid #e9e9e9e0;
+    border-bottom:1px solid #e9e9e9e0;
+    transition: 500ms;
+}
+.inputs-login input:focus {
+    outline: none;
+    scale: 103%;
+    border-bottom:1px solid #e9e9e9e0;
+    border-top:1px solid #e9e9e9e0;
+}
+.inputs-login button {
+    padding: 10px 40px;
+    border-radius: 6px;
+    border: 1px solid #55d;
+    background-color: #55d;
+    cursor: pointer;
+    color: var(--background-color);
+    font-size: 15px;
+    font-weight: bolder;
+    letter-spacing: 1.3px;
+    transition: 400ms;
+}
+.inputs-login button:hover {
+    letter-spacing: .1px ;
+    border-radius: 1px;
+    background-color: rgba(85, 85, 221, 0.904);
+}
+
+.formLogin p {
+    font-family: monospace;
+}
+
+@media (max-width: 765px) {
+    body {
+        background-color: var(--panel-color);
+    }
+    form {
+     background-color: transparent;
+     box-shadow: none;   
+    }
+}

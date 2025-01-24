@@ -1,0 +1,11 @@
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  margin: 0px 12px;
+  align-items: center;
+  border-bottom: 1px solid #cccccc6e;
+}
+.panel-header h2 {
+    font-size: 15px;
+}
