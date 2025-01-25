@@ -128,7 +128,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: default;
   transition: 200ms;
-  margin-left: 50px;
 }
 .descripcion-tarea:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
