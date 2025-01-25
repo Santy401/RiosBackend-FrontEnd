@@ -113,11 +113,11 @@
 }
 
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: 500;
-  display: inline-block;
+  background-color: #cce5ff;
+  color: #004085;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .status-badge.pending {

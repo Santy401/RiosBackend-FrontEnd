@@ -132,12 +132,12 @@ const AdminDashboard = () => {
                 >
                   Áreas
                 </button>
-                <button
+                {/* <button
                   onClick={() => handleChangeList("clients")}
                   className={activeList === "clients" ? "active" : ""}
                 >
                   Clientes
-                </button>
+                </button> */}
               </div>
             </div>
             {renderListContent()}
