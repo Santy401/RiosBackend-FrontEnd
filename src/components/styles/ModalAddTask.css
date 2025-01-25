@@ -97,3 +97,12 @@
 .form-group input.error:focus {
   border-color: #dc3545;
 }
+
+
+.loaling {
+  display: flex;
+  justify-content: center;
+  height: 60vh;
+  align-items: center;
+  font-size: x-large;
+}

@@ -218,3 +218,60 @@
     transform: translateY(0);
   }
 }
+
+/* Contenedor del filtro de tipo de empresa */
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Estilo para el filtro de tipo de empresa */
+.company-type-filter {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 180px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* Cambio de estilo cuando el select tiene foco */
+.company-type-filter:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Estilo de las opciones dentro del select */
+.company-type-filter option {
+  font-size: 14px;
+  padding: 8px;
+  color: #333;
+}
+
+/* Agregar estilo al placeholder (valor predeterminado) */
+.company-type-filter option:first-child {
+  color: #999;
+}
+
+/* Opcional: agregar un poco de margen y espacio entre los filtros */
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 220px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Opcional: cuando el campo de búsqueda tiene foco */
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+}

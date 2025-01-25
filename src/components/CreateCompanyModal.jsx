@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "../components/styles/ModalAddTask.css";
 import { companyService } from "../services/companyService";
 
-const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
+const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies }) => {
   const [formData, setFormData] = useState(
     editCompany || {
       name: "",
@@ -39,6 +39,13 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
       status: formData.status || "active",
       companyType: formData.companyType || "mediana",
     };
+    
+    CreateCompanyModal.propTypes = {
+      onClose: PropTypes.func.isRequired,
+      onSave: PropTypes.func.isRequired,
+      editCompany: PropTypes.object,
+      loadCompaies: PropTypes.func.isRequired,
+    };
   
     try {
       if (editCompany) {
@@ -49,15 +56,16 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
           throw new Error("La empresa no fue creada correctamente.");
         }
       }
-  
-      onSave(); 
+    
+      onSave();
+      loadCompaies(); // Actualiza la lista de empresas
       onClose();
     } catch (error) {
       console.error("Error al guardar empresa:", error);
-      alert("Ocurrió un error al guardar la empresa. Por favor, inténtalo de nuevo.");
+      onClose();
     } finally {
-      setIsLoading(false);
-    }
+      setIsLoading(false); // Aquí debería ser false
+    }    
   };
   
 
@@ -77,7 +85,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
 
         <form onSubmit={handleSave}>
           {isLoading ? (
-            <p>Cargando...</p>
+            <p className="loaling">Cargando...</p>
           ) : (
             <>
               <div className="form-group">
@@ -191,7 +199,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null }) => {
                   required
                   className="select-field"
                 >
-                  <option value="">Seleccione un tipo</option>
+                  <option value="" disabled>Seleccione un tipo</option>
                   <option value="A">Tipo A</option>
                   <option value="B">Tipo B</option>
                   <option value="C">Tipo C</option>

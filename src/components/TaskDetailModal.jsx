@@ -6,9 +6,25 @@ import { companyService } from "../services/companyService.js";
 import { areaService } from "../services/areaService.js";
 
 const TaskDetailModal = ({ task, onClose }) => {
-  const [userData, setUserData] = useState(null);
-  const [companyData, setCompanyData] = useState(null);
-  const [areaData, setAreaData] = useState(null);
+  const [, setUserData] = useState(null);
+  const [, setCompanyData] = useState(null);
+  const [, setAreaData] = useState(null);
+
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString("es-ES", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      console.error("Error al formatear fecha:", error);
+      return dateString;
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,29 +75,26 @@ const TaskDetailModal = ({ task, onClose }) => {
             <p>{task.title}</p>
           </div>
 
-          <div className="detail-group">
-            <label>Descripción:</label>
-            <p>{task.descripcion || "Sin descripción"}</p>
-          </div>
+         
 
           <div className="detail-group">
             <label>Asignado a:</label>
-            <p>{userData?.name || "No asignado"}</p>
+            <p>{task.assignedUser?.name || "No asignado"}</p>
           </div>
 
           <div className="detail-group">
             <label>Empresa:</label>
-            <p>{companyData?.name || "No especificada"}</p>
+            <p>{task.company?.name || "No especificada"}</p>
           </div>
 
           <div className="detail-group">
             <label>Área:</label>
-            <p>{areaData?.name || "No especificada"}</p>
+            <p>{task.area?.nombre_area || "No especificada"}</p>
           </div>
 
           <div className="detail-group">
             <label>Estado:</label>
-            <span className={`status-badge ${task.status || "pending"}`}>
+            <span className={`status-badge ${task.status || "pending"}`} style={{maxWidth:"100px"}}>
               {task.status === "pending"
                 ? "Pendiente"
                 : task.status === "in-progress"
@@ -93,22 +106,18 @@ const TaskDetailModal = ({ task, onClose }) => {
           </div>
 
           <div className="detail-group">
-            <label>Tiempo estimado:</label>
-            <p>{task.time} horas</p>
+            <label>creado el</label>
+            <p style={{marginleft:"12px"}}>{formatDate(task.createdAt)}</p>
           </div>
 
           <div className="detail-group">
-            <label>Fecha de creación:</label>
-            <p>{new Date(task.createdDate).toLocaleDateString()}</p>
+            <label>Fecha Limite</label>
+            <p>{formatDate(task.dueDate)}</p>
           </div>
 
-          <div className="detail-group">
-            <label>Fecha límite:</label>
-            <p>
-              {task.deadline
-                ? new Date(task.deadline).toLocaleDateString()
-                : "No definida"}
-            </p>
+          <div className="detail-group" style={{display:"flex", flexDirection:"column"}}>
+            <label>Descripción:</label>
+              <div className="descripcion-tarea"><p style={{width:"100%",position:" relative",letterSpacing:" 0.1px",lineHeight:" 25px", textAlign:"justify"}}>{task.observation || "Sin descripción"}</p></div>
           </div>
         </div>
       </div>

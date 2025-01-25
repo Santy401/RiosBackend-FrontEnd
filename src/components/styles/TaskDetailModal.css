@@ -7,7 +7,7 @@
   padding: 0;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 90%;
+  width: 30%;
   max-width: 600px;
   max-height: 90vh;
   z-index: 1001;
@@ -49,6 +49,9 @@
   padding: 20px;
   overflow-y: auto;
   flex-grow: 1;
+}
+.detail-modal-content::-webkit-scrollbar {
+  display: none;
 }
 
 .detail-group {
@@ -110,3 +113,29 @@
     padding: 15px;
   }
 }
+
+.descripcion-tarea p {
+  font-size: 16px;
+  line-height: 1.6; 
+  text-align: justify; 
+  margin-top: 10px; 
+  color: #555; 
+}
+.descripcion-tarea {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: default;
+  transition: 200ms;
+  margin-left: 50px;
+}
+.descripcion-tarea:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  color: #000000;
+}
+.descripcion-tarea:hover p {
+  color: #000000;
+}
+

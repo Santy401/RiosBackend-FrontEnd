@@ -18,7 +18,9 @@ const CompanyList = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [companyTypeFilter, setCompanyTypeFilter] = useState(""); // Filtro por tipo de empresa
 
+  // Cargar empresas desde el backend
   const loadCompanies = async () => {
     try {
       setLoading(true);
@@ -33,11 +35,59 @@ const CompanyList = () => {
     }
   };
 
+  // useEffect para cargar empresas al iniciar o cuando el usuario cambie
   useEffect(() => {
     if (user) {
       loadCompanies();
     }
-  }, [user]);  
+  }, [user]);
+
+  useEffect(() => {
+    if (companies.length > 0) {
+      setCompanies((prevCompanies) => [...prevCompanies]);
+    }
+  }, [companies]);
+
+  // Manejo de guardar empresa
+  const handleSaveCompany = async (newCompany) => {
+    try {
+      const createdCompany = await companyService.createCompany(newCompany);
+      setCompanies((prevCompanies) => [...prevCompanies, createdCompany]);
+      await loadCompanies();
+      setNotification({
+        message: "Empresa guardada exitosamente",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Error al guardar empresa:", error);
+      await loadCompanies();
+      setNotification({
+        message: "Error al guardar empresa",
+        type: "error",
+      });
+    }
+  };
+
+  // Manejo de eliminar empresa
+  const handleConfirmDelete = async () => {
+    try {
+      await companyService.deleteCompany(companyToDelete.id);
+      setNotification({
+        message: "Empresa eliminada exitosamente",
+        type: "success",
+      });
+      await loadCompanies();
+    } catch (err) {
+      setNotification({
+        message: err.message || "Error al eliminar empresa",
+        type: "error",
+      });
+    } finally {
+      setShowConfirmModal(false);
+      loadCompanies();
+      setCompanyToDelete(null);
+    }
+  };
 
   const handleDeleteClick = (company) => {
     setCompanyToDelete(company);
@@ -47,59 +97,25 @@ const CompanyList = () => {
   const handleEditCompany = (company) => {
     setEditingCompany(company);
     setShowCreateModal(true);
+    loadCompanies();
   };
-
-  const handleSaveCompany = async () => {
-    try {
-      await loadCompanies(); 
-      setNotification({
-        message: "Empresa guardada exitosamente",
-        type: "success",
-      });
-    } catch (error) {
-      console.error("Error al guardar empresa:", error);
-      setError("Ocurrió un error al recargar la lista de empresas.");
-    }
-  };
-   
-  
-  
-  const handleConfirmDelete = async () => {
-    try {
-      await companyService.deleteCompany(companyToDelete.id);
-      // Eliminar directamente del estado
-      setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyToDelete.id)
-      );
-  
-      setNotification({
-        message: "Empresa eliminada exitosamente",
-        type: "success",
-      });
-    } catch (err) {
-      setNotification({
-        message: err.message || "Error al eliminar empresa",
-        type: "error",
-      });
-    } finally {
-      setShowConfirmModal(false);
-      setCompanyToDelete(null);
-    }
-  };
-  
-  
 
   const handleCardClick = (company) => {
     setSelectedCompany(selectedCompany?.id === company.id ? null : company);
   };
 
+  // Filtro de empresas
   const filteredCompanies = companies.filter((company) => {
     const searchText = searchQuery.toLowerCase();
-    return (
+    const matchesSearchQuery =
       (company?.name && company.name.toLowerCase().includes(searchText)) ||
       (company?.nit && company.nit.toLowerCase().includes(searchText)) ||
-      (company?.email && company.email.toLowerCase().includes(searchText))
-    );
+      (company?.email && company.email.toLowerCase().includes(searchText));
+
+    const matchesTypeFilter =
+      !companyTypeFilter || company.companyType === companyTypeFilter;
+
+    return matchesSearchQuery && matchesTypeFilter;
   });
 
   const getCompanyTypeText = (type) => {
@@ -133,6 +149,16 @@ const CompanyList = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
         />
+        <select
+          className="company-type-filter"
+          value={companyTypeFilter}
+          onChange={(e) => setCompanyTypeFilter(e.target.value)}
+        >
+          <option value="">Filtrar por tipo </option>
+          <option value="A">Tipo A</option>
+          <option value="B">Tipo B</option>
+          <option value="C">Tipo C</option>
+        </select>
       </div>
 
       {filteredCompanies.length === 0 ? (

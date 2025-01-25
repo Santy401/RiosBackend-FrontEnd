@@ -11,6 +11,10 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [expandedTask, setExpandedTask] = useState(null);
 
+  // Contadores de tareas
+  const activeTasksCount = tasks.filter((task) => task.status === "in_progress").length;
+  const completedTasksCount = tasks.filter((task) => task.status === "completed").length;
+
   const formatDate = (dateString) => {
     try {
       const date = new Date(dateString);
@@ -79,6 +83,16 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
 
   return (
     <div className="task-tables-container">
+      {/* Contadores de tareas */}
+      <div className="task-counters" style={{ marginBottom: "10px", paddingRight: "10px" }}>
+        <span className="counter in-progress-counter"  style={{ paddingRight: "10px" }}>
+          Tareas activas: {activeTasksCount}
+        </span>
+        <span className="counter completed-counter">
+          Tareas completadas: {completedTasksCount}
+        </span>
+      </div>
+
       <div className="task-section">
         <div className="task-table-container">
           {tasks.length === 0 ? (
@@ -111,8 +125,12 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                     <th onClick={() => handleSort("assignedUser.name")}>
                       Usuario encargado
                     </th>
-                    <th onClick={() => handleSort("company.name")}>Empresa Selecionada</th>
-                    <th onClick={() => handleSort("area.nombre_area")}>Área Selecionada</th>
+                    <th onClick={() => handleSort("company.name")}>
+                      Empresa Selecionada
+                    </th>
+                    <th onClick={() => handleSort("area.nombre_area")}>
+                      Área Selecionada
+                    </th>
                     <th onClick={() => handleSort("createdAt")}>
                       Fecha Creación
                     </th>
@@ -135,6 +153,10 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                         <div
                           className="observation-content"
                           title={task.observation}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedTask(task);
+                          }}
                         >
                           {task.observation || "-"}
                         </div>
@@ -146,9 +168,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       </td>
                       <td>{task.assignedUser?.name}</td>
                       <td>{task.company?.name}</td>
-                      <td>
-                        {task.area?.nombre_area}
-                      </td>
+                      <td>{task.area?.nombre_area}</td>
                       <td>{formatDate(task.createdAt)}</td>
                       <td>{formatDate(task.dueDate)}</td>
                       <td>
