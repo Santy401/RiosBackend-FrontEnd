@@ -40,6 +40,7 @@
   background-color: #f5f5f5;
 }
 .task-table-container::-webkit-scrollbar-thumb {
+  cursor: pointer;
   background-color: #818181;
   border: 5px solid #afafaf;
 }
@@ -294,7 +295,6 @@ tr.expanded {
 
 tr:hover {
   background-color: #f5f5f5;
-  cursor: pointer;
 }
 
 .task-table th {
@@ -309,31 +309,30 @@ tr:hover {
   border-bottom: 1px solid #dee2e6;
 }
 
-
 .task-table th:nth-child(1) {
   width: 15%;
-} 
+}
 .task-table th:nth-child(2) {
   width: 20%;
-} 
+}
 .task-table th:nth-child(3) {
   width: 15%;
-} 
+}
 .task-table th:nth-child(4) {
   width: 15%;
-} 
+}
 .task-table th:nth-child(5) {
   width: 15%;
-} 
+}
 .task-table th:nth-child(6) {
   width: 10%;
-} 
+}
 .task-table th:nth-child(7) {
   width: 5%;
 }
 .task-table th:nth-child(8) {
   width: 5%;
-} 
+}
 
 .action-buttons {
   cursor: default;
