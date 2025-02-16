@@ -399,14 +399,9 @@ clients.belongsTo(companies, {
 // Middleware de autenticación
 const authenticateJWT = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-next();
-    const authHeader = req.header("Authorization");
-    console.log("Auth header:", authHeader);
-=======
+    next();
     const authHeader = req.header('Authorization');
     console.log('Auth header:', authHeader);
->>>>>>> 2b811dda745c7b4a4494965a5f7bb7d2a010db4d
 
     const token = authHeader?.replace('Bearer ', '');
     console.log('Token extraído:', token);
@@ -418,12 +413,7 @@ next();
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret_key');
     console.log('Token decodificado:', decoded);
 
-<<<<<<< HEAD
     req.user = decoded;
-=======
-    req['user'] = decoded;
-    next();
->>>>>>> 2b811dda745c7b4a4494965a5f7bb7d2a010db4d
   } catch (err) {
     console.error('Error de autenticación:', err);
     return res.status(403).json({ message: 'Token inválido' });
@@ -440,11 +430,7 @@ const isAdmin = (req, res, next) => {
 };
 
 // Rutas de usuarios
-<<<<<<< HEAD
-app.get("/users", async (req, res) => {
-=======
 app.get('/users', authenticateJWT, isAdmin, async (req, res) => {
->>>>>>> 2b811dda745c7b4a4494965a5f7bb7d2a010db4d
   try {
     const allUsers = await users.findAll({
       attributes: { exclude: ['password'] },
@@ -906,11 +892,7 @@ app.delete('/companies/:id', authenticateJWT, isAdmin, async (req, res) => {
 });
 
 // Ruta de registro
-<<<<<<< HEAD
-app.post("/register", async (req, res) => {
-=======
-app.post('/register', authenticateJWT, isAdmin, async (req, res) => {
->>>>>>> 2b811dda745c7b4a4494965a5f7bb7d2a010db4d
+app.post('/register', async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
