@@ -2,7 +2,7 @@
   "name": "apptasktools",
   "private": true,
   "version": "0.0.0",
-  "proxy": "https://task-api.riosbackend.com",
+  "proxy": "http://localhost:6005",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -86,9 +86,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
       {/* Contadores de tareas */}
       <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
         <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-          Tareas activas: {activeTasksCount}
+          {activeTasksCount}
         </span>
-        <span className="counter completed-counter">Tareas completadas: {completedTasksCount}</span>
+        <span className="counter completed-counter">{completedTasksCount}</span>
       </div>
 
       <div className="task-section">

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://task-api.riosbackend.com';
-// const API_URL = 'http://localhost:6005';
+const API_URL = "https://task-api.riosbackend.com";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

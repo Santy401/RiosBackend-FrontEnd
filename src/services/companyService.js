@@ -1,7 +1,5 @@
 import api from "./api";
 
-const API_URL = "https://task-api.riosbackend.com";
-
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
   if (!token) {

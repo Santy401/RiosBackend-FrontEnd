@@ -37,7 +37,7 @@ export const authService = {
       return null;
     }
   },
-  
+
   logout: () => {
     localStorage.removeItem("user");
   },

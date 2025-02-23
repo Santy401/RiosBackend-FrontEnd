@@ -1,10 +1,10 @@
 .modal-create-task {
   position: fixed;
-  top: 293px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   overflow: auto;
   height: 515px;
-  left: 690px;
-  transform: translate(-50%, -50%);
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -20,6 +20,7 @@
 
 .form-group {
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .form-group label {
@@ -31,11 +32,12 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 95%;
+  width: 100%;
   padding: 8px;
   outline-color: #55e;
   border: 1px solid #ddd;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .form-group textarea {
@@ -45,10 +47,9 @@
 
 .button-group {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
   margin-top: 20px;
-  justify-content: center;
 }
 
 .button-group button {

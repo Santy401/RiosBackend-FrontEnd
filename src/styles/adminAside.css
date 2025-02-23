@@ -121,6 +121,12 @@ main.collapsed {
   left: -2px;
 }
 
+.itemsMedie div.active {
+  color: #007bff !important;
+  font-weight: 500;
+  transform: translateX(3%);
+}
+
 .itemsMedie {
   margin: 15px 10px;
   color: #98a2b3;
@@ -134,23 +140,14 @@ main.collapsed {
 .fa-bell {
   margin-right: 5px;
 }
-.itemsMedie div button {
+.itemsMedie div span {
   text-decoration: none;
   font-size: 15px;
   margin-left: 5px;
-  color: #98a2b3;
   background-color: transparent;
   border: none;
   cursor: pointer;
   transition: 300ms;
-}
-.itemsMedie button:hover {
-  color: #55e;
-  transform: translateX(7px);
-}
-.itemsMedie div:hover {
-  font-size: 17px;
-  color: #55e;
 }
 
 .bottomItems {

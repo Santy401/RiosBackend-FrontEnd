@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 0 20px;
-  margin: 25px 0px;
+  margin: -4px 0px 30px 0px;
 }
 
 .task-section {
@@ -336,4 +336,46 @@ tr:hover {
 
 .action-buttons {
   cursor: default;
+}
+
+.task-counters {
+  display: flex;
+  flex-direction: row;
+  width: 100px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 1px 20px 2px 10px;
+  position: relative;
+  top: 31px;
+}
+.task-counters span {
+  margin-right: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+.task-counters span:nth-child(1):after{
+  content:"";
+  margin-left: 10px;
+  display: flex;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #f00;
+  position: relative;
+}
+.task-counters span:nth-child(2):after{
+  content:"";
+  margin-left: 10px;
+  display: flex;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: rgb(43, 255, 0);
+  position: relative;
 }
