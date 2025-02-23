@@ -14,7 +14,7 @@
 }
 
 .create-button {
-  background-color: #4caf50;
+  background-color: #4c77af;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -26,7 +26,7 @@
 }
 
 .create-button:hover {
-  background-color: #45a049;
+  background-color: #4553a0;
 }
 
 .search-input {

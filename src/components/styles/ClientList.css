@@ -23,7 +23,7 @@
 }
 
 .create-button {
-  background-color: #28a745;
+  background-color: #4c77af;
   color: white;
   border: none;
   padding: 9px 13px;
@@ -37,7 +37,7 @@
 }
 
 .create-button:hover {
-  background-color: #218838;
+  background-color: #275180;
   transform: translateY(-1px);
 }
 

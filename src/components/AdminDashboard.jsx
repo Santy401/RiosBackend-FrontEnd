@@ -57,23 +57,27 @@ const AdminDashboard = () => {
           </div>
           <div className="itemBar1"> </div>
           <div className="itemsMedie">
-            <div>
+            <div className={activeComponent === "dashboard" ? "active" : ""}>
+              <div className="itemBar2">
               <i className="fa-solid fa-table-columns"></i>
-              <button onClick={() => handleChangeComponent("dashboard")}>
+              <span onClick={() => handleChangeComponent("dashboard")}>
                 Dashboard
-              </button>
+              </span>
+              </div>
             </div>
-            <div>
+            <div
+              className={activeComponent === "notifications" ? "active" : ""}
+            >
               <i className="fa-solid fa-bell"></i>
-              <button onClick={() => handleChangeComponent("notifications")}>
+              <span onClick={() => handleChangeComponent("notifications")}>
                 Notificaciones
-              </button>
+              </span>
             </div>
-            <div>
+            <div className={activeComponent === "lists" ? "active" : ""}>
               <i className="fa-solid fa-list"></i>
-              <button onClick={() => handleChangeComponent("lists")}>
+              <span onClick={() => handleChangeComponent("lists")}>
                 Listas
-              </button>
+              </span>
             </div>
           </div>
         </div>

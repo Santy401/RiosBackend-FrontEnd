@@ -495,8 +495,8 @@ app.get("/tasks", authenticateJWT, async (req, res) => {
 
     res.json(allTasks);
   } catch (error) {
-    console.error("Error al obtener tareas:", error);
-    res.status(500).json({ message: "Error al obtener tareas" });
+    console.error("Error al obtener tareas:", error); // Mostrará el error completo
+    res.status(500).json({ message: "Error al obtener tareas", error: error.message });
   }
 });
 

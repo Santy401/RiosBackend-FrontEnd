@@ -26,6 +26,7 @@ const CompanyList = () => {
       setLoading(true);
       setError(null);
       const data = await companyService.getAllCompanies();
+      setCompanies([...data]);
       setCompanies(data);
     } catch (err) {
       console.error("Error al cargar empresas:", err);
@@ -42,31 +43,29 @@ const CompanyList = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (companies.length > 0) {
-      setCompanies((prevCompanies) => [...prevCompanies]);
-    }
-  }, [companies]);
+  // useEffect(() => {
+  //   if (companies.length > 0) {
+  //     setCompanies((prevCompanies) => [...prevCompanies]);
+  //   }
+  // }, [companies]);
 
   // Manejo de guardar empresa
   const handleSaveCompany = async (newCompany) => {
     try {
-      const createdCompany = await companyService.createCompany(newCompany);
-      setCompanies((prevCompanies) => [...prevCompanies, createdCompany]);
-      await loadCompanies();
+      await companyService.createCompany(newCompany);
       setNotification({
         message: "Empresa guardada exitosamente",
         type: "success",
       });
-    } catch (error) {
-      console.error("Error al guardar empresa:", error);
-      await loadCompanies();
+      await loadCompanies(); // Asegura que se actualicen las empresas desde el backend
+    } catch (err) {
       setNotification({
-        message: "Error al guardar empresa",
+        message: err.message || "Error al guardar la empresa",
         type: "error",
       });
     }
   };
+  
 
   // Manejo de eliminar empresa
   const handleConfirmDelete = async () => {

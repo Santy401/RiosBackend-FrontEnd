@@ -1,6 +1,6 @@
 import api from "./api";
 
-const API_URL = "https://task-api.riosbackend.com";
+const API_URL = "http://localhost:6005";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

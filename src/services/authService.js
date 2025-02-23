@@ -1,4 +1,4 @@
-const API_URL = "https://task-api.riosbackend.com";
+const API_URL = "http://localhost:6005";
 
 export const authService = {
   login: async (email, password) => {
@@ -37,7 +37,7 @@ export const authService = {
       return null;
     }
   },
-  
+
   logout: () => {
     localStorage.removeItem("user");
   },

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://task-api.riosbackend.com",
+  baseURL: "http://localhost:6005",
   headers: {
     "Content-Type": "application/json",
   },
@@ -50,7 +50,9 @@ export const loginService = async (email, password) => {
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      api.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
     }
 
     return response.data;
@@ -68,7 +70,6 @@ export const registerService = async (userData) => {
     throw error.response?.data?.message || "Error al registrar usuario";
   }
 };
-
 
 export const tasksAPI = {
   fetch: () => api.get("/tasks"),
