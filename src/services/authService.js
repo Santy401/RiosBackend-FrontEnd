@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:6005";
+const API_URL = "https://task-api.riosbackend.com";
 
 export const authService = {
   login: async (email, password) => {
