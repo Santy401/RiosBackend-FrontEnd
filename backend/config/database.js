@@ -1,14 +1,16 @@
-import { Sequelize } from "sequelize";
-import path from "path";
-import { fileURLToPath } from "url";
+import { Sequelize } from 'sequelize';
+
+import path from 'path';
+
+import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath =
   // eslint-disable-next-line no-undef
-  process.env.DATABASE_URL || path.join(__dirname, "..", "database.sqlite");
+  process.env.DATABASE_URL || path.join(__dirname, '..', 'database.sqlite');
 
 const sequelize = new Sequelize({
-  dialect: "sqlite",
+  dialect: 'sqlite',
   storage: dbPath,
   logging: false,
   pool: {
@@ -21,14 +23,14 @@ const sequelize = new Sequelize({
     max: 3,
     timeout: 30000,
   },
-  transactionType: "IMMEDIATE",
-  isolationLevel: "READ COMMITTED",
+  transactionType: 'IMMEDIATE',
+  isolationLevel: 'READ COMMITTED',
   dialectOptions: {
     timeout: 15000,
 
     pragma: {
       busy_timeout: 15000,
-      journal_mode: "WAL",
+      journal_mode: 'WAL',
     },
   },
   define: {

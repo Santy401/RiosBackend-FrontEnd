@@ -1,26 +1,31 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.header("Authorization");
+import dotenv from 'dotenv';
 
-  if (!authHeader) {
-    return res.status(401).json({ message: "Acceso denegado, no hay token" });
-  }
+dotenv.config();
 
-  const token = authHeader.split(" ")[1];
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.header('Authorization');
+  const token = authHeader && authHeader.split(' ')[1];
+
   if (!token) {
-    return res.status(401).json({ message: "Formato de token inválido" });
+    return res.sendStatus(401);
   }
 
-  try {
-    // eslint-disable-next-line no-undef
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = verified.id;
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user;
     next();
-  } catch (error) {
-    console.error("Error al verificar el token:", error.message);
-    return res.status(400).json({ message: "Token inválido" });
-  }
+  });
 };
 
-export default authMiddleware;
+const isAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.sendStatus(403);
+  }
+  next();
+};
+
+export { authenticateJWT, isAdmin };

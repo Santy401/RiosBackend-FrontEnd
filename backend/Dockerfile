@@ -1,20 +1,23 @@
-# Use the official Node.js image as the base image
-FROM node:16
+# Utiliza una imagen base oficial de Node.js
+FROM node:18
 
-# Set the working directory
+# Establece el directorio de trabajo en el contenedor
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copia los archivos de package.json y package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Instala las dependencias del proyecto
 RUN npm install
 
-# Copy the rest of the application code
+# Instala PM2 globalmente
+RUN npm install pm2 -g
+
+# Copia el resto de los archivos del proyecto
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Expone el puerto en el que la aplicación escuchará
+EXPOSE 6005
 
-# Command to run the application
-CMD ["node", "app.js"]
+# Define el comando por defecto para ejecutar la aplicación con PM2
+CMD ["pm2-runtime", "ecosystem.config.cjs", "--env", "production"]

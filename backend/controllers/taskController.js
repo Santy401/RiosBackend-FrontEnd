@@ -1,30 +1,24 @@
-import Task from "../models/taskModel";
-import User from "../models/userModel";
+import TaskService from '../services/taskService.js';
 
-
-const createTask = async (req, res) => {
-  const { title, description, assigned_to } = req.body;
-
- 
-  const newTask = new Task({ title, description, assigned_to });
-
- 
-  await newTask.save();
-
- 
-  await User.findByIdAndUpdate(assigned_to, {
-    $push: { assignedTasks: newTask._id },
-  });
-
-  res.status(201).json({ message: "Tarea creada y asignada correctamente" });
+const getAllTasks = async (req, res, next) => {
+  try {
+    const tasks = await TaskService.getAllTasks(req.user);
+    res.json(tasks);
+  } catch (error) {
+    next(error);
+  }
 };
 
-
-const getTasks = async (req, res) => {
-  const userId = req.userId; 
-
-  const tasks = await Task.find({ assigned_to: userId });
-  res.json({ tasks });
+const createTask = async (req, res, next) => {
+  try {
+    const task = await TaskService.createTask(req.body);
+    res.status(201).json(task);
+  } catch (error) {
+    next(error);
+  }
 };
 
-export { createTask, getTasks };
+export default {
+  getAllTasks,
+  createTask,
+};
