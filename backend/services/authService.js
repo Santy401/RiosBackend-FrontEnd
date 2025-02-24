@@ -40,8 +40,8 @@ const login = async (loginData) => {
   if (!email || !password) {
     throw new Error('Por favor proporcione email y contraseña');
   }
-
-  const user = await User.findOne({ where: { email } });
+  console.log(email);
+  const user = await User.findOne({ where: { email: email.trim() } });
   if (!user) {
     throw new Error('Credenciales inválidas');
   }
@@ -50,7 +50,7 @@ const login = async (loginData) => {
   if (!isPasswordValid) {
     throw new Error('Credenciales inválidas');
   }
-
+  console.log(user.password);
   const token = jwt.sign(
     {
       id: user.id,

@@ -26,7 +26,7 @@ const app = express();
 // Set security HTTP headers
 app.use(helmet());
 
-const allowedOrigins = ['https://task.riosbackend.com'];
+const allowedOrigins = ['https://task.riosbackend.com', 'http://localhost:5173'];
 app.use(
   cors({
     origin: function (origin, callback) {

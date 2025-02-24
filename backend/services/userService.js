@@ -10,7 +10,12 @@ const createUser = async (userData) => {
   return await User.create(userData);
 };
 
+const deleteUser = async (id) => {
+  return await User.destroy({ where: { id } });
+};
+
 export default {
   getAllUsers,
   createUser,
+  deleteUser,
 };

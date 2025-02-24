@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "https://task-api.riosbackend.com";
+const API_URL = import.meta.env.VITE_BACK_URL;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
