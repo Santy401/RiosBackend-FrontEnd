@@ -58,6 +58,7 @@ app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/areas', areaRoutes);
 app.use('/login', authController.login);
+app.use('/auth/register', authController.register);
 app.use('/clients', clientRoutes);
 app.use('/companies', companyRoutes);
 
