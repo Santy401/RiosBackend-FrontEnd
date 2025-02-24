@@ -10,6 +10,7 @@ import rateLimit from 'express-rate-limit';
 
 import xss from 'xss-clean';
 
+import authController from './controllers/authController.js';
 import errorHandler from './middleware/errorMiddleware.js';
 import areaRoutes from './routes/areaRoutes.js';
 import authRoutes from './routes/authRoutes.js';
@@ -56,7 +57,7 @@ app.use('/api', limiter);
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/areas', areaRoutes);
-app.use('/auth', authRoutes);
+app.use('/login', authController.login);
 app.use('/clients', clientRoutes);
 app.use('/companies', companyRoutes);
 
