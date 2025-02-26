@@ -23,16 +23,23 @@ const register = async (userData) => {
   if (existingUser) {
     throw new Error('El email ya está registrado');
   }
-
+  
   const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('Contraseña original:', password);
+console.log('Contraseña encriptada:', hashedPassword)
 
-  return await User.create({
+  const newUser = await User.create({
     name,
     email,
     password: hashedPassword,
     role,
   });
+
+  console.log('Usuario creado:', newUser); 
+
+  return newUser;
 };
+
 
 const login = async (loginData) => {
   const { email, password } = loginData;
@@ -40,17 +47,32 @@ const login = async (loginData) => {
   if (!email || !password) {
     throw new Error('Por favor proporcione email y contraseña');
   }
-  console.log(email);
+
+  console.log('Buscando usuario con email:', email);
+
   const user = await User.findOne({ where: { email: email.trim() } });
+
   if (!user) {
+    console.log('Usuario no encontrado');
     throw new Error('Credenciales inválidas');
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  console.log('Usuario encontrado:', user);
+
+  console.log('Contraseña ingresada:', password);
+  console.log('Contraseña almacenada en BD:', user.password);
+
+
+  const isPasswordValid = await bcrypt.compare(password.trim(), user.password);
+  console.log('Contraseña ingresada:', password);
+console.log('Contraseña almacenada en BD:', user.password);
+
   if (!isPasswordValid) {
     throw new Error('Credenciales inválidas');
   }
-  console.log(user.password);
+
+  console.log('Login exitoso, generando token...');
+
   const token = jwt.sign(
     {
       id: user.id,
@@ -58,6 +80,7 @@ const login = async (loginData) => {
       email: user.email,
       role: user.role,
     },
+    // eslint-disable-next-line no-undef
     process.env.JWT_SECRET,
     { expiresIn: '24h' }
   );
@@ -73,6 +96,25 @@ const login = async (loginData) => {
     },
   };
 };
+
+
+export const initializeAdminUser = async () => {
+  await User.destroy({ where: { email: 'admin@gmail.com' } });
+
+  console.log('Usuario admin eliminado, creando nuevo...');
+
+  await User.create({
+    name: 'ADMIN',
+    email: 'admin@gmail.com',
+    password: 'H2025c*',
+    role: 'admin',
+    protected: true,
+  });
+
+  console.log('Admin user created!');
+};
+
+
 
 export default {
   register,

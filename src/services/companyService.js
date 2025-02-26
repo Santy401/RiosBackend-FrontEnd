@@ -27,13 +27,15 @@ export const companyService = {
 
   createCompany: async (companyData) => {
     try {
-      const config = getAuthHeaders();
-      const response = await api.post("/companies", companyData, config);
+      console.log("🟡 Enviando datos al backend:", companyData); // 👀 Asegúrate de que `nombre` y `nit` estén presentes
+      const response = await api.post("/companies", companyData, {
+        headers: { "Content-Type": "application/json" },
+      });
       return response.data;
     } catch (error) {
-      console.error("Error en createCompany:", error);
+      console.error("🔴 Error en createCompany:", error.response?.data || error.message);
       throw new Error(
-        error.response?.data?.message || "Error al crear la empresa"
+        error.response?.data?.error || "Error al crear la empresa"
       );
     }
   },
@@ -57,10 +59,10 @@ export const companyService = {
       const response = await api.delete(`/companies/${id}`, config);
       return response.data;
     } catch (error) {
-      console.error("Error en deleteCompany:", error);
+      console.error("Error en deleteCompany:", error.response ? error.response.data : error.message); 
       throw new Error(
         error.response?.data?.message || "Error al eliminar la empresa"
-      );
+      ); 
     }
   },
 };

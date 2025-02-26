@@ -39,7 +39,7 @@ const PanelControlTask = () => {
     if (user?.id) {
       loadTasks();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleCreateTask = async (taskData) => {
@@ -132,21 +132,27 @@ const PanelControlTask = () => {
       if (!taskToDelete || typeof taskToDelete.id === "undefined") {
         throw new Error("No se puede eliminar: tarea inválida");
       }
-      const result = await taskService.deleteTask(taskToDelete.id);
 
-      if (!result || typeof result.taskId === "undefined") {
-        throw new Error("Error en la respuesta del servidor");
-      }
+      await taskService.deleteTask(taskToDelete.id); // No necesitas asignarlo a `result`
+      console.log("✅ Tarea eliminada en el backend");
 
-      setTasks((prevTasks) =>
-        prevTasks.filter((task) => task.id !== taskToDelete.id)
-      );
+      setTasks((prevTasks) => {
+        const updatedTasks = prevTasks.filter(
+          (task) => task.id !== taskToDelete.id
+        );
+        console.log(
+          "📌 Tareas después de eliminar en el frontend:",
+          updatedTasks
+        );
+        return updatedTasks;
+      });
+
       setNotification({
         message: "Tarea eliminada exitosamente",
         type: "success",
       });
     } catch (error) {
-      console.error("Error al eliminar tarea:", error);
+      console.error("❌ Error al eliminar tarea:", error);
       setNotification({
         message: error.message || "Error al eliminar la tarea",
         type: "error",
@@ -223,6 +229,7 @@ const PanelControlTask = () => {
         <ConfirmModal
           message={`¿Estás seguro de que quieres eliminar la tarea "${taskToDelete.title}"?`}
           onConfirm={handleConfirmDelete}
+          isLoading={isCreating}
           onCancel={() => {
             setShowConfirmModal(false);
             setTaskToDelete(null);

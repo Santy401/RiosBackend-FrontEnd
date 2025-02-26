@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath =
   // eslint-disable-next-line no-undef
   process.env.DATABASE_URL || path.join(__dirname, '..', 'database.sqlite');
+  console.log('Ruta de la base de datos:', dbPath);
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',

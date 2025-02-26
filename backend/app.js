@@ -13,7 +13,6 @@ import xss from 'xss-clean';
 import authController from './controllers/authController.js';
 import errorHandler from './middleware/errorMiddleware.js';
 import areaRoutes from './routes/areaRoutes.js';
-import authRoutes from './routes/authRoutes.js';
 import clientRoutes from './routes/clientRoutes.js';
 import companyRoutes from './routes/companyRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
@@ -25,6 +24,7 @@ const app = express();
 
 // Set security HTTP headers
 app.use(helmet());
+app.use(express.json());
 
 const allowedOrigins = ['https://task.riosbackend.com', 'http://localhost:5173'];
 app.use(

@@ -37,7 +37,11 @@ export const userService = {
       return response.data;
     } catch (error) {
       console.error('Error en deleteUser:', error);
+      
       if (error.response) {
+        if (error.response.status === 403) {
+          throw new Error('❌ No puedes eliminar al administrador');
+        }
         throw new Error(error.response.data.message || 'Error al eliminar el usuario');
       } else if (error.request) {
         throw new Error('No se pudo conectar con el servidor');

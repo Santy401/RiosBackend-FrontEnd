@@ -34,7 +34,7 @@ const Company = sequelize.define(
     mailServer: DataTypes.STRING,
     companyType: {
       type: DataTypes.ENUM('A', 'B', 'C'),
-      defaultValue: 'B',
+      defaultValue: 'A',
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),

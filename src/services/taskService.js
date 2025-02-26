@@ -111,57 +111,35 @@ export const taskService = {
     }
   },
 
-  deleteTask: async (id) => {
-    try {
-      if (typeof id === 'undefined' || id === null) {
-        throw new Error('ID de tarea inválido');
-      }
-
-      console.log('Intentando eliminar tarea con ID:', id);
-
-      const config = getAuthHeaders();
-      const response = await axios.delete(`${API_URL}/tasks/${id}`, config);
-
-      if (!response.data || typeof response.data.taskId === 'undefined') {
-        throw new Error('Respuesta inválida del servidor');
-      }
-
-      return response.data;
-    } catch (error) {
-      console.error('Error detallado en deleteTask:', error.response?.data || error);
-
-      if (error.response?.status === 404) {
-        throw new Error('Tarea no encontrada');
-      }
-      if (error.response?.status === 403) {
-        throw new Error('No tienes permisos para eliminar esta tarea');
-      }
-
-      throw new Error(error.message || 'Error al eliminar la tarea');
-    }
-  },
-
   updateTaskStatus: async (id, status) => {
     try {
       const config = getAuthHeaders();
-      const response = await axios.put(`${API_URL}/tasks/${id}`, { status }, config);
-
-      if (!response.data || !response.data.task) {
-        throw new Error('Respuesta inválida del servidor');
-      }
-
-      return response.data.task;
+      console.log(`Actualizando estado de la tarea ${id} a:`, status);
+  
+      const response = await axios.put(`${API_URL}/tasks/${id}/status`, { status }, config);
+  
+      console.log('Respuesta del servidor en updateTaskStatus:', response.data);
+      return response.data;
     } catch (error) {
-      console.error('Error en updateTaskStatus:', error);
-      if (error.response?.status === 404) {
-        throw new Error('Tarea no encontrada');
-      }
-      if (error.response?.status === 403) {
-        throw new Error('No tienes permisos para actualizar esta tarea');
-      }
+      console.error('Error en updateTaskStatus:', error.response?.data || error);
       throw new Error(error.response?.data?.message || 'Error al actualizar el estado de la tarea');
     }
   },
-};
+  
+  deleteTask: async (id) => {
+    try {
+      const config = getAuthHeaders();
+      console.log(`Eliminando tarea con ID: ${id}`);
+  
+      const response = await axios.delete(`${API_URL}/tasks/${id}`, config);
+  
+      console.log('Respuesta del servidor en deleteTask:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error en deleteTask:', error.response?.data || error);
+      throw new Error(error.response?.data?.message || 'Error al eliminar la tarea');
+    }
+  },
+};  
 
 export default taskService;

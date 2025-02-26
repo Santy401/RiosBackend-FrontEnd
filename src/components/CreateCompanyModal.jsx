@@ -32,6 +32,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
       setIsLoading(false);
       return;
     }
+    
   
     const companyData = {
       ...formData,
@@ -199,7 +200,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
                   required
                   className="select-field"
                 >
-                  <option value="" disabled>Seleccione un tipo</option>
+                  <option value="">Seleccione un tipo</option>
                   <option value="A">Tipo A</option>
                   <option value="B">Tipo B</option>
                   <option value="C">Tipo C</option>
@@ -221,11 +222,13 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
     </>
   );
 };
-
 CreateCompanyModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   editCompany: PropTypes.object,
+  loadCompanies: PropTypes.func.isRequired, // Corrige el nombre aquí
 };
+
+
 
 export default CreateCompanyModal;

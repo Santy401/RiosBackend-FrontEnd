@@ -43,28 +43,26 @@ const CompanyList = () => {
     }
   }, [user]);
 
-  // useEffect(() => {
-  //   if (companies.length > 0) {
-  //     setCompanies((prevCompanies) => [...prevCompanies]);
-  //   }
-  // }, [companies]);
-
-  // Manejo de guardar empresa
   const handleSaveCompany = async (newCompany) => {
+    console.log("📤 Enviando datos:", newCompany);
+  
     try {
       await companyService.createCompany(newCompany);
       setNotification({
         message: "Empresa guardada exitosamente",
         type: "success",
       });
-      await loadCompanies(); // Asegura que se actualicen las empresas desde el backend
+      await loadCompanies();
     } catch (err) {
+      console.error("🔴 Error en handleSaveCompany:", err.response?.data || err.message);
       setNotification({
-        message: err.message || "Error al guardar la empresa",
+        message: err.response?.data?.error || "Error al guardar la empresa",
         type: "error",
       });
     }
   };
+  
+  
   
 
   // Manejo de eliminar empresa
@@ -153,7 +151,7 @@ const CompanyList = () => {
           value={companyTypeFilter}
           onChange={(e) => setCompanyTypeFilter(e.target.value)}
         >
-          <option value="">Filtrar por tipo </option>
+          <option>Filtrar por tipo </option>
           <option value="A">Tipo A</option>
           <option value="B">Tipo B</option>
           <option value="C">Tipo C</option>
@@ -247,9 +245,11 @@ const CompanyList = () => {
           onClose={() => {
             setShowCreateModal(false);
             setEditingCompany(null);
-          }}
+          }
+        }
           onSave={handleSaveCompany}
           editCompany={editingCompany}
+          loadCompanies={loadCompanies}
         />
       )}
 

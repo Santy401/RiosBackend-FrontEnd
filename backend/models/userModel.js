@@ -1,7 +1,5 @@
-import mongoose from 'mongoose';
-
 import { DataTypes } from 'sequelize';
-
+import bcrypt from 'bcrypt';
 import sequelize from '../config/database.js';
 
 const User = sequelize.define(
@@ -32,10 +30,23 @@ const User = sequelize.define(
       type: DataTypes.ENUM('admin', 'user'),
       defaultValue: 'user',
     },
+    protected: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
     tableName: 'users',
     timestamps: false,
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          user.password = await bcrypt.hash(user.password, 10);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password')) {
+          user.password = await bcrypt.hash(user.password, 10);
+        }
+      },
+    },
   }
 );
 
