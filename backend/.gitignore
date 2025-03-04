@@ -2,4 +2,5 @@
 # Base de datos SQLite
 *.sqlite
 *.sqlite-journal
+database.sqlite
 
