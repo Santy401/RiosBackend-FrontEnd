@@ -2,6 +2,7 @@ import sqlite3 from 'sqlite3';
 import path from 'path';
 
 
+// eslint-disable-next-line no-undef
 const DB_PATH = path.join(process.cwd(), 'DataBaseTask.db');
 
 
