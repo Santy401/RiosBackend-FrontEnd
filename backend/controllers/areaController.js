@@ -11,6 +11,7 @@ const getAllAreas = async (req, res, next) => {
 
 const createArea = async (req, res, next) => {
   try {
+    console.log(req.body);
     const area = await AreaService.createArea(req.body);
     res.status(201).json(area);
   } catch (error) {
