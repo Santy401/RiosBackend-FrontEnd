@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "../components/styles/ModalAddTask.css";
 import { companyService } from "../services/companyService";
 
-const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies }) => {
+const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies }) => {
   const [formData, setFormData] = useState(
     editCompany || {
       name: "",
@@ -16,7 +16,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
       user: "",
       password: "",
       mailServer: "",
-      companyType: "mediana",
+      companyType: "",
       status: "active",
     }
   );
@@ -37,15 +37,19 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
     const companyData = {
       ...formData,
       id: editCompany?.id,
+      nit: formData.nit,
+      email: formData.email,
       status: formData.status || "active",
-      companyType: formData.companyType || "mediana",
+      companyType: formData.companyType || "A",
     };
+
+    console.log("🟡 Datos enviados al backend:", companyData); 
     
     CreateCompanyModal.propTypes = {
       onClose: PropTypes.func.isRequired,
       onSave: PropTypes.func.isRequired,
       editCompany: PropTypes.object,
-      loadCompaies: PropTypes.func.isRequired,
+      loadCompanies: PropTypes.func.isRequired,
     };
   
     try {
@@ -59,24 +63,29 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompaies 
       }
     
       onSave();
-      loadCompaies(); // Actualiza la lista de empresas
+      loadCompanies(); 
       onClose();
     } catch (error) {
       console.error("Error al guardar empresa:", error);
       onClose();
     } finally {
-      setIsLoading(false); // Aquí debería ser false
+      setIsLoading(false); 
     }    
   };
   
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => {
+      const updatedFormData = {
+        ...prev,
+        [name]: value,
+      };
+      console.log("🟢 Estado actualizado:", updatedFormData); 
+      return updatedFormData;
+    });
   };
+  
 
   return (
     <>
@@ -226,7 +235,7 @@ CreateCompanyModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   editCompany: PropTypes.object,
-  loadCompanies: PropTypes.func.isRequired, // Corrige el nombre aquí
+  loadCompanies: PropTypes.func.isRequired, 
 };
 
 

@@ -38,6 +38,8 @@ const startServer = async () => {
     // eslint-disable-next-line no-undef
     process.exit(1);
   }
+  app.use(express.json()); 
+  app.use(express.urlencoded({ extended: true }));
 };
 
 startServer();

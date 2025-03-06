@@ -14,21 +14,24 @@ const getAllCompanies = async () => {
 
 const createCompany = async (companyData) => {
   const { name, nit } = companyData;
+  console.log("🔍 Validando datos:", companyData);
+
   if (!name || !nit) {
-    throw new Error('Nombre y NIT son campos requeridos');
+    throw new Error("❌ Nombre y NIT son requeridos");
   }
 
   const existingCompany = await Company.findOne({ where: { nit } });
   if (existingCompany) {
-    throw new Error('Ya existe una empresa con este NIT');
+    throw new Error("❌ Ya existe una empresa con este NIT");
   }
 
   return await Company.create({
     ...companyData,
-    status: companyData.status || 'active',
-    companyType: companyData.companyType || 'B',
+    status: companyData.status || "active",
+    companyType: companyData.companyType || "A",
   });
 };
+
 
 const updateCompany = async (id, companyData) => {
   const company = await Company.findByPk(id);

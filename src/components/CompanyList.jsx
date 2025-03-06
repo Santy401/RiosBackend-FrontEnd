@@ -20,14 +20,12 @@ const CompanyList = () => {
   const [notification, setNotification] = useState(null);
   const [companyTypeFilter, setCompanyTypeFilter] = useState(""); // Filtro por tipo de empresa
 
-  // Cargar empresas desde el backend
   const loadCompanies = async () => {
     try {
       setLoading(true);
       setError(null);
       const data = await companyService.getAllCompanies();
-      setCompanies([...data]);
-      setCompanies(data);
+      setCompanies(data); // Solo una asignación
     } catch (err) {
       console.error("Error al cargar empresas:", err);
       setError(err.message || "Error al cargar las empresas");
@@ -35,8 +33,8 @@ const CompanyList = () => {
       setLoading(false);
     }
   };
+  
 
-  // useEffect para cargar empresas al iniciar o cuando el usuario cambie
   useEffect(() => {
     if (user) {
       loadCompanies();
@@ -44,25 +42,44 @@ const CompanyList = () => {
   }, [user]);
 
   const handleSaveCompany = async (newCompany) => {
-    console.log("📤 Enviando datos:", newCompany);
-  
     try {
-      await companyService.createCompany(newCompany);
+      const createdCompany = await companyService.createCompany(newCompany);
+      
+      setCompanies((prevCompanies) => [...prevCompanies, createdCompany]); // Agrega la nueva empresa al estado
+  
       setNotification({
-        message: "Empresa guardada exitosamente",
+        message: "Empresa creada exitosamente",
         type: "success",
       });
-      await loadCompanies();
+  
+      setShowCreateModal(false);
     } catch (err) {
-      console.error("🔴 Error en handleSaveCompany:", err.response?.data || err.message);
+      console.error("Error al crear empresa:", err);
       setNotification({
-        message: err.response?.data?.error || "Error al guardar la empresa",
+        message: "Error al crear la empresa",
         type: "error",
       });
     }
   };
   
   
+  
+  
+
+  const handleEditCompany = async (updatedCompany) => {
+    try {
+      await companyService.updateCompany(updatedCompany.id, updatedCompany);
+      setEditingCompany(updatedCompany);
+      setShowCreateModal(true);
+      loadCompanies();
+    } catch (err) {
+      console.error("Error al editar empresa:", err);
+      setNotification({
+        message: "Editada exitosamente",
+        type: "success",
+      });
+    }
+  };
   
 
   // Manejo de eliminar empresa
@@ -91,11 +108,11 @@ const CompanyList = () => {
     setShowConfirmModal(true);
   };
 
-  const handleEditCompany = (company) => {
-    setEditingCompany(company);
-    setShowCreateModal(true);
-    loadCompanies();
-  };
+  // const handleEditCompany = (company) => {
+  //   setEditingCompany(company);
+  //   setShowCreateModal(true);
+  //   loadCompanies();
+  // };
 
   const handleCardClick = (company) => {
     setSelectedCompany(selectedCompany?.id === company.id ? null : company);
@@ -245,8 +262,7 @@ const CompanyList = () => {
           onClose={() => {
             setShowCreateModal(false);
             setEditingCompany(null);
-          }
-        }
+          }}
           onSave={handleSaveCompany}
           editCompany={editingCompany}
           loadCompanies={loadCompanies}
