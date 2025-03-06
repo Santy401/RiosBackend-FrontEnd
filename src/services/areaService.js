@@ -13,59 +13,57 @@ const getAuthHeaders = () => {
   };
 };
 
-export const companyService = {
-  getAllCompanies: async () => {
+export const areaService = {
+  getAllAreas: async () => {
     try {
       const config = getAuthHeaders();
-      const response = await api.get("/companies", config);
+      const response = await api.get("/areas", config);
       return response.data;
     } catch (error) {
-      console.error("Error en getAllCompanies:", error);
-      throw new Error("Error al obtener las empresas");
+      console.error("Error en getAllAreas:", error);
+      throw new Error("Error al obtener las áreas");
     }
   },
 
-  createCompany: async (companyData) => {
+  createArea: async (areaData) => {
     try {
-      console.log("🟡 Enviando datos al backend:", JSON.stringify(companyData, null, 2));
-
+      console.log("🟡 Enviando datos al backend:", JSON.stringify(areaData, null, 2));
       const config = getAuthHeaders();
-      const response = await api.post("/companies", companyData, config);
-      
+      const response = await api.post("/areas", areaData, config);
       return response.data;
     } catch (error) {
-      console.error("🔴 Error en createCompany:", error.response?.data || error.message);
+      console.error("🔴 Error en createArea:", error.response?.data || error.message);
       throw new Error(
-        error.response?.data?.error || "Error al crear la empresa"
+        error.response?.data?.error || "Error al crear el área"
       );
     }
   },
 
-  updateCompany: async (id, companyData) => {
+  updateArea: async (id, areaData) => {
     try {
       const config = getAuthHeaders();
-      const response = await api.put(`/companies/${id}`, companyData, config);
+      const response = await api.put(`/areas/${id}`, areaData, config);
       return response.data;
     } catch (error) {
-      console.error("Error en updateCompany:", error);
+      console.error("Error en updateArea:", error);
       throw new Error(
-        error.response?.data?.message || "Error al actualizar la empresa"
+        error.response?.data?.message || "Error al actualizar el área"
       );
     }
   },
 
-  deleteCompany: async (id) => {
+  deleteArea: async (id) => {
     try {
       const config = getAuthHeaders();
-      const response = await api.delete(`/companies/${id}`, config);
+      const response = await api.delete(`/areas/${id}`, config);
       return response.data;
     } catch (error) {
-      console.error("Error en deleteCompany:", error.response ? error.response.data : error.message); 
+      console.error("Error en deleteArea:", error.response ? error.response.data : error.message);
       throw new Error(
-        error.response?.data?.message || "Error al eliminar la empresa"
-      ); 
+        error.response?.data?.message || "Error al eliminar el área"
+      );
     }
   },
 };
 
-export default companyService;
+export default areaService;
