@@ -31,3 +31,6 @@ body {
     100% { transform: rotate(360deg); }
   }
   
+.panel-control {
+  height: 40vh;
+}

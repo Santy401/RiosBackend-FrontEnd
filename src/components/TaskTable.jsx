@@ -84,13 +84,16 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   return (
     <div className="task-tables-container">
       {/* Contadores de tareas */}
-      <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
-        <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-          {activeTasksCount}
-        </span>
-        <span className="counter completed-counter">{completedTasksCount}</span>
-      </div>
-
+      
+      {isAdmin && (
+          <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
+            <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
+            {activeTasksCount}
+            </span>
+            <span className="counter completed-counter">{completedTasksCount}</span>
+          </div>
+          )}
+          
       <div className="task-section">
         <div className="task-table-container">
           {tasks.length === 0 ? (
