@@ -11,6 +11,7 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
             className="confirm-button confirm"
             onClick={onConfirm} 
           >
+            Eliminar
           </button>
           <button 
             className="confirm-button cancel"
