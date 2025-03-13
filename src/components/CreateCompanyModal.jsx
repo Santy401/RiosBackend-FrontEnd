@@ -22,57 +22,49 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSave = async (e) => {
+   const handleSave = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-  
-    if (!formData.name || !formData.nit || !formData.email) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      setIsLoading(false);
-      return;
-    }
-    
-  
-    const companyData = {
-      ...formData,
-      id: editCompany?.id,
-      nit: formData.nit,
-      email: formData.email,
-      status: formData.status || "active",
-      companyType: formData.companyType || "A",
-    };
-
-    console.log("🟡 Datos enviados al backend:", companyData); 
-    
-    CreateCompanyModal.propTypes = {
-      onClose: PropTypes.func.isRequired,
-      onSave: PropTypes.func.isRequired,
-      editCompany: PropTypes.object,
-      loadCompanies: PropTypes.func.isRequired,
-    };
+    setError(null);
   
     try {
-      if (editCompany) {
-        await companyService.updateCompany(editCompany.id, companyData);
-      } else {
-        const response = await companyService.createCompany(companyData);
-        if (!response || !response.id) {
-          throw new Error("La empresa no fue creada correctamente.");
-        }
+      if (!formData.name || !formData.nit || !formData.email) {
+        throw new Error("Nombre, NIT y Email son campos obligatorios");
       }
-    
-      onSave();
-      loadCompanies(); 
-      onClose();
-    } catch (error) {
-      console.error("Error al guardar empresa:", error);
-      onClose();
-    } finally {
-      setIsLoading(false); 
-    }    
-  };
   
+      const companyData = {
+        ...formData,
+        id: editCompany?.id,
+        status: formData.status || "active",
+        companyType: formData.companyType || "A",
+      };
+  
+      let savedCompany;
+      
+      if (editCompany) {
+        savedCompany = await companyService.updateCompany(editCompany.id, companyData);
+      } else {
+        savedCompany = await companyService.createCompany(companyData);
+      }
+  
+      if (!savedCompany || !savedCompany.id) {
+        console.error("Respuesta del servidor:", savedCompany);
+        throw new Error("Error en la respuesta del servidor");
+      }
+  
+      await loadCompanies();
+      onSave(savedCompany);
+      onClose();
+      
+    } catch (error) {
+      console.error("Error detallado:", error);
+      setError(error.message || "Error al procesar la operación");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,6 +88,8 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
         <form onSubmit={handleSave}>
           {isLoading ? (
             <p className="loaling">Cargando...</p>
+          ) : error ? (
+            <p className="error">{error}</p>
           ) : (
             <>
               <div className="form-group">
