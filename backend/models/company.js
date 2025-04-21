@@ -6,10 +6,10 @@ const Company = sequelize.define(
   'Company',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       primaryKey: true,
-      autoIncrement: true,
-    },
+      autoIncrement: true
+    },    
     name: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -46,5 +46,6 @@ const Company = sequelize.define(
     timestamps: true,
   }
 );
+
 
 export default Company;

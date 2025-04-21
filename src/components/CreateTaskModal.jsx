@@ -4,6 +4,7 @@ import { userService } from "../services/userService";
 import { companyService } from "../services/companyService";
 import { areaService } from "../services/areaService";
 import "./styles/ModalAddTask.css";
+import { motion } from "framer-motion";
 
 const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
   const [formData, setFormData] = useState(
@@ -89,14 +90,19 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
     }));
     console.log(`${name} actualizado:`, value); 
   };
-
-  if (loading) return <div className="loading">Cargando datos...</div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
     <>
       <div className="backdrop" onClick={onClose}></div>
-      <div className="modal-create-task">
+      <div>
+      <motion.div
+       className="modal-create-task"
+       initial={{ opacity: 0, scale: 0.9, y: -30, x: 30 }}
+       animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+       exit={{ opacity: 0, scale: 0.9, y: -30, x: 30 }}
+       transition={{ duration: 0.15, ease: "easeOut" }}
+       >
         <h2>{editTask ? "Editar Tarea" : "Crear Nueva Tarea"}</h2>
 
         <form onSubmit={handleSubmit}>
@@ -193,6 +199,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
             </button>
           </div>
         </form>
+      </motion.div>
       </div>
     </>
   );

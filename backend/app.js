@@ -1,14 +1,10 @@
 import express from 'express';
-
 import cors from 'cors';
-
 import dotenv from 'dotenv';
-
 import helmet from 'helmet';
-
 import rateLimit from 'express-rate-limit';
-
 import xss from 'xss-clean';
+import sequelize from './config/database.js'; 
 
 import authController from './controllers/authController.js';
 import errorHandler from './middleware/errorMiddleware.js';
@@ -22,7 +18,16 @@ dotenv.config();
 
 const app = express();
 
-// Set security HTTP headers
+// Verificar conexión a PostgreSQL 🔍
+sequelize.authenticate()
+  .then(() => {
+    console.log('🟢 Conexión con PostgreSQL exitosa!');
+  })
+  .catch(err => {
+    console.error('🔴 Error al conectar con PostgreSQL:', err);
+  });
+
+// Seguridad
 app.use(helmet());
 app.use(express.json());
 
@@ -39,21 +44,18 @@ app.use(
   })
 );
 
-// Body parser, reading data from body into req.body
+// Config extra
 app.use(express.json({ limit: '10kb' }));
-
-// Data sanitization against XSS
 app.use(xss());
 
-// Rate limiting
 const limiter = rateLimit({
-  max: 100, // limit each IP to 100 requests per windowMs
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  windowMs: 15 * 60 * 1000,
   message: 'Too many requests from this IP, please try again later',
 });
 app.use('/api', limiter);
 
-// Routes
+// Rutas
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/areas', areaRoutes);
@@ -62,7 +64,7 @@ app.use('/auth/register', authController.register);
 app.use('/clients', clientRoutes);
 app.use('/companies', companyRoutes);
 
-// Global error handling middleware
+// Middleware de errores
 app.use(errorHandler);
 
 export default app;

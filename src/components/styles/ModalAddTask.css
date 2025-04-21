@@ -1,13 +1,16 @@
 .modal-create-task {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 14%;
+  right: 9%;
   transform: translate(-50%, -50%);
   overflow: auto;
   height: 515px;
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   z-index: 1000;
   scale: 91%;
   width: 37%;

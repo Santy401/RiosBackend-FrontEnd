@@ -8,6 +8,8 @@ import { useAuth } from "../context/authContext";
 import { getAllTasks } from "../services/taskService";
 import Notification from "./Notification";
 import ConfirmModal from "./ConfirmModal";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const PanelControlTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -61,8 +63,9 @@ const PanelControlTask = () => {
       }
 
       const formattedDueDate = taskData.dueDate
-        ? new Date(taskData.dueDate).toISOString().slice(0, 16)
+        ? new Date(taskData.dueDate).toISOString().slice(0, 16)  // Esto es correcto si necesitas sólo año, mes, día, hora y minutos
         : null;
+
 
       const formattedData = {
         ...taskData,
@@ -195,18 +198,24 @@ const PanelControlTask = () => {
   }
 
   return (
-    <div className="panel-control">
+    <div className="wontrol">
       <div className="panel-header">
         <h2>Listado de Tareas</h2>
-        <button
+        <motion.button
           className="create-button"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+          whileTap={{ scale: 0.0 }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           onClick={() => {
             setEditingTask(null);
             setShowCreateModal(true);
           }}
         >
           <i className="fa-solid fa-plus"></i> Crear Tarea
-        </button>
+        </motion.button>
+
       </div>
 
       <TaskTable
@@ -216,26 +225,30 @@ const PanelControlTask = () => {
         onStatusChange={handleStatusChange}
       />
 
-      {showCreateModal && (
-        <CreateTaskModal
-          onClose={() => setShowCreateModal(false)}
-          onSave={handleCreateTask}
-          editTask={editingTask || null}
-          isLoading={isCreating}
-        />
-      )}
+      <AnimatePresence>
+        {showCreateModal && (
+          <CreateTaskModal
+            onClose={() => setShowCreateModal(false)}
+            onSave={handleCreateTask}
+            editTask={editingTask || null}
+            isLoading={isCreating}
+          />
+        )}
+      </AnimatePresence>
 
-      {showConfirmModal && taskToDelete && (
-        <ConfirmModal
-          message={`¿Estás seguro de que quieres eliminar la tarea "${taskToDelete.title}"?`}
-          onConfirm={handleConfirmDelete}
-          isLoading={isCreating}
-          onCancel={() => {
-            setShowConfirmModal(false);
-            setTaskToDelete(null);
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {showConfirmModal && taskToDelete && (
+          <ConfirmModal
+            message={`¿Estás seguro de que quieres eliminar la tarea "${taskToDelete.title}"?`}
+            onConfirm={handleConfirmDelete}
+            isLoading={isCreating}
+            onCancel={() => {
+              setShowConfirmModal(false);
+              setTaskToDelete(null);
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       {notification && (
         <Notification

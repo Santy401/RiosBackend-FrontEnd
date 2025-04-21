@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './styles/TaskTable.css';
 import TaskDetailModal from '../components/TaskDetailModal.jsx';
 import { useAuth } from '../context/authContext.jsx';
+import { motion } from "framer-motion";
 
 const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const { user } = useAuth();
@@ -84,16 +85,16 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   return (
     <div className="task-tables-container">
       {/* Contadores de tareas */}
-      
+
       {isAdmin && (
-          <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
-            <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
+        <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
+          <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
             {activeTasksCount}
-            </span>
-            <span className="counter completed-counter">{completedTasksCount}</span>
-          </div>
-          )}
-          
+          </span>
+          <span className="counter completed-counter">{completedTasksCount}</span>
+        </div>
+      )}
+
       <div className="task-section">
         <div className="task-table-container">
           {tasks.length === 0 ? (
@@ -118,7 +119,12 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             </div>
           ) : (
             <div className="table-responsive">
-              <table className="task-table">
+              <motion.table
+                className="task-table"
+                initial={{ opacity: 0, X: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('title')}>Nombre De Tarea</th>
@@ -133,13 +139,14 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedTasks.map((task) => (
-                    <tr
+                  {sortedTasks.map((task, index) => (
+                    <motion.tr
                       key={task.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
                       onClick={() => handleRowClick(task.id)}
-                      className={`${getRowClass(task.status)} ${
-                        expandedTask === task.id ? 'expanded' : ''
-                      }`}
+                      className={`${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
                     >
                       <td>{task.title}</td>
                       <td className="task-observation">
@@ -159,7 +166,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       </td>
                       <td>{task.assignedUser?.name}</td>
                       <td>{task.company?.name}</td>
-                      <td>{task.area?.nombre_area}</td>
+                      <td>{task.Areas?.nombre_area}</td>
                       <td>{formatDate(task.createdAt)}</td>
                       <td>{formatDate(task.dueDate)}</td>
                       <td>
@@ -208,10 +215,10 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                           </div>
                         </td>
                       )}
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
-              </table>
+              </motion.table>
             </div>
           )}
         </div>

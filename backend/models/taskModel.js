@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 
 import sequelize from '../config/database.js';
 
-import Area from './areaModel.js';
+import Areas from './areaModel.js';
 import Company from './company.js';
 import User from './userModel.js';
 
@@ -36,24 +36,32 @@ const Task = sequelize.define(
         model: Company,
         key: 'id',
       },
+      created_at: {
+        type: DataTypes.DATE,
+        field: 'created_at' 
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at'
+      }
     },
     area_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Area,
+        model: Areas,
         key: 'id_area',
       },
-    },
-    dueDate: {
+    },    
+    due_date: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       get() {
-        const dueDate = this.getDataValue('dueDate');
+        const dueDate = this.getDataValue('due_date'); // Cambié 'dueDate' a 'due_date'
         return dueDate ? dueDate.toISOString().slice(0, 16) : null;
       },
       set(value) {
-        this.setDataValue('dueDate', new Date(value));
+        this.setDataValue('due_date', new Date(value)); // Cambié 'dueDate' a 'due_date'
       },
     },
     status: {
@@ -64,11 +72,13 @@ const Task = sequelize.define(
   {
     tableName: 'tasks',
     timestamps: true,
+    underscored: true, 
   }
 );
 
 Task.belongsTo(User, { as: 'assignedUser', foreignKey: 'assigned_to' });
 Task.belongsTo(Company, { as: 'company', foreignKey: 'company_id' });
-Task.belongsTo(Area, { as: 'area', foreignKey: 'area_id' });
+Task.belongsTo(Areas, { as: 'Areas', foreignKey: 'area_id' });
+
 
 export default Task;

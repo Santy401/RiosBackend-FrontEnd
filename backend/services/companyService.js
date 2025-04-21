@@ -1,36 +1,54 @@
 import { Op } from 'sequelize';
 
-import Area from '../models/areaModel.js';
+import area from '../models/areaModel.js';
 import Client from '../models/client.js';
 import Company from '../models/company.js';
 
 const getAllCompanies = async () => {
-  return await Company.findAll({
-    attributes: {
-      exclude: ['password', 'ccPassword', 'ssPassword', 'anotherPassword'],
-    },
-  });
+  try {
+    const companies = await Company.findAll({
+      attributes: {
+        exclude: ['password', 'ccPassword', 'ssPassword', 'anotherPassword'],
+      },
+      include: [
+        { model: area, as: 'areas' },
+        { model: Client, as: 'clients' },
+      ],
+    });
+    console.log(companies);
+    return companies;
+  } catch (error) {
+    console.error('❌ Error al obtener las empresas:', error);
+    throw new Error('No se pudieron obtener las empresas');
+  }
 };
+
 
 const createCompany = async (companyData) => {
-  const { name, nit } = companyData;
-  console.log("🔍 Validando datos:", companyData);
+  try {
+    const { name, nit } = companyData;
+    console.log("🔍 Validando datos:", companyData);
 
-  if (!name || !nit) {
-    throw new Error("❌ Nombre y NIT son requeridos");
+    if (!name || !nit) {
+      throw new Error("❌ Nombre y NIT son requeridos");
+    }
+
+    const existingCompany = await Company.findOne({ where: { nit } });
+    if (existingCompany) {
+      throw new Error("❌ Ya existe una empresa con este NIT");
+    }
+
+    return await Company.create({
+      ...companyData,
+      status: companyData.status || "active",
+      companyType: companyData.companyType || "A",
+    });
+  } catch (error) {
+    console.error("❌ Error al crear una empresa:", error);
+    throw error;
   }
-
-  const existingCompany = await Company.findOne({ where: { nit } });
-  if (existingCompany) {
-    throw new Error("❌ Ya existe una empresa con este NIT");
-  }
-
-  return await Company.create({
-    ...companyData,
-    status: companyData.status || "active",
-    companyType: companyData.companyType || "A",
-  });
 };
+
 
 
 const updateCompany = async (id, companyData) => {
