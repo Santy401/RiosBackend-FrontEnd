@@ -5,6 +5,8 @@ import CreateUser from "./createUser";
 import ConfirmModal from "./ConfirmModal";
 import Notification from "./Notification";
 import "../components/styles/userList.css";
+import { AnimatePresence } from "framer-motion";
+
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -37,7 +39,7 @@ const UserList = () => {
       loadUsers();
     }
   }, [currentUser, editingUser]);
-  
+
 
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -73,15 +75,15 @@ const UserList = () => {
       if (!currentUser?.role === "admin") {
         throw new Error("No tienes permisos para gestionar usuarios");
       }
-  
+
       if (userData.id) {
         await userService.updateUser(userData.id, userData);
       } else {
         await userService.createUser(userData);
       }
-      
+
       await loadUsers();
-  
+
       setShowCreateModal(false);
       setEditingUser(null);
       setNotification({
@@ -96,10 +98,10 @@ const UserList = () => {
       });
     }
   };
-  
-  
-  
-  
+
+
+
+
 
   const filteredUsers = users.filter((user) => {
     const searchText = searchQuery.toLowerCase();
@@ -173,29 +175,30 @@ const UserList = () => {
           ))
         )}
       </div>
-
-      {showCreateModal && (
-        <CreateUser
-          onClose={() => {
-            setShowCreateModal(false);
-            setEditingUser(null);
-          }}
-          onSave={handleSaveUser}
-          editUser={editingUser}
-        />
-      )}
-
-      {showConfirmModal && (
-        <ConfirmModal
-          message={`¿Estás seguro de que quieres eliminar al usuario ${userToDelete.name}?`}
-          onConfirm={handleConfirmDelete}
-          onCancel={() => {
-            setShowConfirmModal(false);
-            setUserToDelete(null);
-          }}
-        />
-      )}
-
+      <AnimatePresence>
+        {showCreateModal && (
+          <CreateUser
+            onClose={() => {
+              setShowCreateModal(false);
+              setEditingUser(null);
+            }}
+            onSave={handleSaveUser}
+            editUser={editingUser}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showConfirmModal && (
+          <ConfirmModal
+            message={`¿Estás seguro de que quieres eliminar al usuario ${userToDelete.name}?`}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => {
+              setShowConfirmModal(false);
+              setUserToDelete(null);
+            }}
+          />
+        )}
+      </AnimatePresence>
       {notification && (
         <Notification
           message={notification.message}

@@ -94,14 +94,15 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
 
   return (
     <>
-      <div className="backdrop" onClick={onClose}></div>
+      <div className="backdrop">
       <div>
-      <motion.div
+      <motion.div 
        className="modal-create-task"
-       initial={{ opacity: 0, scale: 0.9, y: -30, x: 30 }}
-       animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-       exit={{ opacity: 0, scale: 0.9, y: -30, x: 30 }}
-       transition={{ duration: 0.15, ease: "easeOut" }}
+       style={{ position:"relative", right:"100px" }}
+       initial={{ opacity: 0, scale: 0.9}}
+       animate={{ opacity: 1, scale: 1 }}
+       exit={{ opacity: 0, scale: 0.9 }}
+       transition={{ duration: 0.2, ease: "easeOut" }}
        >
         <h2>{editTask ? "Editar Tarea" : "Crear Nueva Tarea"}</h2>
 
@@ -200,6 +201,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
           </div>
         </form>
       </motion.div>
+      </div>
       </div>
     </>
   );

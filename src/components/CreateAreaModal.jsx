@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "../components/styles/ModalAddTask.css";
+import { motion }  from "framer-motion"
 
 const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
   const [formData, setFormData] = useState(
@@ -42,51 +43,57 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
 
   return (
     <>
-      <div className="backdrop" onClick={onClose}></div>
-      <div className="modal-create-task">
-        <h2>{editArea ? "Editar Área" : "Crear Nueva Área"}</h2>
+      <div className="backdrop" >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.2 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="modal-create-task">
+          <h2>{editArea ? "Editar Área" : "Crear Nueva Área"}</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre del Área:</label>
-            <input
-              type="text"
-              name="nombre_area"
-              value={formData.nombre_area}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre del Área:</label>
+              <input
+                type="text"
+                name="nombre_area"
+                value={formData.nombre_area}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Departamento:</label>
-            <input
-              type="text"
-              name="departamento"
-              value={formData.departamento}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label>Departamento:</label>
+              <input
+                type="text"
+                name="departamento"
+                value={formData.departamento}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Descripción:</label>
-            <textarea
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleChange}
-            />
-          </div>
+            <div className="form-group">
+              <label>Descripción:</label>
+              <textarea
+                name="descripcion"
+                value={formData.descripcion}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="button-group">
-            <button type="submit">
-              {editArea ? "Guardar Cambios" : "Crear Área"}
-            </button>
-            <button type="button" onClick={onClose}>
-              Cancelar
-            </button>
-          </div>
-        </form>
+            <div className="button-group">
+              <button type="submit">
+                {editArea ? "Guardar Cambios" : "Crear Área"}
+              </button>
+              <button type="button" onClick={onClose}>
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </motion.div>
       </div>
     </>
   );

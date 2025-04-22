@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
 import "../styles/stylesLogin.css";
+import { motion } from "framer-motion";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,8 +39,14 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="formLogin">
+    <div className="containerLogin">
+      <motion.form
+      initial={{ opacity: 0, scale: .7 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: .4, ease: "easeInOut" }}
+      onSubmit={handleSubmit}
+       className="formLogin">
+
         <h2>Inicia Sesión</h2>
         <div className="inputs-login">
           <input
@@ -59,10 +67,17 @@ const Login = () => {
             placeholder="Contraseña"
             required
           />
-          <button type="submit">Entrar</button>
+          <motion.button 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+          whileTap={{ scale: 0.7 }}
+          transition={{ duration: 0.1, ease: "easeInOut" }}
+          type="submit"
+          >Entrar</motion.button>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
+      </motion.form>
     </div>
   );
 };

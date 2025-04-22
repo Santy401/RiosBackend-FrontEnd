@@ -121,8 +121,8 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             <div className="table-responsive">
               <motion.table
                 className="task-table"
-                initial={{ opacity: 0, X: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, X: 30, scale: .6 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.2 }}
               >
                 <thead>
@@ -142,8 +142,8 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   {sortedTasks.map((task, index) => (
                     <motion.tr
                       key={task.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, x: -20, scale: .7 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
                       onClick={() => handleRowClick(task.id)}
                       className={`${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}

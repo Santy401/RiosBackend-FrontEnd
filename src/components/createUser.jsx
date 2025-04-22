@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "../components/styles/ModalAddTask.css";
 import { useAuth } from "../context/authContext";
+import { motion } from "framer-motion";
 
 const CreateUser = ({ onClose, onSave, editUser = null }) => {
   const [formData, setFormData] = useState(
@@ -77,8 +78,14 @@ const CreateUser = ({ onClose, onSave, editUser = null }) => {
 
   return (
     <>
-      <div className="backdrop" onClick={onClose}></div>
-      <div className="modal-create-task">
+      <div className="backdrop">
+      <motion.div
+       className="modal-create-task"
+       initial={{ opacity: 0, scale: 0.9 }}
+       exit={{ opacity:0, scale: .9 }}
+       animate={{ opacity: 1, scale: 1 }}
+       transition={{ duration: 0.2 }}
+       >
         <h2>{editUser ? "Editar Usuario" : "Crear Nuevo Usuario"}</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -165,6 +172,7 @@ const CreateUser = ({ onClose, onSave, editUser = null }) => {
             </button>
           </div>
         </form>
+      </motion.div>
       </div>
     </>
   );

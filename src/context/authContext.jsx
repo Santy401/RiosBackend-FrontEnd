@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import PropTypes from "prop-types";
+import './loading.css'
 
 const AuthContext = createContext(null);
 
@@ -37,7 +38,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div className="SpinnerContent">
+      <div class="fingerprint-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+    </div>;
   }
 
   return (
