@@ -39,7 +39,7 @@
 
 .areas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 100px));
   gap: 20px;
   padding: 20px 0;
 }
@@ -47,6 +47,7 @@
 .area-card {
   background: white;
   border-radius: 8px;
+  width: 270px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s;

@@ -75,7 +75,7 @@ const updateCompany = async (id, companyData) => {
 const deleteCompany = async (id) => {
   const company = await Company.findByPk(id, {
     include: [
-      { model: Area, as: 'areas', required: false },
+      { model: area, as: 'areas', required: false },
       { model: Client, as: 'clients', required: false },
     ],
   });
