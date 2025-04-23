@@ -153,3 +153,27 @@
 .notification {
   z-index: 1060;
 }
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.no-areas {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #888;
+  animation: slideDown 0.6s ease-out forwards;
+}
+
+.loadingArea {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: #555;
+}

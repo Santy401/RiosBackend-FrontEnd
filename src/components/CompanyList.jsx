@@ -5,6 +5,7 @@ import CreateCompanyModal from "./CreateCompanyModal";
 import "../components/styles/CompanyList.css";
 import ConfirmModal from "./ConfirmModal";
 import Notification from "./Notification";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -18,7 +19,7 @@ const CompanyList = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [companyTypeFilter, setCompanyTypeFilter] = useState(""); 
+  const [companyTypeFilter, setCompanyTypeFilter] = useState("");
 
   const loadCompanies = async () => {
     try {
@@ -63,7 +64,7 @@ const CompanyList = () => {
 
       setShowCreateModal(false);
       setEditingCompany(null);
-      await loadCompanies(); 
+      await loadCompanies();
     } catch (err) {
       console.error("Error al guardar empresa:", err);
       setNotification({
@@ -77,8 +78,8 @@ const CompanyList = () => {
 
   const handleEditCompany = async (updatedCompany) => {
     try {
-      setEditingCompany(updatedCompany); 
-      setShowCreateModal(true); 
+      setEditingCompany(updatedCompany);
+      setShowCreateModal(true);
     } catch (err) {
       console.error("Error al preparar edición:", err);
       setNotification({
@@ -139,7 +140,13 @@ const CompanyList = () => {
     return types[type] || "No especificado";
   };
 
-  if (loading) return <div className="loading">Cargando empresas...</div>;
+  if (loading) return <motion.div
+    initial={{ opacity: 0, y: -100 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 2, ease: "easeOut" }}
+    className="loading">
+    Cargando empresas...
+  </motion.div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
@@ -147,12 +154,17 @@ const CompanyList = () => {
       <div className="company-list-header">
         <div className="header-top">
           <h2>Lista de Empresas</h2>
-          <button
+          <motion.button
+            initial={{ opacity: 0, scale: .8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 0.8 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="create-button"
             onClick={() => setShowCreateModal(true)}
           >
             <i className="fa-solid fa-plus"></i> Crear Empresa
-          </button>
+          </motion.button>
         </div>
         <input
           type="text"
@@ -166,7 +178,7 @@ const CompanyList = () => {
           value={companyTypeFilter}
           onChange={(e) => setCompanyTypeFilter(e.target.value)}
         >
-          <option>Filtrar por tipo </option>
+          <option value="">Filtrar por tipo </option>
           <option value="A">Tipo A</option>
           <option value="B">Tipo B</option>
           <option value="C">Tipo C</option>
@@ -177,81 +189,106 @@ const CompanyList = () => {
         <div className="no-companies">No se encontraron empresas</div>
       ) : (
         <div className="companies-grid">
-          {filteredCompanies.map((company) => (
-            <div
-              key={company.id}
-              className={`company-card ${
-                selectedCompany?.id === company.id ? "expanded" : ""
-              }`}
-              onClick={() => handleCardClick(company)}
-            >
-              <div className="company-card-header">
-                <h3>{company.name}</h3>
-                <div
-                  className="company-actions"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    onClick={() => handleEditCompany(company)}
-                    className="edit-button"
-                    title="Editar empresa"
+          <AnimatePresence>
+            {filteredCompanies.map((company, index) => (
+              <motion.div
+                layout
+                key={user.id}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: index * 0.07 }} // delay progresivo
+                className={`company-card ${selectedCompany?.id === company.id ? "expanded" : ""
+                  }`}
+                onClick={() => handleCardClick(company)}
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="company-card-header">
+                  <h3>{company.name}</h3>
+                  <div
+                    className="company-actions"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(company)}
-                    className="delete-button"
-                    title="Eliminar empresa"
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-              <div className="company-card-content">
-                <p className="company-nit">
-                  <i className="fa-solid fa-id-card"></i>
-                  {company.nit}
-                </p>
-                <p className="company-email">
-                  <i className="fa-solid fa-envelope"></i>
-                  {company.email || "Sin correo"}
-                </p>
-                <p className="company-type" data-type={company.companyType}>
-                  <i className="fa-solid fa-building"></i>
-                  {getCompanyTypeText(company.companyType)}
-                </p>
-
-                {selectedCompany?.id === company.id && (
-                  <div className="company-expanded-details">
-                    <p className="company-phone">
-                      <i className="fa-solid fa-phone"></i>
-                      {company.cellphone || "No especificado"}
-                    </p>
-                    <p className="company-dian">
-                      <i className="fa-solid fa-file-invoice"></i>
-                      {company.dian || "No especificado"}
-                    </p>
-                    <p className="company-signature">
-                      <i className="fa-solid fa-signature"></i>
-                      {company.legalSignature || "No especificado"}
-                    </p>
-                    <p className="company-software">
-                      <i className="fa-solid fa-calculator"></i>
-                      {company.accountingSoftware || "No especificado"}
-                    </p>
-                    <p className="company-user">
-                      <i className="fa-solid fa-user"></i>
-                      {company.user || "No especificado"}
-                    </p>
-                    <p className="company-server">
-                      <i className="fa-solid fa-server"></i>
-                      {company.mailServer || "No especificado"}
-                    </p>
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      onClick={() => handleEditCompany(company)}
+                      className="edit-button"
+                      title="Editar empresa"
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </motion.button>
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      onClick={() => handleDeleteClick(company)}
+                      className="delete-button"
+                      title="Eliminar empresa"
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </motion.button>
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
+                </div>
+                <div className="company-card-content">
+                  <p className="company-nit">
+                    <i className="fa-solid fa-id-card"></i>
+                    {company.nit}
+                  </p>
+                  <p className="company-email">
+                    <i className="fa-solid fa-envelope"></i>
+                    {company.email || "Sin correo"}
+                  </p>
+                  <p className="company-type" data-type={company.companyType}>
+                    <i className="fa-solid fa-building"></i>
+                    {getCompanyTypeText(company.companyType)}
+                  </p>
+
+                  <AnimatePresence>
+                    {selectedCompany?.id === company.id && (
+                      <motion.div
+                        className="company-expanded-details"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="company-phone">
+                          <i className="fa-solid fa-phone"></i>
+                          {company.cellphone || "No especificado"}
+                        </p>
+                        <p className="company-dian">
+                          <i className="fa-solid fa-file-invoice"></i>
+                          {company.dian || "No especificado"}
+                        </p>
+                        <p className="company-signature">
+                          <i className="fa-solid fa-signature"></i>
+                          {company.legalSignature || "No especificado"}
+                        </p>
+                        <p className="company-software">
+                          <i className="fa-solid fa-calculator"></i>
+                          {company.accountingSoftware || "No especificado"}
+                        </p>
+                        <p className="company-user">
+                          <i className="fa-solid fa-user"></i>
+                          {company.user || "No especificado"}
+                        </p>
+                        <p className="company-server">
+                          <i className="fa-solid fa-server"></i>
+                          {company.mailServer || "No especificado"}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
 

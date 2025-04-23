@@ -5,7 +5,7 @@ import CreateUser from "./createUser";
 import ConfirmModal from "./ConfirmModal";
 import Notification from "./Notification";
 import "../components/styles/userList.css";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 
 const UserList = () => {
@@ -120,12 +120,17 @@ const UserList = () => {
       <div className="user-list-header">
         <div className="header-top">
           <h2>Lista de Usuarios</h2>
-          <button
+          <motion.button
+            initial={{ opacity: 0, scale: .8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 0.8 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="create-button"
             onClick={() => setShowCreateModal(true)}
           >
             <i className="fas fa-plus"></i> Crear Usuario
-          </button>
+          </motion.button>
         </div>
         <input
           type="text"
@@ -137,28 +142,43 @@ const UserList = () => {
       </div>
 
       <div className="users-grid">
-        {filteredUsers.length === 0 ? (
-          <div className="no-users">No se encontraron usuarios</div>
-        ) : (
-          filteredUsers.map((user) => (
-            <div key={user.id} className="user-card">
+        <AnimatePresence>
+          {filteredUsers.map((user, index) => (
+            <motion.div
+              key={user.id}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, delay: index * 0.07 }} // delay progresivo
+              className="user-card"
+            >
               <div className="user-card-header">
                 <h3>{user.name}</h3>
                 <div className="user-actions">
-                  <button
+                  <motion.button
+                    initial={{ opacity: 0, scale: .8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                     onClick={() => handleEditUser(user)}
                     className="edit-button"
                     title="Editar usuario"
                   >
                     <i className="fas fa-pen"></i>
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    initial={{ opacity: 0, scale: .8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                     onClick={() => handleDeleteClick(user)}
                     className="delete-button"
                     title="Eliminar usuario"
                   >
                     <i className="fas fa-trash"></i>
-                  </button>
+                  </motion.button>
                 </div>
               </div>
               <div className="user-card-content">
@@ -171,9 +191,9 @@ const UserList = () => {
                   {user.role}
                 </p>
               </div>
-            </div>
-          ))
-        )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
       <AnimatePresence>
         {showCreateModal && (

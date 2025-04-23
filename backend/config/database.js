@@ -1,5 +1,5 @@
 // Configuracion De PosgreSQL
-import { Sequelize } from 'sequelize';  
+import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('TasksRios', 'san', 'santy401', {
   host: 'localhost',

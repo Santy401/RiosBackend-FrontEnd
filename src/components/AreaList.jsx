@@ -5,6 +5,7 @@ import "../components/styles/AreaList.css";
 import { useAuth } from "../context/authContext";
 import ConfirmModal from "../components/ConfirmModal.jsx";
 import Notification from "../components/Notification.jsx";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AreaList = () => {
   const [areas, setAreas] = useState([]);
@@ -25,10 +26,8 @@ const AreaList = () => {
       setLoading(true);
       setError(null);
       const data = await areaService.getAllAreas();
-      console.log("Áreas cargadas:", data);
       setAreas(data);
     } catch (err) {
-      console.error("Error al cargar áreas:", err);
       setError("Error al cargar áreas");
     } finally {
       setLoading(false);
@@ -36,18 +35,11 @@ const AreaList = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      loadAreas();
-    }
+    if (user) loadAreas();
   }, [user]);
 
-  useEffect(() => {
-    console.log("Lista de áreas actualizada:", areas);
-  }, [areas]);
-
   const handleDeleteClick = (area) => {
-    if (!area || !area.id_area) {
-      console.error("Intento de eliminar área inválida:", area);
+    if (!area?.id_area) {
       setNotification({
         message: "No se puede eliminar el área: datos inválidos",
         type: "error",
@@ -60,27 +52,19 @@ const AreaList = () => {
 
   const handleConfirmDelete = async () => {
     if (isDeleting) return;
-
     try {
       setIsDeleting(true);
-      if (!areaToDelete || !areaToDelete.id_area) {
-        throw new Error("No se puede eliminar: área inválida");
-      }
-
       await areaService.deleteArea(areaToDelete.id_area);
-
-      setAreas((prevAreas) =>
-        prevAreas.filter((area) => area.id_area !== areaToDelete.id_area)
+      setAreas((prev) =>
+        prev.filter((a) => a.id_area !== areaToDelete.id_area)
       );
-
       setNotification({
         message: "Área eliminada exitosamente",
         type: "success",
       });
-    } catch (error) {
-      console.error("Error detallado al eliminar área:", error);
+    } catch (err) {
       setNotification({
-        message: error.message || "Error al eliminar el área",
+        message: err.message || "Error al eliminar el área",
         type: "error",
       });
     } finally {
@@ -110,14 +94,14 @@ const AreaList = () => {
           editingArea.id_area,
           areaData
         );
-        setAreas((prevAreas) =>
-          prevAreas.map((area) =>
-            area.id_area === editingArea.id_area ? updatedArea : area
+        setAreas((prev) =>
+          prev.map((a) =>
+            a.id_area === editingArea.id_area ? updatedArea : a
           )
         );
       } else {
         const newArea = await areaService.createArea(areaData);
-        setAreas((prevAreas) => [...prevAreas, newArea]);
+        setAreas((prev) => [...prev, newArea]);
       }
 
       setNotification({
@@ -125,7 +109,6 @@ const AreaList = () => {
         type: "success",
       });
     } catch (err) {
-      console.error("Error al guardar área:", err);
       setNotification({
         message: err.message || "Error al guardar el área",
         type: "error",
@@ -144,7 +127,14 @@ const AreaList = () => {
       area.descripcion?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (loading) return <div className="loading">Cargando áreas...</div>;
+  if (loading) return <motion.div
+    className="loadingArea"
+    initial={{ opacity: 0, y: -100 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 2, ease: "easeOut" }}
+  >
+    Cargando áreas...
+  </motion.div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
@@ -152,12 +142,17 @@ const AreaList = () => {
       <div className="area-list-header">
         <div className="header-top">
           <h2>Lista de Áreas</h2>
-          <button
+          <motion.button
+            initial={{ opacity: 0, scale: .8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 0.8 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="create-button"
             onClick={() => setShowCreateModal(true)}
           >
             <i className="fa-solid fa-plus"></i> Crear Área
-          </button>
+          </motion.button>
         </div>
         <input
           type="text"
@@ -171,41 +166,73 @@ const AreaList = () => {
       {filteredAreas.length === 0 ? (
         <div className="no-areas">No se encontraron áreas</div>
       ) : (
-        <div className="areas-grid">
-          {filteredAreas.map((area) => (
-            <div key={area.id_area} className="area-card">
-              <div className="area-card-header">
-                <h3>{area.nombre_area}</h3>
-                <div className="area-actions">
-                  <button
-                    onClick={() => handleEditArea(area)}
-                    className="edit-button"
-                    title="Editar área"
-                  >
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(area)}
-                    className="delete-button"
-                    title="Eliminar área"
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
+        <motion.div
+          className="areas-grid"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
+          <AnimatePresence>
+            {filteredAreas.map((area, index) => (
+              <motion.div
+                key={user.id}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: index * 0.07 }} // delay progresivo
+                className="user-card"
+              >
+                <div className="area-card-header">
+                  <h3>{area.nombre_area}</h3>
+                  <div className="area-actions">
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      onClick={() => handleEditArea(area)}
+                      className="edit-button"
+                      title="Editar área"
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </motion.button>
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      onClick={() => handleDeleteClick(area)}
+                      className="delete-button"
+                      title="Eliminar área"
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-              <div className="area-card-content">
-                <p className="area-department">
-                  <i className="fa-solid fa-building"></i>
-                  {area.departamento}
-                </p>
-                <p className="area-description">
-                  <i className="fa-solid fa-align-left"></i>
-                  {area.descripcion || "Sin descripción"}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+                <div className="area-card-content">
+                  <p className="area-department">
+                    <i className="fa-solid fa-building"></i>
+                    {area.departamento}
+                  </p>
+                  <p className="area-description">
+                    <i className="fa-solid fa-align-left"></i>
+                    {area.descripcion || "Sin descripción"}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
 
       {showCreateModal && (
