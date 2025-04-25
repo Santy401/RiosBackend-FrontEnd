@@ -16,7 +16,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
       area_id: "",
       dueDate: "",
       status: "in_progress",
-      createdAt: new Date().toISOString(), 
+      createdAt: new Date().toISOString(),
     }
   );
 
@@ -53,7 +53,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (
       !formData.title ||
       !formData.observation ||
@@ -65,143 +65,155 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
       alert("Todos los campos son obligatorios.");
       return;
     }
-  
+
     try {
       const response = await onSave(formData);
       console.log("Respuesta del servidor:", response);
-  
+
       if (response && response.task) {
         console.log("Tarea creada/actualizada:", response.task);
-        setFormData(response.task); 
+        setFormData(response.task);
       }
-  
+
       onClose();
     } catch (error) {
       console.error("Error al guardar la tarea:", error);
       alert("Ocurrió un error al procesar la solicitud.");
     }
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    console.log(`${name} actualizado:`, value); 
+    console.log(`${name} actualizado:`, value);
   };
   if (error) return <div className="error">{error}</div>;
 
   return (
     <>
       <div className="backdrop">
-      <div>
-      <motion.div 
-       className="modal-create-task"
-       style={{ position:"relative", right:"100px" }}
-       initial={{ opacity: 0, scale: 0.9}}
-       animate={{ opacity: 1, scale: 1 }}
-       exit={{ opacity: 0, scale: 0.9 }}
-       transition={{ duration: 0.2, ease: "easeOut" }}
-       >
-        <h2>{editTask ? "Editar Tarea" : "Crear Nueva Tarea"}</h2>
+        <div>
+          <motion.div
+            className="modal-create-task"
+            style={{ position: "relative", right: "100px" }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <h2>{editTask ? "Editar Tarea" : "Crear Nueva Tarea"}</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Título: *</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Título: *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div className="form-group">
-            <label>Asignar a: *</label>
-            <select
-              name="assigned_to"
-              value={formData.assigned_to}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccionar usuario</option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} ({user.email})
-                </option>
-              ))}
-            </select>
-          </div>
+              <div className="form-group">
+                <label>Asignar a: *</label>
+                <select
+                  name="assigned_to"
+                  value={formData.assigned_to}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccionar usuario</option>
+                  {users.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name} ({user.email})
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          <div className="form-group">
-            <label>Empresa: *</label>
-            <select
-              name="company_id"
-              value={formData.company_id}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccionar empresa</option>
-              {companies.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.name} - Tipo {company.companyType}
-                </option>
-              ))}
-            </select>
-          </div>
+              <div className="form-group">
+                <label>Empresa: *</label>
+                <select
+                  name="company_id"
+                  value={formData.company_id}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccionar empresa</option>
+                  {companies.map((company) => (
+                    <option key={company.id} value={company.id}>
+                      {company.name} - Tipo {company.companyType}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          <div className="form-group">
-            <label>Área: *</label>
-            <select
-              name="area_id"
-              value={formData.area_id}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccionar área</option>
-              {areas.map((area) => (
-                <option key={area.id_area} value={area.id_area}>
-                  {area.nombre_area} - {area.departamento}
-                </option>
-              ))}
-            </select>
-          </div>
+              <div className="form-group">
+                <label>Área: *</label>
+                <select
+                  name="area_id"
+                  value={formData.area_id}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccionar área</option>
+                  {areas.map((area) => (
+                    <option key={area.id_area} value={area.id_area}>
+                      {area.nombre_area} - {area.departamento}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          <div className="form-group">
-            <label>Fecha límite: *</label>
-            <input
-              type="datetime-local"
-              name="dueDate"
-              value={formData.dueDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <div className="form-group">
+                <label>Fecha límite: *</label>
+                <input
+                  type="datetime-local"
+                  name="dueDate"
+                  value={formData.dueDate}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div className="form-group">
-            <label>Descripción: *</label>
-            <textarea
-              name="observation"
-              value={formData.observation}
-              onChange={handleChange}
-              rows="4"
-              required
-            />
-          </div>
+              <div className="form-group">
+                <label>Descripción: *</label>
+                <textarea
+                  name="observation"
+                  value={formData.observation}
+                  onChange={handleChange}
+                  rows="4"
+                  required
+                />
+              </div>
 
-          <div className="button-group">
-            <button type="submit">
-              {editTask ? "Guardar Cambios" : "Crear Tarea"}
-            </button>
-            <button type="button" onClick={onClose}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </motion.div>
-      </div>
+              <div className="button-group">
+                <motion.button
+                  initial={{ opacity: 0, scale: .8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  type="submit">
+                  {editTask ? "Guardar Cambios" : "Crear Tarea"}
+                </motion.button>
+                <motion.button
+                  initial={{ opacity: 0, scale: .8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  type="button" onClick={onClose}>
+                  Cancelar
+                </motion.button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
       </div>
     </>
   );

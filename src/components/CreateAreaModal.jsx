@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "../components/styles/ModalAddTask.css";
-import { motion }  from "framer-motion"
+import { motion } from "framer-motion"
 
 const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
   const [formData, setFormData] = useState(
@@ -85,12 +85,25 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
             </div>
 
             <div className="button-group">
-              <button type="submit">
+              <motion.button
+                initial={{ opacity: 0, scale: .8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                type="submit">
                 {editArea ? "Guardar Cambios" : "Crear Área"}
-              </button>
-              <button type="button" onClick={onClose}>
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0, scale: .8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                type="button" onClick={onClose}>
                 Cancelar
-              </button>
+              </motion.button>
             </div>
           </form>
         </motion.div>

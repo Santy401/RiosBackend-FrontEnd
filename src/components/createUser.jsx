@@ -79,100 +79,112 @@ const CreateUser = ({ onClose, onSave, editUser = null }) => {
   return (
     <>
       <div className="backdrop">
-      <motion.div
-       className="modal-create-task"
-       initial={{ opacity: 0, scale: 0.9 }}
-       exit={{ opacity:0, scale: .9 }}
-       animate={{ opacity: 1, scale: 1 }}
-       transition={{ duration: 0.2 }}
-       >
-        <h2>{editUser ? "Editar Usuario" : "Crear Nuevo Usuario"}</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre: *</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            {errors.name && (
-              <span className="error-message">{errors.name}</span>
+        <motion.div
+          className="modal-create-task"
+          initial={{ opacity: 0, scale: 0.9 }}
+          exit={{ opacity: 0, scale: .9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <h2>{editUser ? "Editar Usuario" : "Crear Nuevo Usuario"}</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre: *</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              {errors.name && (
+                <span className="error-message">{errors.name}</span>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>Email: *</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              {errors.email && (
+                <span className="error-message">{errors.email}</span>
+              )}
+            </div>
+
+            {!editUser && (
+              <>
+                <div className="form-group">
+                  <label>Contraseña: *</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.password && (
+                    <span className="error-message">{errors.password}</span>
+                  )}
+                </div>
+
+                <div className="form-group">
+                  <label>Confirmar Contraseña: *</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.confirmPassword && (
+                    <span className="error-message">
+                      {errors.confirmPassword}
+                    </span>
+                  )}
+                </div>
+              </>
             )}
-          </div>
 
-          <div className="form-group">
-            <label>Email: *</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            {errors.email && (
-              <span className="error-message">{errors.email}</span>
-            )}
-          </div>
+            <div className="form-group">
+              <label>Rol:</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
 
-          {!editUser && (
-            <>
-              <div className="form-group">
-                <label>Contraseña: *</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.password && (
-                  <span className="error-message">{errors.password}</span>
-                )}
-              </div>
-
-              <div className="form-group">
-                <label>Confirmar Contraseña: *</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.confirmPassword && (
-                  <span className="error-message">
-                    {errors.confirmPassword}
-                  </span>
-                )}
-              </div>
-            </>
-          )}
-
-          <div className="form-group">
-            <label>Rol:</label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-            >
-              <option value="user">Usuario</option>
-              <option value="admin">Administrador</option>
-            </select>
-          </div>
-
-          <div className="button-group">
-            <button type="submit">
-              {editUser ? "Guardar Cambios" : "Crear Usuario"}
-            </button>
-            <button type="button" onClick={onClose}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </motion.div>
+            <div className="button-group">
+              <motion.button
+                initial={{ opacity: 0, scale: .8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                type="submit">
+                {editUser ? "Guardar Cambios" : "Crear Usuario"}
+              </motion.button>
+              <motion.button
+                initial={{ opacity: 0, scale: .8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                type="button" onClick={onClose}>
+                Cancelar
+              </motion.button>
+            </div>
+          </form>
+        </motion.div>
       </div>
     </>
   );
