@@ -21,6 +21,7 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
+*.node_alpine.tar
 *.sw?
 
 # Base de datos SQLite
