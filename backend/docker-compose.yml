@@ -4,7 +4,7 @@ services:
     image: taskrios-backend
     network_mode: "host"
     environment:
-      - DB_HOST=127.0.0.1
+      - DB_HOST=host.docker.internal
       - DB_USER=san
       - DB_PASSWORD=santy401
       - DB_NAME=TasksRios
