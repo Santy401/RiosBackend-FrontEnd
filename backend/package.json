@@ -21,7 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
     "sequelize": "^6.37.5",
-    "xss-clean": "^0.1.4"
+    "xss-clean": "^0.1.4",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "pm2": "^5.4.3"
