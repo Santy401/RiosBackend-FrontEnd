@@ -33,8 +33,11 @@ const area = sequelize.define(
       },
     },
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
+      type: DataTypes.STRING,
       defaultValue: 'active',
+      validate: {
+        isIn: [['active', 'inactive']]
+      }
     },
   },
   {

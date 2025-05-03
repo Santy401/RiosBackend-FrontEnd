@@ -36,14 +36,6 @@ const Task = sequelize.define(
         model: Company,
         key: 'id',
       },
-      created_at: {
-        type: DataTypes.DATE,
-        field: 'created_at' 
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        field: 'updated_at'
-      }
     },
     area_id: {
       type: DataTypes.INTEGER,
@@ -57,17 +49,28 @@ const Task = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
       get() {
-        const dueDate = this.getDataValue('due_date'); // Cambié 'dueDate' a 'due_date'
+        const dueDate = this.getDataValue('due_date');
         return dueDate ? dueDate.toISOString().slice(0, 16) : null;
       },
       set(value) {
-        this.setDataValue('due_date', new Date(value)); // Cambié 'dueDate' a 'due_date'
+        this.setDataValue('due_date', new Date(value));
       },
     },
     status: {
-      type: DataTypes.ENUM('in_progress', 'completed'),
+      type: DataTypes.STRING,
       defaultValue: 'in_progress',
+      validate: {
+        isIn: [['in_progress', 'completed']]
+      }
     },
+    created_at: {
+      type: DataTypes.DATE,
+      field: 'created_at' 
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      field: 'updated_at'
+    }
   },
   {
     tableName: 'tasks',
@@ -79,6 +82,5 @@ const Task = sequelize.define(
 Task.belongsTo(User, { as: 'assignedUser', foreignKey: 'assigned_to' });
 Task.belongsTo(Company, { as: 'company', foreignKey: 'company_id' });
 Task.belongsTo(Areas, { as: 'Areas', foreignKey: 'area_id' });
-
 
 export default Task;

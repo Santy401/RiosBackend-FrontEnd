@@ -16,7 +16,7 @@ if (NODE_ENV === 'production') {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false, // Cambia esto según tu proveedor de hosting
+        rejectUnauthorized: false,
       },
     },
   });
@@ -26,10 +26,13 @@ if (NODE_ENV === 'production') {
   const DB_USER = process.env.DB_USER || 'san';
   const DB_PASSWORD = process.env.DB_PASSWORD || 'santy401';
   const DB_HOST = process.env.DB_HOST || 'localhost';
+  const DB_PORT = process.env.DB_PORT || 5432;
 
   sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     host: DB_HOST,
+    port: DB_PORT,
     dialect: 'postgres',
+    logging: console.log, // Habilitar logs para desarrollo
   });
 }
 
@@ -39,10 +42,15 @@ if (NODE_ENV === 'production') {
     console.log('🟢 Conexión con Sequelize y PostgreSQL exitosa!');
 
     // Sincroniza el modelo con la base de datos
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ 
+      alter: true,
+      force: false,
+      logging: console.log
+    });
     console.log('✅ Tablas actualizadas con éxito (sync alter)');
   } catch (error) {
     console.error('🔴 Error conectando con Sequelize:', error);
+    process.exit(1);
   }
 })();
 

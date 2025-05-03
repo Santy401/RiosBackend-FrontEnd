@@ -74,10 +74,18 @@ const Client = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    company_id: {
+      type: DataTypes.BIGINT,
+      references: {
+        model: Company,
+        key: 'id',
+      },
+    }
   },
   {
     tableName: 'clients',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         unique: true,

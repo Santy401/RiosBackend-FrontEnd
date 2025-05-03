@@ -33,12 +33,18 @@ const Company = sequelize.define(
     password: DataTypes.STRING,
     mailServer: DataTypes.STRING,
     companyType: {
-      type: DataTypes.ENUM('A', 'B', 'C'),
+      type: DataTypes.STRING,
       defaultValue: 'A',
+      validate: {
+        isIn: [['A', 'B', 'C']]
+      }
     },
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
+      type: DataTypes.STRING,
       defaultValue: 'active',
+      validate: {
+        isIn: [['active', 'inactive']]
+      }
     },
   },
   {
