@@ -1,5 +1,37 @@
+# Dependencies
 node_modules
 npm-debug.log
-Dockerfile
-docker-compose.yml
-.dockerignore
+pnpm-debug.log
+
+# Version control
+.git
+.gitignore
+
+# Environment
+.env
+.env.*
+.env.local
+
+# IDE
+.vscode
+.idea
+
+# Build outputs
+dist
+coverage
+*.log
+
+# OS
+.DS_Store
+
+# Documentation
+*.md
+LICENSE
+CHANGELOG.md
+
+# Test files
+__tests__
+*.test.js
+*.spec.js
+test
+tests
