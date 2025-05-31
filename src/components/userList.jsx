@@ -20,19 +20,21 @@ const UserList = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [notification, setNotification] = useState(null);
 
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      const data = await userService.getAllUsers();
-      setUsers(data);
-      setError(null);
-    } catch (err) {
-      console.error("Error al cargar usuarios:", err);
-      setError("Error al cargar usuarios");
-    } finally {
-      setLoading(false);
-    }
-  };
+const loadUsers = async () => {
+  try {
+    setLoading(true);
+    const data = await userService.getAllUsers();
+    // Asegurar que data sea un array
+    setUsers(Array.isArray(data) ? data : []);
+    setError(null);
+  } catch (err) {
+    console.error("Error al cargar usuarios:", err);
+    setError("Error al cargar usuarios");
+    setUsers([]); // Establecer array vacío en caso de error
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     if (currentUser?.role === "admin") {
@@ -103,14 +105,14 @@ const UserList = () => {
 
 
 
-  const filteredUsers = users.filter((user) => {
-    const searchText = searchQuery.toLowerCase();
-    return (
-      user.name?.toLowerCase().includes(searchText) ||
-      user.email?.toLowerCase().includes(searchText) ||
-      user.role?.toLowerCase().includes(searchText)
-    );
-  });
+const filteredUsers = (Array.isArray(users) ? users : []).filter((user) => {
+  const searchText = searchQuery.toLowerCase();
+  return (
+    user.name?.toLowerCase().includes(searchText) ||
+    user.email?.toLowerCase().includes(searchText) ||
+    user.role?.toLowerCase().includes(searchText)
+  );
+});
 
   if (loading) return <div className="loading">Cargando usuarios...</div>;
   if (error) return <div className="error">{error}</div>;

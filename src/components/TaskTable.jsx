@@ -12,9 +12,13 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [expandedTask, setExpandedTask] = useState(null);
 
-  // Contadores de tareas
-  const activeTasksCount = tasks.filter((task) => task.status === 'in_progress').length;
-  const completedTasksCount = tasks.filter((task) => task.status === 'completed').length;
+  const activeTasksCount = Array.isArray(tasks)
+    ? tasks.filter((task) => task.status === 'in_progress').length
+    : 0;
+
+  const completedTasksCount = Array.isArray(tasks)
+    ? tasks.filter((task) => task.status === 'completed').length
+    : 0;
 
   const formatDate = (dateString) => {
     try {
@@ -243,7 +247,7 @@ TaskTable.propTypes = {
       company: PropTypes.shape({
         name: PropTypes.string,
       }),
-      area: PropTypes.shape({
+      Area: PropTypes.shape({
         nombre_area: PropTypes.string,
         departamento: PropTypes.string,
       }),

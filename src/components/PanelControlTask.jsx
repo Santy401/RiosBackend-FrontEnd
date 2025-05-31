@@ -23,19 +23,24 @@ const PanelControlTask = () => {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  const loadTasks = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getAllTasks(user?.id, user?.role);
-      setTasks(data);
-    } catch (err) {
-      console.error("Error al cargar tareas:", err);
-      setError("No se pudieron cargar las tareas");
-    } finally {
-      setLoading(false);
-    }
-  };
+const loadTasks = async () => {
+  try {
+    setLoading(true);
+    setError(null);
+    const data = await getAllTasks(user?.id, user?.role);
+    
+    // Asegúrate que data sea un array
+    const tasksArray = Array.isArray(data) ? data : [];
+    
+    setTasks(tasksArray);
+  } catch (err) {
+    console.error("Error al cargar tareas:", err);
+    setError("No se pudieron cargar las tareas");
+    setTasks([]); // Asegura que tasks sea array incluso en caso de error
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     if (user?.id) {

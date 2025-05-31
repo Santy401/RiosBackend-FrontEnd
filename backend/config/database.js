@@ -1,55 +1,53 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+dotenv.config();
 
-const NODE_ENV = process.env.NODE_ENV || "development";
+// 1️⃣ Configuración para AWS RDS (DEFAULT)
+const AWS_CONFIG = {
+  host: process.env.DB_HOST || "rios-db.c6jy2yqs8p98.us-east-1.rds.amazonaws.com",
+  username: process.env.DB_USER || "postgre",
+  database: process.env.DB_NAME || "postgres",
+  password: process.env.DB_PASSWORD || "TaskRios401",
+  port: process.env.DB_PORT || 5432,
+  dialect: "postgres",
+  logging: console.log,
+  dialectOptions: {
+    ssl: { require: true, rejectUnauthorized: false }, // SSL para AWS
+  },
+};
 
-let sequelize;
+// 2️⃣ Configuración para PostgreSQL local (OPCIONAL)
+const LOCAL_CONFIG = {
+  host: process.env.LOCAL_DB_HOST || "localhost",
+  username: process.env.LOCAL_DB_USER || "postgres",
+  database: process.env.LOCAL_DB_NAME || "localdb",
+  password: process.env.LOCAL_DB_PASSWORD || "postgres", // Cambia esto
+  port: process.env.LOCAL_DB_PORT || 5432,
+  dialect: "postgres",
+  logging: console.log,
+  // Sin SSL (local normalmente no usa SSL)
+};
 
-if (NODE_ENV === "production") {
-  // En producción, se recomienda usar una sola URL de conexión (DATABASE_URL)
-  const DATABASE_URL = process.env.DATABASE_URL;
-  if (!DATABASE_URL) {
-    throw new Error("DATABASE_URL no está definida en producción");
-  }
-  sequelize = new Sequelize(DATABASE_URL, {
-    dialect: "postgres",
-    protocol: "postgres",
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  });
-} else {
-  // Local/desarrollo
-  const DB_NAME = process.env.DB_NAME || "TasksRios";
-  const DB_USER = process.env.DB_USER || "san";
-  const DB_PASSWORD = process.env.DB_PASSWORD || "santy401";
-  const DB_HOST = process.env.DB_HOST || "localhost";
-  const DB_PORT = process.env.DB_PORT || 5432;
+// 3️⃣ Elegir configuración dinámicamente
+const useLocalDB = process.env.DB_FORCE_LOCAL === "true"; // Si DB_FORCE_LOCAL=true, usa LOCAL
+const selectedConfig = useLocalDB ? LOCAL_CONFIG : AWS_CONFIG;
 
-  sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-    host: DB_HOST,
-    port: DB_PORT,
-    dialect: "postgres",
-    logging: console.log, // Habilitar logs para desarrollo
-  });
-}
+const sequelize = new Sequelize(selectedConfig);
 
+// 4️⃣ Verificar conexión
 (async () => {
   try {
     await sequelize.authenticate();
-    console.log("🟢 Conexión con Sequelize y PostgreSQL exitosa!");
+    console.log(
+      useLocalDB
+        ? "🟢 Conectado a PostgreSQL LOCAL (manual override)"
+        : "🟢 Conectado a AWS RDS (default)"
+    );
 
-    // Sincroniza el modelo con la base de datos
-    await sequelize.sync({
-      alter: true,
-      force: false,
-      logging: console.log,
-    });
-    console.log("✅ Tablas actualizadas con éxito (sync alter)");
+    await sequelize.sync({ alter: true, force: false });
+    console.log("✅ Tablas sincronizadas");
   } catch (error) {
-    console.error("🔴 Error conectando con Sequelize:", error);
+    console.error("🔴 Error de conexión:", error.message);
     process.exit(1);
   }
 })();

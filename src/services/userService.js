@@ -2,14 +2,14 @@ import api from './api';
 
 export const userService = {
   getAllUsers: async () => {
-    try {
-      const response = await api.get('/users');
-      return response.data;
-    } catch (error) {
-      console.error('Error en getAllUsers:', error);
-      throw new Error('Error al obtener usuarios');
-    }
-  },
+  try {
+    const response = await api.get('/users');
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return []; // Siempre devolver array
+  }
+},
 
   createUser: async (userData) => {
     try {

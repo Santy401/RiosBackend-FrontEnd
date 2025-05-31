@@ -39,16 +39,16 @@ export const AuthProvider = ({ children }) => {
 
   if (loading) {
     return <div className="SpinnerContent">
-      <div class="fingerprint-spinner">
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
-        <div class="spinner-ring"></div>
+      <div className="fingerprint-spinner">
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
+        <div className="spinner-ring"></div>
       </div>
     </div>;
   }
