@@ -60,7 +60,7 @@ const Task = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: 'in_progress',
       validate: {
-        isIn: [['in_progress', 'completed']]
+        isIn: [['pending', 'in_progress', 'completed']]
       }
     },
     created_at: {

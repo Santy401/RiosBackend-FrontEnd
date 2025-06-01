@@ -11,15 +11,28 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // --- CONFIGURACIÓN DE CORS PARA VERCEL ---
-app.use(
-  cors({
-    origin: "https://task-rios.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "*",
+  "https://task-rios.vercel.app/login",
+  "https://localhost:3000",
+  "https://54.173.189.136.sslip.io",
+];
 
-// Sirve los archivos estáticos de public (si los necesitas)
+app.use(cors({
+  origin: function (origin, callback) {
+    console.log("BODY", origin)
+    if(!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error("not allowed by CORDS"));
+    }
+  },
+  credentials: true,
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, "../public")));
 
 const PORT = process.env.PORT || 6005;
@@ -34,15 +47,12 @@ const startServer = async () => {
 
     await initializeAdminUser();
 
-    // Ruta principal que envía el index.html
     app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, "../public/index.html"));
     });
 
-    // Vuelve a servir estáticos (si tenés más carpetas)
     app.use(express.static(path.join(__dirname, "../public")));
 
-    // Arranca el servidor escuchando en todas las interfaces
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on http://0.0.0.0:${PORT}`);
     });
@@ -51,7 +61,6 @@ const startServer = async () => {
     process.exit(1);
   }
 
-  // Middlewares para parsear JSON y URL-encoded al final
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 };

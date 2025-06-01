@@ -18,7 +18,6 @@ dotenv.config();
 
 const app = express();
 
-// Verificar conexión a PostgreSQL 🔍
 sequelize.authenticate()
   .then(() => {
     console.log('🟢 Conexión con PostgreSQL exitosa!');
@@ -27,11 +26,10 @@ sequelize.authenticate()
     console.error('🔴 Error al conectar con PostgreSQL:', err);
   });
 
-// Seguridad
 app.use(helmet());
 app.use(express.json());
 
-const allowedOrigins = ['https://task.riosbackend.com', 'http://localhost:5173'];
+const allowedOrigins = ['https://task-rios.vercel.app/login', 'http://localhost:5173', 'https://task-rios.vercel.app'];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -44,7 +42,6 @@ app.use(
   })
 );
 
-// Config extra
 app.use(express.json({ limit: '10kb' }));
 app.use(xss());
 
@@ -55,7 +52,6 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Rutas
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/areas', areaRoutes);
@@ -64,7 +60,6 @@ app.use('/auth/register', authController.register);
 app.use('/clients', clientRoutes);
 app.use('/companies', companyRoutes);
 
-// Middleware de errores
 app.use(errorHandler);
 
 export default app;

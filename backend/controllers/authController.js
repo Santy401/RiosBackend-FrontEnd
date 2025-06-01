@@ -10,6 +10,7 @@ const register = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
+  console.log("BODY recibido", req.body);
   try {
     const token = await AuthService.login(req.body);
     res.json(token);
