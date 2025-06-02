@@ -19,17 +19,17 @@ const AWS_CONFIG = {
 // 2️⃣ Configuración para PostgreSQL local (OPCIONAL)
 const LOCAL_CONFIG = {
   host: process.env.LOCAL_DB_HOST || "localhost",
-  username: process.env.LOCAL_DB_USER || "postgres",
-  database: process.env.LOCAL_DB_NAME || "localdb",
-  password: process.env.LOCAL_DB_PASSWORD || "postgres", // Cambia esto
+  username: process.env.LOCAL_DB_USER || "san",
+  database: process.env.LOCAL_DB_NAME || "TasksRios",
+  password: process.env.LOCAL_DB_PASSWORD || "santy401", // Cambia esto
   port: process.env.LOCAL_DB_PORT || 5432,
   dialect: "postgres",
   logging: console.log,
   // Sin SSL (local normalmente no usa SSL)
 };
 
-// 3️⃣ Elegir configuración dinámicamente
-const useLocalDB = process.env.DB_FORCE_LOCAL === "true"; // Si DB_FORCE_LOCAL=true, usa LOCAL
+// 3️⃣ Elegir configuración dinámicamente basado en NODE_ENV
+const useLocalDB = process.env.NODE_ENV === "development"; // Usa local en desarrollo
 const selectedConfig = useLocalDB ? LOCAL_CONFIG : AWS_CONFIG;
 
 const sequelize = new Sequelize(selectedConfig);
