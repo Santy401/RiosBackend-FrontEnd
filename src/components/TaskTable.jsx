@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './styles/TaskTable.css';
 import TaskDetailModal from '../components/TaskDetailModal.jsx';
@@ -16,6 +16,13 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchBy, setSearchBy] = useState('all');
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null
+  });
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   const handleSelectTask = (taskId) => {
     const newSelected = new Set(selectedTasks);
@@ -25,61 +32,163 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
       newSelected.add(taskId);
     }
     setSelectedTasks(newSelected);
-    setSelectAll(false); // Reset select all when individual selection changes
+    setSelectAll(false);
   };
 
   const handleSelectAll = () => {
     const newSelected = new Set();
     if (selectAll) {
-      // Deselect all
-      setSelectedTasks(new Set());
+      setSelectedTasks(newSelected);
     } else {
-      // Select all
-      tasks.forEach(task => newSelected.add(task.id));
+      filteredTasks.forEach(task => newSelected.add(task.id));
       setSelectedTasks(newSelected);
     }
     setSelectAll(!selectAll);
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = (e) => {
     if (selectedTasks.size === 0) return;
 
     if (window.confirm('¿Estás seguro de que deseas eliminar las tareas seleccionadas?')) {
-      selectedTasks.forEach(taskId => onDeleteTask(taskId));
+      const taskIdsArray = Array.from(selectedTasks);
+      taskIdsArray.forEach(async (taskId) => {
+        try {
+          await onDeleteTask(taskId);
+        } catch (error) {
+          console.error(`Error al eliminar tarea ${taskId}:`, error);
+        }
+      });
+
       setSelectedTasks(new Set());
       setSelectAll(false);
     }
-  }; // 'cards', 'table', or 'list'
+  };
 
-  const filteredTasks = tasks.filter(task => {
-    const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
-    const matchesSearch = !searchQuery ||
-      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
+  const handleChangeStatusSelected = (newStatus) => {
+    if (selectedTasks.size === 0) return;
 
-  const activeTasksCount = Array.isArray(filteredTasks)
-    ? filteredTasks.filter((task) => task.status === 'in_progress').length
-    : 0;
+    if (window.confirm('¿Estás seguro de que deseas cambiar el estado de las tareas seleccionadas?')) {
+      selectedTasks.forEach(taskId => onStatusChange(taskId, newStatus));
+      setSelectedTasks(new Set());
+      setSelectAll(false);
+      setSelectedStatus('');
+    }
+  };
 
-  const completedTasksCount = Array.isArray(filteredTasks)
-    ? filteredTasks.filter((task) => task.status === 'completed').length
-    : 0;
+  const matchesField = (field, query) => {
+    if (!query) return true;
+    const queryLower = query.toLowerCase();
+    return field?.toLowerCase().includes(queryLower);
+  };
+
+  const matchesDateRange = (task) => {
+    if (!dateRange.startDate && !dateRange.endDate) return true;
+    
+    const taskDate = new Date(task.createdAt);
+    
+    if (dateRange.startDate) {
+      const startDate = new Date(dateRange.startDate);
+      if (taskDate < startDate) return false;
+    }
+    
+    if (dateRange.endDate) {
+      const endDate = new Date(dateRange.endDate);
+      if (taskDate > endDate) return false;
+    }
+    
+    return true;
+  };
+
+  const filterAndSortTasks = useCallback(() => {
+    // Filtrado
+    const filtered = tasks.filter(task => {
+      const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
+      
+      let matchesSearch = false;
+      
+      if (searchBy === 'all') {
+        matchesSearch = matchesField(task.title, searchQuery) ||
+                       matchesField(task.description, searchQuery) ||
+                       matchesField(task.assignedUser?.name, searchQuery) ||
+                       matchesField(task.company?.name, searchQuery) ||
+                       matchesField(task.Areas?.nombre_area, searchQuery);
+      } else if (searchBy === 'user') {
+        matchesSearch = matchesField(task.assignedUser?.name, searchQuery);
+      } else if (searchBy === 'company') {
+        matchesSearch = matchesField(task.company?.name, searchQuery);
+      } else if (searchBy === 'area') {
+        matchesSearch = matchesField(task.Areas?.nombre_area, searchQuery);
+      } else if (searchBy === 'date') {
+        matchesSearch = matchesDateRange(task);
+      }
+
+      return matchesStatus && matchesSearch;
+    });
+
+    // Ordenamiento
+    const sorted = [...filtered].sort((a, b) => {
+      if (!sortConfig.key) return 0;
+
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      if (sortConfig.key.includes('.')) {
+        const keys = sortConfig.key.split('.');
+        aValue = keys.reduce((obj, key) => obj?.[key], a);
+        bValue = keys.reduce((obj, key) => obj?.[key], b);
+      }
+
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    setFilteredTasks(sorted);
+  }, [tasks, filterStatus, searchBy, searchQuery, dateRange, sortConfig]);
+
+  useEffect(() => {
+    filterAndSortTasks();
+  }, [filterAndSortTasks]);
+
+  const activeTasksCount = filteredTasks.filter((task) => task.status === 'in_progress').length;
+  const completedTasksCount = filteredTasks.filter((task) => task.status === 'completed').length;
 
   const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    
     try {
       const date = new Date(dateString);
-      return date.toLocaleString('es-ES', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+      
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleString('es-ES', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      }
+
+      if (typeof dateString === 'string') {
+        const dateParts = dateString.split('T');
+        if (dateParts.length === 2) {
+          const dateOnly = dateParts[0];
+          const timeOnly = dateParts[1];
+          const [year, month, day] = dateOnly.split('-');
+          const [hour, minute] = timeOnly.split(':');
+          return `${day}/${month}/${year} ${hour}:${minute}`;
+        }
+
+        const datePartsDash = dateString.split('-');
+        if (datePartsDash.length === 3) {
+          return `${datePartsDash[2]}/${datePartsDash[1]}/${datePartsDash[0]}`;
+        }
+      }
+
+      return '-';
     } catch (error) {
       console.error('Error al formatear fecha:', error);
-      return dateString;
+      return '-';
     }
   };
 
@@ -103,23 +212,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
     setSortConfig({ key, direction });
   };
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    if (!sortConfig.key) return 0;
-
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
-
-    if (sortConfig.key.includes('.')) {
-      const keys = sortConfig.key.split('.');
-      aValue = keys.reduce((obj, key) => obj?.[key], a);
-      bValue = keys.reduce((obj, key) => obj?.[key], b);
-    }
-
-    if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-    if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-    return 0;
-  });
-
   const handleRowClick = (taskId) => {
     setExpandedTask(expandedTask === taskId ? null : taskId);
   };
@@ -135,7 +227,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
 
   return (
     <div className="task-tables-container">
-      {/* Filtros y buscador */}
       <div className="filters-container" style={{ marginBottom: '15px' }}>
         <div className="status-filter">
           <select
@@ -148,20 +239,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             <option value="completed">TERMINADAS</option>
           </select>
         </div>
-        <div className="search-container" style={{ marginLeft: '10px' }}>
-          <input
-            type="text"
-            placeholder="Buscar tareas..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-        </div>
       </div>
 
-      {/* View mode toggle */}
       <div className="view-mode-toggle">
-        {/* Contadores de tareas */}
         {isAdmin && (
           <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
             <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
@@ -171,6 +251,53 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
           </div>
         )}
         <div className="view-mode-buttons">
+          <div className="search-container">
+            <div className="search-options">
+              <select
+                value={searchBy}
+                onChange={(e) => setSearchBy(e.target.value)}
+                className="search-select"
+              >
+                <option value="all">Buscar en todos los campos</option>
+                <option value="user">Por usuario asignado</option>
+                <option value="company">Por empresa</option>
+                <option value="area">Por área</option>
+                <option value="date">Por fecha</option>
+              </select>
+              
+              {searchBy === 'date' ? (
+                <div className="date-range-picker">
+                  <input
+                    type="date"
+                    value={dateRange.startDate || ''}
+                    onChange={(e) => setDateRange(prev => ({
+                      ...prev,
+                      startDate: e.target.value
+                    }))}
+                    className="date-input"
+                  />
+                  <span className="date-separator">-</span>
+                  <input
+                    type="date"
+                    value={dateRange.endDate || ''}
+                    onChange={(e) => setDateRange(prev => ({
+                      ...prev,
+                      endDate: e.target.value
+                    }))}
+                    className="date-input"
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="search-input"
+                />
+              )}
+            </div>
+          </div>
           <button
             onClick={() => setViewMode('cards')}
             className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
@@ -195,38 +322,16 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
         </div>
       </div>
 
-
-
       <div className="task-section">
         <div className="task-table-container">
-          {tasks.length === 0 ? (
-            <div
-              className="no-data-message"
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                padding: '20px',
-                alignItems: 'center',
-              }}
-            >
-              <i
-                className="fas fa-tasks"
-                style={{
-                  marginRight: '10px',
-                  fontSize: '20px',
-                  color: '#6c757d',
-                }}
-              ></i>
-              <span>No hay tareas registradas</span>
+          {filteredTasks.length === 0 ? (
+            <div className="no-data-message">
+              <i className="fas fa-tasks"></i>
+              <span>No hay tareas que coincidan con los criterios de búsqueda</span>
             </div>
           ) : viewMode === 'table' ? (
             <div className="table-responsive">
-              <motion.table
-                className="task-table"
-                initial={{ opacity: 0, X: 30, scale: .6 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.2 }}
-              >
+              <motion.table className="task-table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('title')}>Nombre De Tarea</th>
@@ -241,12 +346,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedTasks.map((task, index) => (
+                  {filteredTasks.map((task, index) => (
                     <motion.tr
                       key={task.id}
-                      initial={{ opacity: 0, x: -20, scale: .7 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
                       onClick={() => handleRowClick(task.id)}
                       className={`${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
                     >
@@ -324,12 +426,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             </div>
           ) : viewMode === 'list' ? (
             <div className="task-list-container">
-              {sortedTasks.map((task, index) => (
+              {filteredTasks.map((task, index) => (
                 <motion.div
                   key={task.id}
-                  initial={{ opacity: 0, x: -20, scale: .7 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
                   className={`task-list-item ${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
                   onClick={() => handleRowClick(task.id)}
                 >
@@ -423,6 +522,34 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             </div>
           ) : (
             <div className="task-list-container">
+              {isAdmin && selectedTasks.size > 0 && (
+                <div className="delete-selected-container">
+                  <div className="selected-actions">
+                    <select
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                      className="status-selector"
+                    >
+                      <option value="">Seleccionar estado</option>
+                      <option value="in_progress">En Progreso</option>
+                      <option value="completed">Completada</option>
+                    </select>
+                    <button
+                      onClick={() => handleChangeStatusSelected(selectedStatus)}
+                      className="change-status-btn"
+                      disabled={!selectedStatus}
+                    >
+                      Cambiar Estado
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteSelected(e)}
+                      className="delete-selected-btn"
+                    >
+                      Eliminar {selectedTasks.size} seleccionadas
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="task-list-header">
                 <div className="task-list-cell">
                   <input
@@ -442,12 +569,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                 <div className="task-list-cell">Fecha Límite</div>
                 {isAdmin && <div className="task-list-cell">Acciones</div>}
               </div>
-              {sortedTasks.map((task, index) => (
+              {filteredTasks.map((task, index) => (
                 <motion.div
                   key={task.id}
-                  initial={{ opacity: 0, x: -20, scale: .7 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
                   className={`task-card ${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
                   onClick={() => handleRowClick(task.id)}
                 >
@@ -497,7 +621,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                     <div className="task-list-cell">{task.company?.name}</div>
                     <div className="task-list-cell">{task.Areas?.nombre_area}</div>
                     <div className="task-list-cell">{formatDate(task.createdAt)}</div>
-                    <div className="task-list-cell">{formatDate(task.dueDate)}</div>
+                    <div className="task-list-cell">
+                      {task.dueDate ? formatDate(task.dueDate) : '-'}
+                    </div>
                     {isAdmin && (
                       <div className="task-list-cell">
                         <div className="task-list-actions">
@@ -534,16 +660,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   </div>
                 </motion.div>
               ))}
-              {isAdmin && selectedTasks.size > 0 && (
-                <div className="delete-selected-container">
-                  <button
-                    onClick={handleDeleteSelected}
-                    className="delete-selected-btn"
-                  >
-                    Eliminar {selectedTasks.size} seleccionadas
-                  </button>
-                </div>
-              )}
             </div>
           )}
         </div>

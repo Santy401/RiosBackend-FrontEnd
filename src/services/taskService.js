@@ -115,9 +115,9 @@ export const taskService = {
     try {
       const config = getAuthHeaders();
       console.log(`Actualizando estado de la tarea ${id} a:`, status);
-  
+
       const response = await axios.put(`${API_URL}/tasks/${id}/status`, { status }, config);
-  
+
       console.log('Respuesta del servidor en updateTaskStatus:', response.data);
       return response.data;
     } catch (error) {
@@ -125,14 +125,14 @@ export const taskService = {
       throw new Error(error.response?.data?.message || 'Error al actualizar el estado de la tarea');
     }
   },
-  
+
   deleteTask: async (id) => {
     try {
       const config = getAuthHeaders();
       console.log(`Eliminando tarea con ID: ${id}`);
-  
+
       const response = await axios.delete(`${API_URL}/tasks/${id}`, config);
-  
+
       console.log('Respuesta del servidor en deleteTask:', response.data);
       return response.data;
     } catch (error) {
@@ -140,6 +140,6 @@ export const taskService = {
       throw new Error(error.response?.data?.message || 'Error al eliminar la tarea');
     }
   },
-};  
+};
 
 export default taskService;

@@ -14,7 +14,7 @@ body {
 .asideNv {
   position: relative;
   background-color: #fff;
-  width: 250px;
+  width: 210px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -193,8 +193,7 @@ main.collapsed {
   color: #98a2b3;
 }
 
-.asideNv {
-  width: 250px; 
+.asideNv { 
   transition: width 0.3s ease, opacity 0.3s ease; 
   background-color: #ffffff; 
   overflow: hidden;
