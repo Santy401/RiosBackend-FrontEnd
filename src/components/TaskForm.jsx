@@ -10,7 +10,7 @@ const TaskForm = ({ onSubmit }) => {
     assigned_to: "",
     company: "",
     time: "",
-    status: "pending",
+    status: "in_progress",
   });
 
   useEffect(() => {

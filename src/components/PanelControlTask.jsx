@@ -81,7 +81,7 @@ const loadTasks = async () => {
         area_id: taskData.area_id || "",
         dueDate: formattedDueDate,
         updateAt: new Date().toISOString(),
-        status: "pending",
+        status: taskData.status || "in_progress",
       };
 
       if (editingTask && editingTask.id) {

@@ -17,7 +17,7 @@ body {
   width: 250px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   height: 100vh;
   padding: 15px;
   border-right: 1px solid #ffffff;
@@ -92,6 +92,11 @@ main.collapsed {
   width: 272px;
   margin-top: 5px;
 }
+
+.itemBar2 {
+  display: flex;
+  align-items: center;
+}
 .searchAlignIcon {
   border: 1px solid #ecedee;
   margin-top: 10px;
@@ -150,40 +155,42 @@ main.collapsed {
   transition: 300ms;
 }
 
+.labelBottom {
+  margin: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  color: #98a2b3;
+}
 .bottomItems {
+  border-top: 2px solid #ecedee ;
   display: flex;
   flex-direction: column;
   margin-bottom: 35px;
+  position: absolute;
+  bottom: 1%;
+  width: 90%;
 }
 
 .bottomItems button {
   background-color: transparent;
-  border: none;
+  display: flex;
+  align-items: center;
+  border: none;  
   width: 60%;
   cursor: pointer;
-  color: #98a2b3;
+  color: #000;
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 14px;
   transition: 500ms;
 }
-.bottomItems button i {
-  transition: 1s;
+
+.bottomItems button:hover {
+  color: #98a2b3;
 }
-.bottomItems button:nth-child(1):hover {
-  transform: translateY(-4%);
-  color: #55e;
-}
-.bottomItems button i:nth-child(1):hover {
-  transform: rotate(360deg);
-  color: rgb(0, 0, 255);
-}
-.bottomItems button i:nth-child(2):hover {
-  transform: rotate(660deg);
-  color: rgb(255, 0, 0);
-}
-.bottomItems button:nth-child(2):hover {
-  transform: translateY(-4%);
-  color: rgb(250, 17, 0);
+
+.bolt {
+  margin-right: 5px;
+  color: #98a2b3;
 }
 
 .asideNv {
@@ -199,27 +206,153 @@ main.collapsed {
 }
 
 .toggle-menu {
-  opacity: 0.1;
-  position: absolute;
-  top: 9px;
-  left: 3px;
-  scale: 81%;
   z-index: 1000;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-  transition: 400ms;
+  transition: transform 0.3s ease-in-out;
 }
 
-.toggle-menu:hover {
-  opacity: 1;
-  background-color: #0056b3;
+.asideNv.hidden {
+  transform: translateX(-100%);
+}
+
+.topItems {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.itemBar0 {
+  cursor: pointer;
+  padding: 10px;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemBar0:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header-container h5 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.header-container h5 i {
+  color: #fff;
+}
+
+.itemBar0 {
+  position: relative;
+  cursor: pointer;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dropdown-contentt {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  position: absolute;
+  left: 7%;
+  top: 60px; /* ajusta según necesidad */
+  right: 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform-origin: top;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  color: #333;
+  width: 100%;
+  border-radius: 10px;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: 200ms;
+}
+
+.dropdown-item:hover {
+  color: red;
+}
+
+.dropdown-icon.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 100%;
+  padding: 10px;
+}
+
+.header-container h5 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-container h5 i {
+  color: #fff;
+}
+
+.dropdown-icon {
+  width: 12px;
+  height: 12px;
+  color: #98a2b3;
+  transition: 0.3s;
+  transform: rotate(0deg);
+}
+
+.itemBar0:hover .dropdown-icon,
+.itemBar0.active .dropdown-icon {
+  color: #fff;
+  transform: rotate(180deg);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.itemBar0 {
+  position: relative; 
+}
+
+.divider {
+  display: flex;
+  width: 100%;
+  height: 1px;
+  background-color: #ecedee;
 }

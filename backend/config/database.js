@@ -29,7 +29,7 @@ const LOCAL_CONFIG = {
 };
 
 // 3️⃣ Elegir configuración dinámicamente basado en NODE_ENV
-const useLocalDB = process.env.NODE_ENV === "development"; // Usa local en desarrollo
+const useLocalDB = process.env.NODE_ENV === "production"; // Usa local en desarrollo
 const selectedConfig = useLocalDB ? LOCAL_CONFIG : AWS_CONFIG;
 
 const sequelize = new Sequelize(selectedConfig);

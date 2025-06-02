@@ -1,4 +1,4 @@
-import "../styles/adminAside.css";
+  import "../styles/adminAside.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
@@ -94,77 +94,47 @@ const AdminDashboard = () => {
     <div className="bigC">
       <aside className={`asideNv ${isSidebarVisible ? "" : "hidden"}`}>
         <div className="topItems">
-          <div
-            className="header-container"
-            onClick={() => setIsDropdownOpen((prev) => !prev)}
-          >
-            <h5>
-              <i className="fa-solid fa-user-tie"></i> Admin.Task
-            </h5>
-            <ChevronDown
-              className={`dropdown-icon ${isDropdownOpen ? "rotate" : ""}`}
-            />
-          </div>
-
-          <AnimatePresence>
-            {isDropdownOpen && (
-              <motion.div
-                className="dropdown-contentt"
-                initial={{ opacity: 0, scaleY: 0 }}
-                animate={{ opacity: 1, scaleY: 1 }}
-                exit={{ opacity: 0, scaleY: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                style={{ transformOrigin: "top" }}
-              >
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsDropdownOpen(false);
-                    handleLogout();
-                  }}
-                  className="dropdown-item"
+          <div className="itemBar0" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <div className="header-container">
+              <h5>
+                <i className="fa-solid fa-user-tie"></i> Admin.Task
+              </h5>
+              <ChevronDown className="dropdown-icon" />
+            </div>
+            <AnimatePresence mode="wait">
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="dropdown-content"
                 >
-                  <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-
-        <div className="itemBar1"></div>
-
+        <div className="itemBar1">
+          {renderComponent()}
+        </div>
         <div className="itemsMedie">
           <div className={activeComponent === "dashboard" ? "active" : ""}>
             <div className="itemBar2">
-              <LayoutDashboard />
+              <Dashboard className="icon" />
               <span onClick={() => handleChangeComponent("dashboard")}>
                 Dashboard
               </span>
             </div>
           </div>
-
-          <div className={activeComponent === "notifications" ? "active" : ""}>
-            <div className="itemBar2">
-              <Inbox />
-              <span onClick={() => handleChangeComponent("notifications")}>
-                Notificaciones
-              </span>
-            </div>
-          </div>
-
-          <div className="divider"></div>
-
           <div className={activeComponent === "tasks" ? "active" : ""}>
             <div className="itemBar2">
-              <ListChecks />
+              <Tasks className="icon" />
               <span onClick={() => handleChangeComponent("tasks")}>
                 Tasks
               </span>
             </div>
           </div>
-
           <div className={activeComponent === "lists" ? "active" : ""}>
             <div className="itemBar2">
               <ListPlus />
@@ -174,15 +144,23 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="bottomItems">
           <label className="labelBottom">Configuración</label>
           <button>
             <Bolt className="bolt" /> Preferencias
           </button>
+          <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDropdownOpen(false);
+                      handleLogout();
+                    }}
+                    className="dropdown-item"
+                  >
+                    <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                  </button>
         </div>
       </aside>
-
       <main
         style={{
           overflowY: "scroll",
@@ -199,12 +177,9 @@ const AdminDashboard = () => {
           onClick={() => setIsSidebarVisible(!isSidebarVisible)}
         >
           <i
-            className={`fa-solid ${
-              isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"
-            }`}
+            className={`fa-solid ${isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"}`}
           ></i>
         </button>
-
         <AnimatePresence mode="wait">
           <motion.div
             key={activeComponent}
@@ -226,3 +201,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+             
