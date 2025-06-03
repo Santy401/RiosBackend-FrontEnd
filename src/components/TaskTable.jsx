@@ -239,26 +239,19 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   return (
     <div className="task-tables-container">
       <div className="filters-container" style={{ marginBottom: '15px' }}>
-        <div className="status-filter">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="status-select"
-          >
-            <option value="all">TODAS LAS TAREAS</option>
-            <option value="in_progress">EN PROCESO</option>
-            <option value="completed">TERMINADAS</option>
-          </select>
-        </div>
       </div>
 
       <div className="view-mode-toggle">
         {isAdmin && (
           <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
             <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-              {activeTasksCount}
+              <span title={searchBy.label}>
+               <span className='name-title'>Tareas</span> 
+              </span>
+              <div className='counter-count'>
+              <span>{filteredTasks.length}</span>
+              </div>
             </span>
-            <span className="counter completed-counter">{completedTasksCount}</span>
           </div>
         )}
         <div className="view-mode-buttons">
