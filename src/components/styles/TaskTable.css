@@ -5,7 +5,6 @@
   gap: 20px;
   border-radius: 10px;
   border: 1px solid #c1c2c469;
-  padding: 20px;
   position: relative;
   top: 20px;
   left: 5px;
@@ -16,6 +15,7 @@
   display: flex;
   gap: 10px;
   justify-content: space-between;
+  align-items: center;
 }
 
 .view-toggle-btn {
@@ -168,8 +168,8 @@
 }
 
 .task-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
   border-radius: 4px;
   border: 2px solid #ddd;
@@ -787,6 +787,7 @@ tr:hover {
 .view-mode-buttons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .search-container {
@@ -846,11 +847,69 @@ tr:hover {
   font-size: 14px;
 }
 
-.search-input {
+.search-inputt {
   padding: 8px;
   border: 1px solid #dee2e6;
   border-radius: 4px;
   font-size: 14px;
   flex: 1;
   min-width: 200px;
+}
+/* Agrega esto a tu archivo TaskTable.css */
+.listbox-container {
+  position: relative;
+  z-index: 10;
+}
+
+.listbox-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.listbox-button:hover {
+  border-color: #aaa;
+}
+
+.listbox-button:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.listbox-options {
+  position: fixed;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: auto;
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.listbox-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.listbox-option:hover {
+  background-color: #f5f5f5;
+}
+
+.listbox-option[aria-selected="true"] {
+  background-color: #ebf4ff;
+  color: #3b82f6;
 }

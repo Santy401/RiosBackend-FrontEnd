@@ -4,10 +4,21 @@ import './styles/TaskTable.css';
 import TaskDetailModal from '../components/TaskDetailModal.jsx';
 import { useAuth } from '../context/authContext.jsx';
 import { motion } from "framer-motion";
+import { Listbox } from '@headlessui/react';
+import { Search, User, Building2, Layout, Calendar } from 'lucide-react';
 
 const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
+
+  const searchOptions = [
+    { value: 'all', icon: <Search size={16} color="#888" /> },
+    { value: 'user', icon: <User size={16} color="#3b82f6" /> },
+    { value: 'company', icon: <Building2 size={16} color="#8b5cf6" /> },
+    { value: 'area', icon: <Layout size={16} color="#10b981" /> },
+    { value: 'date', icon: <Calendar size={16} color="#ef4444" /> },
+  ];
+
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [selectedTask, setSelectedTask] = useState(null);
   const [expandedTask, setExpandedTask] = useState(null);
@@ -16,7 +27,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchBy, setSearchBy] = useState('all');
+  const [searchBy, setSearchBy] = useState(searchOptions[0]);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null
@@ -83,19 +94,19 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
 
   const matchesDateRange = (task) => {
     if (!dateRange.startDate && !dateRange.endDate) return true;
-    
+
     const taskDate = new Date(task.createdAt);
-    
+
     if (dateRange.startDate) {
       const startDate = new Date(dateRange.startDate);
       if (taskDate < startDate) return false;
     }
-    
+
     if (dateRange.endDate) {
       const endDate = new Date(dateRange.endDate);
       if (taskDate > endDate) return false;
     }
-    
+
     return true;
   };
 
@@ -103,22 +114,22 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
     // Filtrado
     const filtered = tasks.filter(task => {
       const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
-      
+
       let matchesSearch = false;
-      
-      if (searchBy === 'all') {
+
+      if (searchBy.value === 'all') {
         matchesSearch = matchesField(task.title, searchQuery) ||
-                       matchesField(task.description, searchQuery) ||
-                       matchesField(task.assignedUser?.name, searchQuery) ||
-                       matchesField(task.company?.name, searchQuery) ||
-                       matchesField(task.Areas?.nombre_area, searchQuery);
-      } else if (searchBy === 'user') {
+          matchesField(task.description, searchQuery) ||
+          matchesField(task.assignedUser?.name, searchQuery) ||
+          matchesField(task.company?.name, searchQuery) ||
+          matchesField(task.Areas?.nombre_area, searchQuery);
+      } else if (searchBy.value === 'user') {
         matchesSearch = matchesField(task.assignedUser?.name, searchQuery);
-      } else if (searchBy === 'company') {
+      } else if (searchBy.value === 'company') {
         matchesSearch = matchesField(task.company?.name, searchQuery);
-      } else if (searchBy === 'area') {
+      } else if (searchBy.value === 'area') {
         matchesSearch = matchesField(task.Areas?.nombre_area, searchQuery);
-      } else if (searchBy === 'date') {
+      } else if (searchBy.value === 'date') {
         matchesSearch = matchesDateRange(task);
       }
 
@@ -155,10 +166,10 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
 
   const formatDate = (dateString) => {
     if (!dateString) return '-';
-    
+
     try {
       const date = new Date(dateString);
-      
+
       if (!isNaN(date.getTime())) {
         return date.toLocaleString('es-ES', {
           year: 'numeric',
@@ -253,19 +264,33 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
         <div className="view-mode-buttons">
           <div className="search-container">
             <div className="search-options">
-              <select
-                value={searchBy}
-                onChange={(e) => setSearchBy(e.target.value)}
-                className="search-select"
-              >
-                <option value="all">Buscar en todos los campos</option>
-                <option value="user">Por usuario asignado</option>
-                <option value="company">Por empresa</option>
-                <option value="area">Por área</option>
-                <option value="date">Por fecha</option>
-              </select>
-              
-              {searchBy === 'date' ? (
+              <div className="listbox-container"> {/* Contenedor adicional */}
+              <Listbox value={searchBy} onChange={setSearchBy}>
+                  <Listbox.Button className="listbox-button">
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {searchBy.icon}
+                      {searchBy.label}
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="listbox-options" style={{ position: 'absolute', width: '100%' }} unmount={false}>
+                    {searchOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.value}
+                        value={option}
+                        className="listbox-option"
+                      >
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px', }}>
+                          {option.icon}
+                          {option.label}
+                        </span>
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </Listbox>
+              </div>
+
+
+              {searchBy.value === 'date' ? (
                 <div className="date-range-picker">
                   <input
                     type="date"
@@ -293,7 +318,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   placeholder="Buscar..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-input"
+                  className="search-inputt"
                 />
               )}
             </div>
@@ -541,12 +566,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                     >
                       Cambiar Estado
                     </button>
-                    <button
-                      onClick={(e) => handleDeleteSelected(e)}
-                      className="delete-selected-btn"
-                    >
-                      Eliminar {selectedTasks.size} seleccionadas
-                    </button>
                   </div>
                 </div>
               )}
@@ -697,4 +716,4 @@ TaskTable.propTypes = {
   onStatusChange: PropTypes.func.isRequired
 };
 
-export default TaskTable;
+export default TaskTable; 2
