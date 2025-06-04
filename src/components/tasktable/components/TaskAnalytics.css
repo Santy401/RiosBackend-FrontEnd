@@ -1,0 +1,68 @@
+.task-analytics-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.analytics-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.analytics-card h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.filters-container {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-select {
+  min-width: 150px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: #333;
+}
+
+.custom-tooltip {
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 4px;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+.custom-tooltip .label {
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+.custom-tooltip .value {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+.custom-tooltip .description {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.recharts-responsive-container {
+  height: 300px;
+}
