@@ -40,11 +40,13 @@
 }
 
 .custom-tooltip {
-  background: rgba(0, 0, 0, 0.85);
+  background: white;
   border-radius: 4px;
   padding: 10px;
-  color: white;
+  color: #333;
   font-size: 14px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .custom-tooltip .label {
