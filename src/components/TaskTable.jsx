@@ -562,116 +562,120 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                   </div>
                 </div>
               )}
-              <div className="task-list-header">
-                <div className="task-list-cell">
-                  <input
-                    type="checkbox"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                    className="select-all-checkbox"
-                  />
-                </div>
-                <div className="task-list-cell">Título</div>
-                <div className="task-list-cell">Estado</div>
-                <div className="task-list-cell">Observación</div>
-                <div className="task-list-cell">Usuario</div>
-                <div className="task-list-cell">Empresa</div>
-                <div className="task-list-cell">Área</div>
-                <div className="task-list-cell">Fecha Creación</div>
-                <div className="task-list-cell">Fecha Límite</div>
-                {isAdmin && <div className="task-list-cell">Acciones</div>}
-              </div>
-              {filteredTasks.map((task, index) => (
-                <motion.div
-                  key={task.id}
-                  className={`task-card ${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
-                  onClick={() => handleRowClick(task.id)}
-                >
-                  <div className="task-list-row">
-                    <div className="task-list-cell">
+              <table className="task-table">
+                <thead>
+                  <tr>
+                    <th>
                       <input
                         type="checkbox"
-                        checked={selectedTasks.has(task.id)}
-                        onChange={() => handleSelectTask(task.id)}
-                        className="task-checkbox"
+                        checked={selectAll}
+                        onChange={handleSelectAll}
+                        className="select-all-checkbox"
                       />
-                    </div>
-                    <div className="task-list-cell">
-                      <label>{task.title}</label>
-                    </div>
-                    <div className="task-list-cell">
-                      <select
-                        className={getStatusClass(task.status)}
-                        value={task.status}
-                        onChange={(e) => {
-                          e.stopPropagation();
-                          onStatusChange(task.id, e.target.value);
-                        }}
-                      >
-                        <option value="in_progress">En Progreso</option>
-                        <option value="completed">Completada</option>
-                      </select>
-                    </div>
-                    <div className="task-list-cell">
-                      <div className="task-observation">
-                        <div
-                          className="observation-content"
-                          title={task.observation}
-                          onClick={(e) => {
+                    </th>
+                    <th>Título</th>
+                    <th>Estado</th>
+                    <th>Observación</th>
+                    <th>Usuario</th>
+                    <th>Empresa</th>
+                    <th>Área</th>
+                    <th>Fecha Creación</th>
+                    <th>Fecha Límite</th>
+                    {isAdmin && <th>Acciones</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTasks.map((task, index) => (
+                    <motion.tr
+                      key={task.id}
+                      className={`task-card ${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
+                      onClick={() => handleRowClick(task.id)}
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedTasks.has(task.id)}
+                          onChange={() => handleSelectTask(task.id)}
+                          className="task-checkbox"
+                        />
+                      </td>
+                      <td>
+                        <label>{task.title}</label>
+                      </td>
+                      <td>
+                        <select
+                          className={getStatusClass(task.status)}
+                          value={task.status}
+                          onChange={(e) => {
                             e.stopPropagation();
-                            setSelectedTask(task);
+                            onStatusChange(task.id, e.target.value);
                           }}
                         >
-                          {task.observation || '-'}
-                        </div>
-                        {expandedTask === task.id && task.observation && (
-                          <div className="observation-expanded">{task.observation}</div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="task-list-cell">{task.assignedUser?.name}</div>
-                    <div className="task-list-cell">{task.company?.name}</div>
-                    <div className="task-list-cell">{task.Areas?.nombre_area}</div>
-                    <div className="task-list-cell">{formatDate(task.createdAt)}</div>
-                    <div className="task-list-cell">
-                      {task.dueDate ? formatDate(task.dueDate) : '-'}
-                    </div>
-                    {isAdmin && (
-                      <div className="task-list-cell">
-                        <div className="task-list-actions">
-                          <button
+                          <option value="in_progress">En Progreso</option>
+                          <option value="completed">Completada</option>
+                        </select>
+                      </td>
+                      <td>
+                        <div className="task-observation">
+                          <div
+                            className="observation-content"
+                            title={task.observation}
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedTask(task);
                             }}
-                            className="detail-button"
-                            title="Ver detalles"
                           >
-                            <i className="fa-solid fa-eye"></i>
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onEditTask(task);
-                            }}
-                            className="edit-button"
-                            title="Editar tarea"
-                          >
-                            <i className="fa-solid fa-pen-to-square"></i>
-                          </button>
-                          <button
-                            onClick={(e) => handleDeleteClick(e, task)}
-                            className="delete-button"
-                            title="Eliminar tarea"
-                          >
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
+                            {task.observation || '-'}
+                          </div>
+                          {expandedTask === task.id && task.observation && (
+                            <div className="observation-expanded">{task.observation}</div>
+                          )}
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                      </td>
+                      <td>{task.assignedUser?.name}</td>
+                      <td>{task.company?.name}</td>
+                      <td>{task.Areas?.nombre_area}</td>
+                      <td>{formatDate(task.createdAt)}</td>
+                      <td>
+                        {task.dueDate ? formatDate(task.dueDate) : '-'}
+                      </td>
+                      {isAdmin && (
+                        <td>
+                          <div className="task-list-actions">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedTask(task);
+                              }}
+                              className="detail-button"
+                              title="Ver detalles"
+                            >
+                              <i className="fa-solid fa-eye"></i>
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onEditTask(task);
+                              }}
+                              className="edit-button"
+                              title="Editar tarea"
+                            >
+                              <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button
+                              onClick={(e) => handleDeleteClick(e, task)}
+                              className="delete-button"
+                              title="Eliminar tarea"
+                            >
+                              <i className="fa-solid fa-trash"></i>
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
