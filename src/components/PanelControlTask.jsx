@@ -205,13 +205,13 @@ const PanelControlTask = () => {
   return (
     <div className="wontrol">
       <div className="panel-header">
-        <h2>Listado de Tareas</h2>
+        <h1>Panel De Tareas</h1>
         <motion.button
           className="create-button"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-          whileTap={{ scale: 0.0 }}
+          whileTap={{ scale: 0.9 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
           onClick={() => {
             setEditingTask(null);

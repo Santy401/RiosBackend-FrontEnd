@@ -1,0 +1,53 @@
+.tasks-container {
+  padding: 20px;
+}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.admin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-info .icon {
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-info .icon {
+  font-size: 20px;
+  color: #666;
+}
+
+.tasks-header span {
+  color: #333;
+}
+
+.tasks-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

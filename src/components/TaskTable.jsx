@@ -247,7 +247,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
         {isAdmin && (
           <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
             <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-              <span className='name-title'>Tareas</span> 
+              <span className='name-title'>Tareas</span>
               <div className='counter-count'>
                 <span>{filteredTasks.length}</span>
               </div>
@@ -264,7 +264,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             setSearchQuery={setSearchQuery}
             dateRange={dateRange}
             setDateRange={setDateRange}
-            />
+          />
           <TaskViewModeToggle
             viewMode={viewMode}
             setViewMode={setViewMode}
@@ -278,7 +278,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             selectedTasksCount={selectedTasks.size}
             onDeleteSelected={handleDeleteSelected}
             onChangeStatusSelected={handleChangeStatusSelected}
-            // isAdmin={isAdmin} // Pass if needed by TaskActionsBar
+          // isAdmin={isAdmin} // Pass if needed by TaskActionsBar
           />
         )}
         <div className="task-table-container">
