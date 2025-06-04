@@ -4,87 +4,29 @@ import './styles/TaskTable.css';
 import TaskDetailModal from '../components/TaskDetailModal.jsx';
 import { useAuth } from '../context/authContext.jsx';
 import { motion } from "framer-motion";
-import { Listbox } from '@headlessui/react';
+import TaskActionsBar from './tasktable/TaskActionsBar';
+import TaskFilterControls from './tasktable/components/TaskFilterControls';
+import TaskViewModeToggle from './tasktable/components/TaskViewModeToggle';
+import TaskTableHeader from './tasktable/components/TaskTableHeader';
+import TaskTableRow from './tasktable/components/TaskTableRow';
+import TaskEmptyState from './tasktable/components/TaskEmptyState';
 import { Search, User, Building2, Layout, Calendar } from 'lucide-react';
 
 const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
 
+
+
   const searchOptions = [
-    { value: 'all', icon: <Search size={16} color="#888" /> },
-    { value: 'user', icon: <User size={16} color="#3b82f6" /> },
-    { value: 'company', icon: <Building2 size={16} color="#8b5cf6" /> },
-    { value: 'area', icon: <Layout size={16} color="#10b981" /> },
-    { value: 'date', icon: <Calendar size={16} color="#ef4444" /> },
+    { value: 'all', icon: <Search size={16} color="#888" />, label: 'Buscar en todo' },
+    { value: 'user', icon: <User size={16} color="#3b82f6" />, label: 'Usuario' },
+    { value: 'company', icon: <Building2 size={16} color="#8b5cf6" />, label: 'Empresa' },
+    { value: 'area', icon: <Layout size={16} color="#10b981" />, label: 'Área' },
+    { value: 'date', icon: <Calendar size={16} color="#ef4444" />, label: 'Fecha' },
   ];
 
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [expandedTask, setExpandedTask] = useState(null);
-  const [viewMode, setViewMode] = useState('cards');
-  const [selectedTasks, setSelectedTasks] = useState(new Set());
-  const [selectAll, setSelectAll] = useState(false);
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchBy, setSearchBy] = useState(searchOptions[0]);
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null
-  });
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [filteredTasks, setFilteredTasks] = useState([]);
-
-  const handleSelectTask = (taskId) => {
-    const newSelected = new Set(selectedTasks);
-    if (newSelected.has(taskId)) {
-      newSelected.delete(taskId);
-    } else {
-      newSelected.add(taskId);
-    }
-    setSelectedTasks(newSelected);
-    setSelectAll(false);
-  };
-
-  const handleSelectAll = () => {
-    const newSelected = new Set();
-    if (selectAll) {
-      setSelectedTasks(newSelected);
-    } else {
-      filteredTasks.forEach(task => newSelected.add(task.id));
-      setSelectedTasks(newSelected);
-    }
-    setSelectAll(!selectAll);
-  };
-
-  const handleDeleteSelected = (e) => {
-    if (selectedTasks.size === 0) return;
-
-    if (window.confirm('¿Estás seguro de que deseas eliminar las tareas seleccionadas?')) {
-      const taskIdsArray = Array.from(selectedTasks);
-      taskIdsArray.forEach(async (taskId) => {
-        try {
-          await onDeleteTask(taskId);
-        } catch (error) {
-          console.error(`Error al eliminar tarea ${taskId}:`, error);
-        }
-      });
-
-      setSelectedTasks(new Set());
-      setSelectAll(false);
-    }
-  };
-
-  const handleChangeStatusSelected = (newStatus) => {
-    if (selectedTasks.size === 0) return;
-
-    if (window.confirm('¿Estás seguro de que deseas cambiar el estado de las tareas seleccionadas?')) {
-      selectedTasks.forEach(taskId => onStatusChange(taskId, newStatus));
-      setSelectedTasks(new Set());
-      setSelectAll(false);
-      setSelectedStatus('');
-    }
-  };
 
   const matchesField = (field, query) => {
     if (!query) return true;
@@ -109,6 +51,66 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
 
     return true;
   };
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [expandedTask, setExpandedTask] = useState(null);
+  const [viewMode, setViewMode] = useState('cards');
+  const [selectedTasks, setSelectedTasks] = useState(new Set());
+  const [selectAll, setSelectAll] = useState(false);
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchBy, setSearchBy] = useState(searchOptions[0]);
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null
+  });
+
+  const [filteredTasks, setFilteredTasks] = useState([]);
+
+  const handleSelectTask = (taskId) => {
+    const newSelected = new Set(selectedTasks);
+    if (newSelected.has(taskId)) {
+      newSelected.delete(taskId);
+    } else {
+      newSelected.add(taskId);
+    }
+    setSelectedTasks(newSelected);
+    setSelectAll(false);
+  };
+
+  const handleSelectAll = () => {
+    const newSelected = new Set();
+    if (selectAll) {
+      setSelectedTasks(newSelected);
+    } else {
+      filteredTasks.forEach(task => newSelected.add(task.id));
+      setSelectedTasks(newSelected);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleDeleteSelected = () => {
+    // Confirmation is now handled in TaskActionsBar
+    const taskIdsArray = Array.from(selectedTasks);
+    taskIdsArray.forEach(async (taskId) => {
+      try {
+        await onDeleteTask(taskId);
+      } catch (error) {
+        console.error(`Error al eliminar tarea ${taskId}:`, error);
+      }
+    });
+    setSelectedTasks(new Set());
+    setSelectAll(false);
+  };
+
+  const handleChangeStatusSelected = (newStatus) => {
+    // Confirmation is now handled in TaskActionsBar
+    selectedTasks.forEach(taskId => onStatusChange(taskId, newStatus));
+    setSelectedTasks(new Set());
+    setSelectAll(false);
+    // selectedStatus state is removed, its equivalent is local to TaskActionsBar
+  };
+
+
 
   const filterAndSortTasks = useCallback(() => {
     // Filtrado
@@ -245,199 +247,77 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
         {isAdmin && (
           <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
             <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-              <span title={searchBy.label}>
-               <span className='name-title'>Tareas</span> 
-              </span>
+              <span className='name-title'>Tareas</span> 
               <div className='counter-count'>
-              <span>{filteredTasks.length}</span>
+                <span>{filteredTasks.length}</span>
               </div>
             </span>
           </div>
         )}
-        <div className="view-mode-buttons">
-          <div className="search-container">
-            <div className="search-options">
-              <div className="listbox-container"> {/* Contenedor adicional */}
-              <Listbox value={searchBy} onChange={setSearchBy}>
-                  <Listbox.Button className="listbox-button">
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {searchBy.icon}
-                      {searchBy.label}
-                    </span>
-                  </Listbox.Button>
-                  <Listbox.Options className="listbox-options" style={{ position: 'absolute', width: '100%' }} unmount={false}>
-                    {searchOptions.map((option) => (
-                      <Listbox.Option
-                        key={option.value}
-                        value={option}
-                        className="listbox-option"
-                      >
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px', }}>
-                          {option.icon}
-                          {option.label}
-                        </span>
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </Listbox>
-              </div>
-
-
-              {searchBy.value === 'date' ? (
-                <div className="date-range-picker">
-                  <input
-                    type="date"
-                    value={dateRange.startDate || ''}
-                    onChange={(e) => setDateRange(prev => ({
-                      ...prev,
-                      startDate: e.target.value
-                    }))}
-                    className="date-input"
-                  />
-                  <span className="date-separator">-</span>
-                  <input
-                    type="date"
-                    value={dateRange.endDate || ''}
-                    onChange={(e) => setDateRange(prev => ({
-                      ...prev,
-                      endDate: e.target.value
-                    }))}
-                    className="date-input"
-                  />
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  placeholder="Buscar..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-inputt"
-                />
-              )}
-            </div>
-          </div>
-          <button
-            onClick={() => setViewMode('cards')}
-            className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
-            title="Ver como tarjetas"
-          >
-            <i className="fa-solid fa-th-large"></i>
-          </button>
-          <button
-            onClick={() => setViewMode('table')}
-            className={`view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
-            title="Ver como tabla"
-          >
-            <i className="fa-solid fa-table"></i>
-          </button>
-          <button
-            onClick={() => setViewMode('list')}
-            className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-            title="Ver como lista"
-          >
-            <i className="fa-solid fa-list"></i>
-          </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TaskFilterControls
+            filterStatus={filterStatus}
+            setFilterStatus={setFilterStatus}
+            searchBy={searchBy}
+            setSearchBy={setSearchBy}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            />
+          <TaskViewModeToggle
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+          />
         </div>
       </div>
 
       <div className="task-section">
+        {selectedTasks.size > 0 && (
+          <TaskActionsBar
+            selectedTasksCount={selectedTasks.size}
+            onDeleteSelected={handleDeleteSelected}
+            onChangeStatusSelected={handleChangeStatusSelected}
+            // isAdmin={isAdmin} // Pass if needed by TaskActionsBar
+          />
+        )}
         <div className="task-table-container">
           {filteredTasks.length === 0 ? (
-            <div className="no-data-message">
-              <i className="fas fa-tasks"></i>
-              <span>No hay tareas que coincidan con los criterios de búsqueda</span>
-            </div>
+            <TaskEmptyState tasks={tasks} searchQuery={searchQuery} />
           ) : viewMode === 'table' ? (
             <div className="table-responsive">
               <motion.table className="task-table">
                 <thead>
-                  <tr>
-                    <th onClick={() => handleSort('title')}>Nombre De Tarea</th>
-                    <th>Observacion</th>
-                    <th onClick={() => handleSort('assignedUser.name')}>Usuario encargado</th>
-                    <th onClick={() => handleSort('company.name')}>Empresa Selecionada</th>
-                    <th onClick={() => handleSort('area.nombre_area')}>Área Selecionada</th>
-                    <th onClick={() => handleSort('createdAt')}>Fecha Creación</th>
-                    <th onClick={() => handleSort('dueDate')}>Fecha Límite</th>
-                    <th onClick={() => handleSort('status')}>Estado</th>
-                    {isAdmin && <th>Acciones</th>}
-                  </tr>
+                  <TaskTableHeader
+                    sortConfig={sortConfig}
+                    handleSort={handleSort}
+                    isAdmin={isAdmin}
+                    selectedTasks={selectedTasks}
+                    selectedTasksCount={selectedTasks.size}
+                    handleSelectAll={handleSelectAll}
+                    handleDeleteSelected={handleDeleteSelected}
+                    handleChangeStatusSelected={handleChangeStatusSelected}
+                    viewMode={viewMode}
+                  />
                 </thead>
                 <tbody>
                   {filteredTasks.map((task, index) => (
-                    <motion.tr
+                    <TaskTableRow
                       key={task.id}
-                      onClick={() => handleRowClick(task.id)}
-                      className={`${getRowClass(task.status)} ${expandedTask === task.id ? 'expanded' : ''}`}
-                    >
-                      <td>{task.title}</td>
-                      <td className="task-observation">
-                        <div
-                          className="observation-content"
-                          title={task.observation}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedTask(task);
-                          }}
-                        >
-                          {task.observation || '-'}
-                        </div>
-                        {expandedTask === task.id && task.observation && (
-                          <div className="observation-expanded">{task.observation}</div>
-                        )}
-                      </td>
-                      <td>{task.assignedUser?.name}</td>
-                      <td>{task.company?.name}</td>
-                      <td>{task.Areas?.nombre_area}</td>
-                      <td>{formatDate(task.createdAt)}</td>
-                      <td>{formatDate(task.dueDate)}</td>
-                      <td>
-                        <select
-                          className={getStatusClass(task.status)}
-                          value={task.status}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            onStatusChange(task.id, e.target.value);
-                          }}
-                        >
-                          <option value="in_progress">En Progreso</option>
-                          <option value="completed">Completada</option>
-                        </select>
-                      </td>
-                      {isAdmin && (
-                        <td className="actions">
-                          <div className="action-buttons">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedTask(task);
-                              }}
-                              className="detail-button"
-                              title="Ver detalles"
-                            >
-                              <i className="fa-solid fa-eye"></i>
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onEditTask(task);
-                              }}
-                              className="edit-button"
-                              title="Editar tarea"
-                            >
-                              <i className="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button
-                              onClick={(e) => handleDeleteClick(e, task)}
-                              className="delete-button"
-                              title="Eliminar tarea"
-                            >
-                              <i className="fa-solid fa-trash"></i>
-                            </button>
-                          </div>
-                        </td>
-                      )}
-                    </motion.tr>
+                      task={task}
+                      selectedTasks={selectedTasks}
+                      handleSelectTask={handleSelectTask}
+                      expandedTask={expandedTask}
+                      handleRowClick={handleRowClick}
+                      onStatusChange={onStatusChange}
+                      isAdmin={isAdmin}
+                      onDeleteTask={onDeleteTask}
+                      onEditTask={onEditTask}
+                      formatDate={formatDate}
+                      getStatusClass={getStatusClass}
+                      getRowClass={getRowClass}
+                      viewMode={viewMode}
+                    />
                   ))}
                 </tbody>
               </motion.table>
@@ -540,28 +420,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
             </div>
           ) : (
             <div className="task-list-container">
-              {isAdmin && selectedTasks.size > 0 && (
-                <div className="delete-selected-container">
-                  <div className="selected-actions">
-                    <select
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="status-selector"
-                    >
-                      <option value="">Seleccionar estado</option>
-                      <option value="in_progress">En Progreso</option>
-                      <option value="completed">Completada</option>
-                    </select>
-                    <button
-                      onClick={() => handleChangeStatusSelected(selectedStatus)}
-                      className="change-status-btn"
-                      disabled={!selectedStatus}
-                    >
-                      Cambiar Estado
-                    </button>
-                  </div>
-                </div>
-              )}
+              {/* Old bulk actions UI removed, TaskActionsBar is now used above */}
               <table className="task-table">
                 <thead>
                   <tr>
@@ -713,4 +572,4 @@ TaskTable.propTypes = {
   onStatusChange: PropTypes.func.isRequired
 };
 
-export default TaskTable; 2
+export default TaskTable; 
