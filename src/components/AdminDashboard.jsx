@@ -11,6 +11,7 @@ import Tasks from "../components/Tasks.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { Inbox, LayoutDashboard, ListChecks, ListPlus, Bolt, ChevronDown } from "lucide-react";
 import { toast } from 'react-toastify';
+import Icon from "../assets/Logo.png";
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -104,7 +105,7 @@ const AdminDashboard = () => {
             onClick={() => setIsDropdownOpen((prev) => !prev)}
           >
             <h5>
-              <i className="fa-solid fa-user-tie"></i> Admin.Task
+              <img src={Icon} alt="Logo" style={{ width: "26px", filter: "invert(100%)" }} /> RiosTask
             </h5>
             <ChevronDown
               className={`dropdown-icon ${isDropdownOpen ? "rotate" : ""}`}
