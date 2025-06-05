@@ -104,6 +104,7 @@ const PanelControlTask = () => {
       } else {
         const newTask = await taskService.createTask(formattedData);
         setTasks((prevTasks) => [...prevTasks, newTask]);
+        showToast("Tarea creada exitosamente", "success");
       }
 
       setShowCreateModal(false);
