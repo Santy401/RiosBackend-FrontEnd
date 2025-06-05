@@ -5,6 +5,7 @@ import { useAuth } from "../context/authContext";
 import TaskTable from "./TaskTable";
 import { taskService } from "../services/taskService";
 import "./styles/UserDashboard.css";
+import { toast } from 'react-toastify';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const UserDashboard = () => {
   useEffect(() => {
     if (user) {
       loadTasks();
+      toast.success('¡Bienvenido! Interactuas como Usuario');
     } else {
       navigate("/login");
     }

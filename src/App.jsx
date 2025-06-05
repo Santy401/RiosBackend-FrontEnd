@@ -12,6 +12,8 @@ import { AuthProvider } from "./context/authContext";
 import "./styles/globals.css"; 
 import ClientList from "./components/ClientList";
 import AreaList from "./components/AreaList";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -87,6 +89,15 @@ function App() {
           />
         </Routes>
       </Router>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
     </AuthProvider>
   );
 }

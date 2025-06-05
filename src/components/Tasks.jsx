@@ -66,16 +66,17 @@ const Tasks = () => {
     <div className="tasks-container">
       <div className="tasks-header">
         <div className="admin-info">
-          <User className="icon" />
-          <span>¡HOLA ADMIN!</span>
+          <h1>Dashboard</h1>
+           <div className="time-info">
+           <Clock className="icon" />
+           <span>{currentTime.toLocaleTimeString()}</span>
+           </div>
           <div className="date-info">
             <Calendar className="icon" />
             <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
+
+
           </div>
-        </div>
-        <div className="time-info">
-          <Clock className="icon" />
-          <span>{currentTime.toLocaleTimeString()}</span>
         </div>
       </div>
       <div className="tasks-content">

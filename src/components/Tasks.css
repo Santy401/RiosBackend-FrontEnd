@@ -1,5 +1,9 @@
 .tasks-container {
   padding: 20px;
+  background: white;
+  border-radius: 8px;
+  margin-right: 39.8px;
+  margin-top: 20px;
 }
 
 .tasks-header {
@@ -7,21 +11,24 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
   margin-bottom: 20px;
 }
 
 .admin-info {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.admin-info h1 {
+  margin: 0;
 }
 
 .admin-info .icon {
-  font-size: 24px;
+  font-size: 15px;
   color: #666;
-  margin-bottom: 5px;
+  scale: 0.8;
 }
 
 .date-info {
@@ -33,11 +40,11 @@
 .time-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 3px;
 }
 
 .time-info .icon {
-  font-size: 20px;
+  font-size: 15px;
   color: #666;
 }
 
@@ -49,5 +56,5 @@
   background: white;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+

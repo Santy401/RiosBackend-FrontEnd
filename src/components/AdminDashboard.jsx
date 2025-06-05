@@ -1,5 +1,5 @@
 import "../styles/adminAside.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
 import UserList from "../components/userList.jsx";
@@ -10,6 +10,7 @@ import DashboardAdmin from "../components/DashboardAdmin.jsx";
 import Tasks from "../components/Tasks.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { Inbox, LayoutDashboard, ListChecks, ListPlus, Bolt, ChevronDown } from "lucide-react";
+import { toast } from 'react-toastify';
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -18,6 +19,10 @@ const AdminDashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+
+  useEffect(() => {
+    toast.success('¡Bienvenido! Interactuas como Administrador');
+  }, []);
 
   const handleChangeComponent = (Component) => {
     setActiveComponent(Component);

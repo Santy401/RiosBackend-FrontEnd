@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
 import "../styles/stylesLogin.css";
 import { motion } from "framer-motion";
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -19,14 +20,11 @@ const Login = () => {
     try {
       const user = await login(formData.email, formData.password);
       console.log("Login exitoso:", user);
-      if (user.role === "admin") {
-        navigate("/dashboard-admin", { replace: true });
-      } else {
-        navigate("/dashboard-user", { replace: true });
-      }
+      navigate(user.role === "admin" ? "/dashboard-admin" : "/dashboard-user", { replace: true });
     } catch (err) {
       console.error("Error en login:", err);
       setError(err.message || "Error al iniciar sesión");
+      toast.error(err.message || "Error al iniciar sesión");
     }
   };
 
@@ -41,12 +39,12 @@ const Login = () => {
   return (
     <div className="containerLogin">
       <motion.form
-      initial={{ opacity: 0, scale: .7 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: .4, ease: "easeInOut" }}
-      onSubmit={handleSubmit}
-       className="formLogin">
-
+        initial={{ opacity: 0, scale: .7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: .4, ease: "easeInOut" }}
+        onSubmit={handleSubmit}
+        className="formLogin"
+      >
         <h2>Inicia Sesión</h2>
         <div className="inputs-login">
           <input
@@ -68,18 +66,21 @@ const Login = () => {
             required
           />
           <motion.button 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-          whileTap={{ scale: 0.7 }}
-          transition={{ duration: 0.1, ease: "easeInOut" }}
-          type="submit"
-          >Entrar</motion.button>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 0.7 }}
+            transition={{ duration: 0.1, ease: "easeInOut" }}
+            type="submit"
+          >
+            Entrar
+          </motion.button>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </motion.form>
     </div>
   );
 };
+
 
 export default Login;
