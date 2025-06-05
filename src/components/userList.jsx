@@ -3,7 +3,7 @@ import { useAuth } from "../context/authContext";
 import { userService } from "../services/userService";
 import CreateUser from "./createUser";
 import ConfirmModal from "./ConfirmModal";
-import Notification from "./Notification";
+import { showToast } from "./ToastNotification";
 import "../components/styles/userList.css";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -18,7 +18,7 @@ const UserList = () => {
   const { user: currentUser } = useAuth();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
-  const [notification, setNotification] = useState(null);
+
 
 const loadUsers = async () => {
   try {
@@ -52,15 +52,9 @@ const loadUsers = async () => {
     try {
       await userService.deleteUser(userToDelete.id);
       setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userToDelete.id));
-      setNotification({
-        message: "Usuario eliminado exitosamente",
-        type: "success",
-      });
+      showToast("Usuario eliminado exitosamente", "success");
     } catch (err) {
-      setNotification({
-        message: err.message || "Error al eliminar usuario",
-        type: "error",
-      });
+      showToast(err.message || "Error al eliminar el usuario", "error");
     } finally {
       setShowConfirmModal(false);
       setUserToDelete(null);
@@ -88,16 +82,10 @@ const loadUsers = async () => {
 
       setShowCreateModal(false);
       setEditingUser(null);
-      setNotification({
-        message: `Usuario ${userData.id ? "actualizado" : "creado"} exitosamente`,
-        type: "success",
-      });
+      showToast("Usuario creado exitosamente", "success");
     } catch (err) {
       console.error("Error al guardar usuario:", err);
-      setNotification({
-        message: err.message || "Error al guardar usuario",
-        type: "error",
-      });
+      showToast("Error al guardar usuario", "error");
     }
   };
 
@@ -221,13 +209,7 @@ const filteredUsers = (Array.isArray(users) ? users : []).filter((user) => {
           />
         )}
       </AnimatePresence>
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+
     </div>
   );
 };

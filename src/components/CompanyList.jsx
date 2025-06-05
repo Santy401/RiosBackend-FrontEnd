@@ -4,7 +4,7 @@ import { companyService } from "../services/companyService";
 import CreateCompanyModal from "./CreateCompanyModal";
 import "../components/styles/CompanyList.css";
 import ConfirmModal from "./ConfirmModal";
-import Notification from "./Notification";
+import { showToast } from "./ToastNotification";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CompanyList = () => {
@@ -18,7 +18,7 @@ const CompanyList = () => {
   const { user } = useAuth();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
-  const [notification, setNotification] = useState(null);
+
   const [companyTypeFilter, setCompanyTypeFilter] = useState("");
 
   const loadCompanies = async () => {
@@ -47,19 +47,13 @@ const CompanyList = () => {
 
       if (editingCompany) {
         await companyService.updateCompany(editingCompany.id, companyData);
-        setNotification({
-          message: "Empresa actualizada exitosamente",
-          type: "success",
-        });
+        showToast("Empresa actualizada exitosamente", "success");
       } else {
         const createdCompany = await companyService.createCompany(companyData);
         if (!createdCompany) {
           throw new Error("La empresa no fue creada correctamente");
         }
-        setNotification({
-          message: "Empresa creada exitosamente",
-          type: "success",
-        });
+        showToast("Empresa creada exitosamente", "success");
       }
 
       setShowCreateModal(false);
@@ -67,10 +61,7 @@ const CompanyList = () => {
       await loadCompanies();
     } catch (err) {
       console.error("Error al guardar empresa:", err);
-      setNotification({
-        message: err.message || "Error al guardar la empresa",
-        type: "error",
-      });
+      showToast(err.message || "Error al guardar la empresa", "error");
     } finally {
       setLoading(false);
     }
@@ -82,26 +73,17 @@ const CompanyList = () => {
       setShowCreateModal(true);
     } catch (err) {
       console.error("Error al preparar edición:", err);
-      setNotification({
-        message: "Error al preparar la edición",
-        type: "error",
-      });
+      showToast("Error al preparar la edición", "error");
     }
   };
 
   const handleConfirmDelete = async () => {
     try {
       await companyService.deleteCompany(companyToDelete.id);
-      setNotification({
-        message: "Empresa eliminada exitosamente",
-        type: "success",
-      });
+      showToast("Empresa eliminada exitosamente", "success");
       await loadCompanies();
     } catch (err) {
-      setNotification({
-        message: err.message || "Error al eliminar empresa",
-        type: "error",
-      });
+      showToast(err.message || "Error al eliminar la empresa", "error");
     } finally {
       setShowConfirmModal(false);
       loadCompanies();
@@ -312,13 +294,7 @@ const CompanyList = () => {
         />
       )}
 
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+
     </div>
   );
 };

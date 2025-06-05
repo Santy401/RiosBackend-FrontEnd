@@ -3,7 +3,7 @@ import { useAuth } from "../context/authContext";
 import { clientService } from "../services/clientService";
 import CreateClientModal from "./CreateClientModal";
 import ConfirmModal from "./ConfirmModal";
-import Notification from "./Notification";
+import { showToast } from "./ToastNotification";
 import "./styles/ClientList.css";
 
 const ClientList = () => {
@@ -16,7 +16,7 @@ const ClientList = () => {
   const { user } = useAuth();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [clientToDelete, setClientToDelete] = useState(null);
-  const [notification, setNotification] = useState(null);
+
   const [selectedClient, setSelectedClient] = useState(null);
   const [filterType, setFilterType] = useState("");
   useEffect(() => {
@@ -61,15 +61,9 @@ const ClientList = () => {
       setClients((prevClients) =>
         prevClients.filter((c) => c.id !== clientToDelete.id)
       );
-      setNotification({
-        message: "Cliente eliminado exitosamente",
-        type: "success",
-      });
+      showToast("Cliente eliminado exitosamente", "success");
     } catch (err) {
-      setNotification({
-        message: err.message || "Error al eliminar el cliente",
-        type: "error",
-      });
+      showToast(err.message || "Error al eliminar el cliente", "error");
     } finally {
       setShowConfirmModal(false);
       setClientToDelete(null);
@@ -96,12 +90,7 @@ const ClientList = () => {
 
       setShowCreateModal(false);
       setEditingClient(null);
-      setNotification({
-        message: `Cliente ${
-          editingClient ? "actualizado" : "creado"
-        } exitosamente`,
-        type: "success",
-      });
+      showToast(`Cliente ${editingClient ? "actualizado" : "creado"} exitosamente`, "success");
     } catch (err) {
       console.error("Error al guardar cliente:", err);
       setNotification({
@@ -267,13 +256,7 @@ const ClientList = () => {
         />
       )}
 
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+
     </div>
   );
 };

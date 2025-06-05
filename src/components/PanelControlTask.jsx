@@ -6,7 +6,7 @@ import CreateTaskModal from "../components/CreateTaskModal.jsx";
 import { taskService } from "../services/taskService.js";
 import { useAuth } from "../context/authContext";
 import { getAllTasks } from "../services/taskService";
-import Notification from "./Notification";
+import { showToast } from "./ToastNotification";
 import ConfirmModal from "./ConfirmModal";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
@@ -18,7 +18,7 @@ const PanelControlTask = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useAuth();
-  const [notification, setNotification] = useState(null);
+
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -59,11 +59,7 @@ const PanelControlTask = () => {
       );
 
       if (!taskData.title || !taskData.assigned_to) {
-        setNotification({
-          message:
-            "Por favor completa los campos obligatorios: Nombre y el asignado",
-          type: "error",
-        });
+        showToast("Por favor completa los campos obligatorios: Nombre y el asignado", "error");
         return;
       }
 
@@ -114,10 +110,7 @@ const PanelControlTask = () => {
       loadTasks();
     } catch (error) {
       console.error("Error al guardar tarea:", error);
-      setNotification({
-        message: error.response?.data?.message || "Error al guardar la tarea",
-        type: "error",
-      });
+      showToast(error.response?.data?.message || "Error al guardar la tarea", "error");
     } finally {
       setIsCreating(false);
     }
@@ -125,10 +118,7 @@ const PanelControlTask = () => {
 
   const handleDeleteClick = (task) => {
     if (!task || typeof task.id === "undefined") {
-      setNotification({
-        message: "No se puede eliminar la tarea: datos inválidos",
-        type: "error",
-      });
+      showToast("No se puede eliminar la tarea: datos inválidos", "error");
       return;
     }
     setTaskToDelete(task);
@@ -155,16 +145,10 @@ const PanelControlTask = () => {
         return updatedTasks;
       });
 
-      setNotification({
-        message: "Tarea eliminada exitosamente",
-        type: "success",
-      });
+      showToast("Tarea eliminada exitosamente", "success");
     } catch (error) {
       console.error("❌ Error al eliminar tarea:", error);
-      setNotification({
-        message: error.message || "Error al eliminar la tarea",
-        type: "error",
-      });
+      showToast(error.message || "Error al eliminar la tarea", "error");
     } finally {
       setShowConfirmModal(false);
       setTaskToDelete(null);
@@ -182,10 +166,7 @@ const PanelControlTask = () => {
       loadTasks();
     } catch (error) {
       console.error("Error al actualizar estado:", error);
-      setNotification({
-        message: "Error al actualizar el estado de la tarea",
-        type: "error",
-      });
+      showToast("Error al actualizar el estado de la tarea", "error");
     }
   };
 
@@ -222,7 +203,7 @@ const PanelControlTask = () => {
         </motion.button>
 
       </div>
-          
+
       <TaskTable
         tasks={tasks}
         onEditTask={handleEditTask}
@@ -255,13 +236,7 @@ const PanelControlTask = () => {
         )}
       </AnimatePresence>
 
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+
     </div>
   );
 };

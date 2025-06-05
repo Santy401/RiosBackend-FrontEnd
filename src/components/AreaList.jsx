@@ -4,7 +4,7 @@ import { areaService } from "../services/areaService.js";
 import "../components/styles/AreaList.css";
 import { useAuth } from "../context/authContext";
 import ConfirmModal from "../components/ConfirmModal.jsx";
-import Notification from "../components/Notification.jsx";
+import { showToast } from "../components/ToastNotification.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AreaList = () => {
@@ -17,7 +17,7 @@ const AreaList = () => {
   const { user } = useAuth();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [areaToDelete, setAreaToDelete] = useState(null);
-  const [notification, setNotification] = useState(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -40,10 +40,7 @@ const AreaList = () => {
 
   const handleDeleteClick = (area) => {
     if (!area?.id_area) {
-      setNotification({
-        message: "No se puede eliminar el área: datos inválidos",
-        type: "error",
-      });
+      showToast("No se puede eliminar el área: datos inválidos", "error");
       return;
     }
     setAreaToDelete(area);
@@ -58,15 +55,9 @@ const AreaList = () => {
       setAreas((prev) =>
         prev.filter((a) => a.id_area !== areaToDelete.id_area)
       );
-      setNotification({
-        message: "Área eliminada exitosamente",
-        type: "success",
-      });
+      showToast("Área eliminada exitosamente", "success");
     } catch (err) {
-      setNotification({
-        message: err.message || "Error al eliminar el área",
-        type: "error",
-      });
+      showToast(err.message || "Error al eliminar el área", "error");
     } finally {
       setIsDeleting(false);
       setShowConfirmModal(false);
@@ -104,15 +95,9 @@ const AreaList = () => {
         setAreas((prev) => [...prev, newArea]);
       }
 
-      setNotification({
-        message: `Área ${editingArea ? "actualizada" : "creada"} exitosamente`,
-        type: "success",
-      });
+      showToast(`Área ${editingArea ? "actualizada" : "creada"} exitosamente`, "success");
     } catch (err) {
-      setNotification({
-        message: err.message || "Error al guardar el área",
-        type: "error",
-      });
+      showToast(err.message || "Error al guardar el área", "error");
     } finally {
       setIsSubmitting(false);
       setShowCreateModal(false);
@@ -263,13 +248,7 @@ const AreaList = () => {
         />
       )}
 
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+
     </div>
   );
 };
