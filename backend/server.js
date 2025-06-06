@@ -12,23 +12,21 @@ const __dirname = dirname(__filename);
 
 // --- CONFIGURACIÓN DE CORS PARA VERCEL ---
 const allowedOrigins = [
-  "*",
-  "https://task-rios.vercel.app/login",
-  "https://localhost:3000",
-  "https://54.173.189.136.sslip.io",
+  "https://task-rios.vercel.app",
+  "http://localhost:3000"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    console.log("BODY", origin)
-    if(!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      callback(new Error("not allowed by CORDS"));
+      callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true,
+  credentials: true
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

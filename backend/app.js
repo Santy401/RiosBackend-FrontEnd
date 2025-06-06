@@ -29,7 +29,7 @@ sequelize.authenticate()
 app.use(helmet());
 app.use(express.json());
 
-const allowedOrigins = ['https://task-rios.vercel.app/login', 'http://localhost:5173', 'https://task-rios.vercel.app'];
+const allowedOrigins = ['https://task-rios.vercel.app/login', 'http://localhost:5173', 'https://task-rios.vercel.app', "https://54.173.189.136.sslip.io"];
 app.use(
   cors({
     origin: function (origin, callback) {
