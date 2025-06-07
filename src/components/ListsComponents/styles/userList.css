@@ -48,6 +48,7 @@
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   padding: 20px 0;
+  gap: 37px;
 }
 
 .user-card {
@@ -58,11 +59,13 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s;
+  transition: scale .1s;
 }
 
 .user-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  scale: 1.02;
 }
 
 .user-card-header {
