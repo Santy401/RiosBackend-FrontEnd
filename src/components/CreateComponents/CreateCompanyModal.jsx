@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import "../components/styles/ModalAddTask.css";
-import { companyService } from "../services/companyService";
+import "../styles/ModalAddTask.css";
+import { companyService } from "../../services/companyService";
 import { motion } from "framer-motion";
 
 const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies }) => {

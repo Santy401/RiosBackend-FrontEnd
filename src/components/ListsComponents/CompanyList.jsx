@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/authContext";
-import { companyService } from "../services/companyService";
-import CreateCompanyModal from "./CreateCompanyModal";
-import "../components/styles/CompanyList.css";
-import ConfirmModal from "./ConfirmModal";
-import { showToast } from "./ToastNotification";
+import { useAuth } from "../../context/authContext";
+import { companyService } from "../../services/companyService";
+import CreateCompanyModal from "../CreateComponents/CreateCompanyModal";
+import "../styles/CompanyList.css";
+import ConfirmModal from "../common/ConfirmModal";
+import { showToast } from "../common/ToastNotification";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CompanyList = () => {

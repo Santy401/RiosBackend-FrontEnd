@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../src/pages/Login.jsx";
-import AdminDashboard from "../src/components/AdminDashboard.jsx";
-import UserDashboard from "../src/components/UserDashboard.jsx";
-import PrivateRoute from "../src/privateRoute.jsx";
+import Login from "../pages/Login.jsx";
+import AdminDashboard from "../pages/AdminDashboard.jsx";
+import UserDashboard from "../pages/UserDashboard.jsx";
+import PrivateRoute from "./privateRoute.jsx";
 
 // eslint-disable-next-line react/prop-types
 const AppRoutes = ({ user, loading, onLogin, onLogout }) => {

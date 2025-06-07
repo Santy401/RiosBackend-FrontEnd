@@ -1,13 +1,13 @@
 import "../components/styles/PanelControlTask.css";
-import "../components/styles/PanelHeader.css";
+import "./styles/PanelHeader.css";
 import { useState, useEffect } from "react";
-import TaskTable from "../components/TaskTable.jsx";
-import CreateTaskModal from "../components/CreateTaskModal.jsx";
-import { taskService } from "../services/taskService.js";
-import { useAuth } from "../context/authContext";
-import { getAllTasks } from "../services/taskService";
-import { showToast } from "./ToastNotification";
-import ConfirmModal from "./ConfirmModal";
+import TaskTable from "../TaskTable.jsx";
+import CreateTaskModal from "../CreateComponents/CreateTaskModal.jsx";
+import { taskService } from "../../services/taskService.js";
+import { useAuth } from "../../context/authContext.jsx";
+import { getAllTasks } from "../../services/taskService.js";
+import { showToast } from "../common/ToastNotification.jsx";
+import ConfirmModal from "../common/ConfirmModal.jsx";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 

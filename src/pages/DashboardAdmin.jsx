@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../components/styles/AdminDashboard.css";
 import "../components/styles/ModalAddTask.css";
-import PanelControlTask from "../components/PanelControlTask.jsx";
+import PanelControlTask from "../components/Panels/PanelControlTask.jsx";
 import "../components/styles/PanelControlTask.css";
 
 const DashboardAdmin = () => {

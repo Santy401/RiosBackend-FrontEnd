@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import TaskTable from "./TaskTable";
+import TaskTable from "../components/TaskTable";
 import { taskService } from "../services/taskService";
-import "./styles/UserDashboard.css";
+import "../components/styles/UserDashboard.css";
 import { toast } from 'react-toastify';
 
 const UserDashboard = () => {

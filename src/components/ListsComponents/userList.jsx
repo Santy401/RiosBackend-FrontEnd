@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/authContext";
-import { userService } from "../services/userService";
-import CreateUser from "./createUser";
-import ConfirmModal from "./ConfirmModal";
-import { showToast } from "./ToastNotification";
-import "../components/styles/userList.css";
+import { useAuth } from "../../context/authContext";
+import { userService } from "../../services/userService";
+import CreateUser from "../CreateComponents/createUser";
+import ConfirmModal from "../common/ConfirmModal";
+import { showToast } from "../common/ToastNotification";
+import "../styles/userList.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 
@@ -20,21 +20,21 @@ const UserList = () => {
   const [userToDelete, setUserToDelete] = useState(null);
 
 
-const loadUsers = async () => {
-  try {
-    setLoading(true);
-    const data = await userService.getAllUsers();
-    // Asegurar que data sea un array
-    setUsers(Array.isArray(data) ? data : []);
-    setError(null);
-  } catch (err) {
-    console.error("Error al cargar usuarios:", err);
-    setError("Error al cargar usuarios");
-    setUsers([]); // Establecer array vacío en caso de error
-  } finally {
-    setLoading(false);
-  }
-};
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+      const data = await userService.getAllUsers();
+      // Asegurar que data sea un array
+      setUsers(Array.isArray(data) ? data : []);
+      setError(null);
+    } catch (err) {
+      console.error("Error al cargar usuarios:", err);
+      setError("Error al cargar usuarios");
+      setUsers([]); // Establecer array vacío en caso de error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (currentUser?.role === "admin") {
@@ -93,14 +93,14 @@ const loadUsers = async () => {
 
 
 
-const filteredUsers = (Array.isArray(users) ? users : []).filter((user) => {
-  const searchText = searchQuery.toLowerCase();
-  return (
-    user.name?.toLowerCase().includes(searchText) ||
-    user.email?.toLowerCase().includes(searchText) ||
-    user.role?.toLowerCase().includes(searchText)
-  );
-});
+  const filteredUsers = (Array.isArray(users) ? users : []).filter((user) => {
+    const searchText = searchQuery.toLowerCase();
+    return (
+      user.name?.toLowerCase().includes(searchText) ||
+      user.email?.toLowerCase().includes(searchText) ||
+      user.role?.toLowerCase().includes(searchText)
+    );
+  });
 
   if (loading) return <div className="loading">Cargando usuarios...</div>;
   if (error) return <div className="error">{error}</div>;

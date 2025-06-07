@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserList from "../components/userList.jsx";
-import CompanyList from "../components/CompanyList.jsx";
-import AreaList from "../components/AreaList.jsx";
+import UserList from "../components/ListsComponents/userList.jsx";
+import CompanyList from "../components/ListsComponents/CompanyList.jsx";
+import AreaList from "../components/ListsComponents/AreaList.jsx";
 import "../pages/styles/ListsPage.css";
 
 const ListsPage = () => {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { userService } from "../services/userService";
-import { companyService } from "../services/companyService";
-import { areaService } from "../services/areaService";
-import "./styles/ModalAddTask.css";
+import { userService } from "../../services/userService";
+import { companyService } from "../../services/companyService";
+import { areaService } from "../../services/areaService";
+import "../styles/ModalAddTask.css";
 import { motion } from "framer-motion";
 
 const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {

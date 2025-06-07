@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import "./styles/ConfirmModal.css";
+import "../styles/ConfirmModal.css";
 import { motion } from "framer-motion"
 
 const ConfirmModal = ({ message, onConfirm, onCancel }) => {

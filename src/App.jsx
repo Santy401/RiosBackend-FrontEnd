@@ -4,20 +4,18 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardAdmin from "./components/AdminDashboard";
-import DashboardUser from "./components/UserDashboard";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import DashboardAdmin from "./pages/AdminDashboard";
+import DashboardUser from "./pages/UserDashboard";
 import Login from "./pages/Login";
-import { AuthProvider } from "./context/authContext";
-import "./styles/globals.css"; 
-import ClientList from "./components/ClientList";
-import AreaList from "./components/AreaList";
+import "./styles/globals.css";
+import AreaList from "./components/ListsComponents/AreaList";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <AuthProvider>
+    <div>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -65,15 +63,6 @@ function App() {
           />
 
           <Route
-            path="/clients"
-            element={
-              <ProtectedRoute>
-                <ClientList />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
             path="*"
             element={
               <Navigate
@@ -98,7 +87,7 @@ function App() {
         draggable
         theme="light"
       />
-    </AuthProvider>
+    </div>
   );
 }
 

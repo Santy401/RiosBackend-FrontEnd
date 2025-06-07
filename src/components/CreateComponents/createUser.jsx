@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import "../components/styles/ModalAddTask.css";
-import { useAuth } from "../context/authContext";
+import "../styles/ModalAddTask.css";
+import { useAuth } from "../../context/authContext";
 import { motion } from "framer-motion";
 
 const CreateUser = ({ onClose, onSave, editUser = null }) => {

@@ -1,15 +1,16 @@
-  import "../styles/adminAside.css";
-import { useState } from "react";
+import "../styles/adminAside.css";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
-import UserList from "../components/userList.jsx";
-import CompanyList from "../components/CompanyList.jsx";
-import AreaList from "../components/AreaList.jsx";
-import ClientList from "../components/ClientList.jsx";
-import DashboardAdmin from "../components/DashboardAdmin.jsx";
+import UserList from "../components/ListsComponents/userList.jsx";
+import CompanyList from "../components/ListsComponents/CompanyList.jsx";
+import AreaList from "../components/ListsComponents/AreaList.jsx";
+import DashboardAdmin from "./DashboardAdmin.jsx";
 import Tasks from "../components/Tasks.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { Inbox, LayoutDashboard, ListChecks, ListPlus, Bolt, ChevronDown } from "lucide-react";
+import { toast } from 'react-toastify';
+import Icon from "../assets/Logo.png";
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -18,6 +19,10 @@ const AdminDashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+
+  useEffect(() => {
+    toast.success('¡Bienvenido! Interactuas como Administrador');
+  }, []);
 
   const handleChangeComponent = (Component) => {
     setActiveComponent(Component);
@@ -43,8 +48,6 @@ const AdminDashboard = () => {
         return <CompanyList />;
       case "areas":
         return <AreaList />;
-      case "clients":
-        return <ClientList />;
       default:
         return null;
     }
@@ -94,47 +97,77 @@ const AdminDashboard = () => {
     <div className="bigC">
       <aside className={`asideNv ${isSidebarVisible ? "" : "hidden"}`}>
         <div className="topItems">
-          <div className="itemBar0" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <div className="header-container">
-              <h5>
-                <i className="fa-solid fa-user-tie"></i> Admin.Task
-              </h5>
-              <ChevronDown className="dropdown-icon" />
-            </div>
-            <AnimatePresence mode="wait">
-              {isDropdownOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="dropdown-content"
-                >
-
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <div
+            className="header-container"
+            onClick={() => setIsDropdownOpen((prev) => !prev)}
+          >
+            <h5>
+              <img src={Icon} alt="Logo" style={{ width: "26px", filter: "invert(100%)" }} /> RiosTask
+            </h5>
+            <ChevronDown
+              className={`dropdown-icon ${isDropdownOpen ? "rotate" : ""}`}
+            />
           </div>
+
+          <AnimatePresence>
+            {isDropdownOpen && (
+              <motion.div
+                className="dropdown-contentt"
+                initial={{ opacity: 0, scaleY: 0 }}
+                animate={{ opacity: 1, scaleY: 1 }}
+                exit={{ opacity: 0, scaleY: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                style={{ transformOrigin: "top" }}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsDropdownOpen(false);
+                    handleLogout();
+                  }}
+                  className="dropdown-item"
+                >
+                  <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        <div className="itemBar1">
-          {renderComponent()}
-        </div>
+
+        <div className="itemBar1"></div>
+
         <div className="itemsMedie">
           <div className={activeComponent === "dashboard" ? "active" : ""}>
             <div className="itemBar2">
-              <Dashboard className="icon" />
+              <LayoutDashboard />
               <span onClick={() => handleChangeComponent("dashboard")}>
                 Dashboard
               </span>
             </div>
           </div>
+
+          <div className={activeComponent === "notifications" ? "active" : ""}>
+            <div className="itemBar2">
+              <Inbox />
+              <span onClick={() => handleChangeComponent("notifications")}>
+                Notificaciones
+              </span>
+            </div>
+          </div>
+
+          <div className="divider"></div>
+
           <div className={activeComponent === "tasks" ? "active" : ""}>
             <div className="itemBar2">
-              <Tasks className="icon" />
+              <ListChecks />
               <span onClick={() => handleChangeComponent("tasks")}>
                 Tasks
               </span>
             </div>
           </div>
+
           <div className={activeComponent === "lists" ? "active" : ""}>
             <div className="itemBar2">
               <ListPlus />
@@ -144,23 +177,15 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
+
         <div className="bottomItems">
           <label className="labelBottom">Configuración</label>
           <button>
             <Bolt className="bolt" /> Preferencias
           </button>
-          <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsDropdownOpen(false);
-                      handleLogout();
-                    }}
-                    className="dropdown-item"
-                  >
-                    <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
-                  </button>
         </div>
       </aside>
+
       <main
         style={{
           overflowY: "scroll",
@@ -177,9 +202,11 @@ const AdminDashboard = () => {
           onClick={() => setIsSidebarVisible(!isSidebarVisible)}
         >
           <i
-            className={`fa-solid ${isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"}`}
+            className={`fa-solid ${isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"
+              }`}
           ></i>
         </button>
+
         <AnimatePresence mode="wait">
           <motion.div
             key={activeComponent}
@@ -201,4 +228,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-             

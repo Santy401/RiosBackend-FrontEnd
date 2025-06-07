@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import CreateAreaModal from "../components/CreateAreaModal.jsx";
-import { areaService } from "../services/areaService.js";
-import "../components/styles/AreaList.css";
-import { useAuth } from "../context/authContext";
-import ConfirmModal from "../components/ConfirmModal.jsx";
-import { showToast } from "../components/ToastNotification.jsx";
+import CreateAreaModal from "../CreateComponents/CreateAreaModal.jsx";
+import { areaService } from "../../services/areaService.js";
+import "../styles/AreaList.css";
+import { useAuth } from "../../context/authContext";
+import ConfirmModal from "../common/ConfirmModal.jsx";
+import { showToast } from "../common/ToastNotification.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AreaList = () => {

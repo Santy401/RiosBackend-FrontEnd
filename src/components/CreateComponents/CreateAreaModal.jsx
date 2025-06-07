@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import "../components/styles/ModalAddTask.css";
+import "../styles/ModalAddTask.css";
 import { motion } from "framer-motion"
 
 const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
