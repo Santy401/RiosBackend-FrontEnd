@@ -35,7 +35,6 @@ api.interceptors.response.use(
       const alertElement = document.createElement('div');
       document.body.appendChild(alertElement);
       const root = createRoot(alertElement);
-      root.render(<SessionExpiredAlert />);
     }
 
     return Promise.reject(error);
