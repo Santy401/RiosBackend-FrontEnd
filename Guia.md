@@ -3,17 +3,17 @@
 ## 1. PRIMERA FASE - ESTRUCTURA Y ORGANIZACIÓN (FÁCIL)
 
 ### Organización de Carpetas
-- [ ] Reorganizar la estructura de carpetas según la propuesta anterior
+- [x] Reorganizar la estructura de carpetas según la propuesta anterior
   - Mover componentes a `src/components/common/`
   - Mover dashboards a `src/pages/`
   - Crear subcarpetas para componentes reutilizables
   - Actualizar rutas de importación
 
 ### Componentes
-- [ ] Mover los dashboards de components a pages
+- [x] Mover los dashboards de components a pages
   - Dashboard Admin → `src/pages/admin/Dashboard.jsx`
   - Dashboard User → `src/pages/user/Dashboard.jsx`
-- [ ] Crear subcarpetas para componentes comunes
+- [x] Crear subcarpetas para componentes comunes
   - `src/components/common/Alerts/`
   - `src/components/common/Layouts/`
   - `src/components/common/Forms/`
