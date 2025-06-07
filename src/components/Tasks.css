@@ -4,6 +4,8 @@
   border-radius: 8px;
   margin-right: 39.8px;
   margin-top: 20px;
+  border: 1px solid #ddd;
+  height: 90vh;
 }
 
 .tasks-header {
@@ -57,4 +59,3 @@
   border-radius: 8px;
   padding: 20px;
 }
-

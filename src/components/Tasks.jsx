@@ -74,8 +74,6 @@ const Tasks = () => {
           <div className="date-info">
             <Calendar className="icon" />
             <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
-
-
           </div>
         </div>
       </div>
