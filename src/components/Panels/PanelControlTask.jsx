@@ -1,7 +1,7 @@
-import "../components/styles/PanelControlTask.css";
+import "./styles/PanelControlTask.css";
 import "./styles/PanelHeader.css";
 import { useState, useEffect } from "react";
-import TaskTable from "../TaskTable.jsx";
+import TaskTable from "../tasktable/TaskTable.jsx";
 import CreateTaskModal from "../CreateComponents/CreateTaskModal.jsx";
 import { taskService } from "../../services/taskService.js";
 import { useAuth } from "../../context/authContext.jsx";

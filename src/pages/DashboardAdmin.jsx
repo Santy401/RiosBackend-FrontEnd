@@ -1,8 +1,8 @@
 import { useState } from "react";
-import "../components/styles/AdminDashboard.css";
-import "../components/styles/ModalAddTask.css";
+import "./styles/Dashboard.css";
+import "../components/CreateComponents/styles/ModalAddTask.css";
 import PanelControlTask from "../components/Panels/PanelControlTask.jsx";
-import "../components/styles/PanelControlTask.css";
+import "../components/Panels/styles/PanelControlTask.css";
 
 const DashboardAdmin = () => {
   const [isModalOpen, setModalOpen] = useState(false);

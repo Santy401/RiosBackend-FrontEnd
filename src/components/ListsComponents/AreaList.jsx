@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CreateAreaModal from "../CreateComponents/CreateAreaModal.jsx";
 import { areaService } from "../../services/areaService.js";
-import "../styles/AreaList.css";
+import "./styles/AreaList.css";
 import { useAuth } from "../../context/authContext";
 import ConfirmModal from "../common/ConfirmModal.jsx";
 import { showToast } from "../common/ToastNotification.jsx";

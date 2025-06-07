@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import TaskTable from "../components/TaskTable";
+import TaskTable from "../components/tasktable/TaskTable";
 import { taskService } from "../services/taskService";
-import "../components/styles/UserDashboard.css";
+import "./styles/Dashboard.css";
 import { toast } from 'react-toastify';
 
 const UserDashboard = () => {
@@ -88,10 +88,10 @@ const UserDashboard = () => {
     <div className="user-dashboard">
       <header className="dashboard-header">
         <div>
-        <h1>¡ Hola {user.name} !</h1><span style={{fontStyle:"italic", paddingLeft:"10px", fontSize:"13px"}}>Esta Es Tu Bandeja De Tareas</span>
+          <h1>¡ Hola {user.name} !</h1><span style={{ fontStyle: "italic", paddingLeft: "10px", fontSize: "13px" }}>Esta Es Tu Bandeja De Tareas</span>
         </div>
-        <div className="user-info" style={{display:"flex", alignItems:"center"}}>
-          <span style={{marginRight:"20px"}}>{user.email}</span>
+        <div className="user-info" style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ marginRight: "20px" }}>{user.email}</span>
           <button
             onClick={() => {
               logout();
@@ -107,7 +107,7 @@ const UserDashboard = () => {
         <TaskTable
           tasks={tasks}
           onDeleteTask={handleDeleteTask}
-          onEditTask={() => {}}
+          onEditTask={() => { }}
           onStatusChange={handleStatusChange}
         />
       </main>

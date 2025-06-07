@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import "../styles/ModalAddTask.css";
+import "./styles/ModalAddTask.css";
 import { useAuth } from "../../context/authContext";
 import { motion } from "framer-motion";
 

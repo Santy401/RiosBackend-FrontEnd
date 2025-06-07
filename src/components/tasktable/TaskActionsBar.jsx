@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './TaskActionsBar.css';
+import "./styles/TaskActionsBar.css";
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 

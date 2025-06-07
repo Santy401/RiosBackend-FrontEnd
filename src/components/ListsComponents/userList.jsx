@@ -4,7 +4,7 @@ import { userService } from "../../services/userService";
 import CreateUser from "../CreateComponents/createUser";
 import ConfirmModal from "../common/ConfirmModal";
 import { showToast } from "../common/ToastNotification";
-import "../styles/userList.css";
+import "./styles/userList.css";
 import { AnimatePresence, motion } from "framer-motion";
 
 

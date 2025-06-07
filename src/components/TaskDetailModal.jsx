@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import "../components/styles/TaskDetailModal.css";
+import "./Styles/TaskDetailModa.css";
 import { userService } from "../services/userService.js";
 import { companyService } from "../services/companyService.js";
 import { areaService } from "../services/areaService.js";

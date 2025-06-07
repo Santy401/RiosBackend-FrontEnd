@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import './styles/TaskTable.css';
-import TaskDetailModal from '../components/TaskDetailModal.jsx';
-import { useAuth } from '../context/authContext.jsx';
+import "./styles/TaskTable.css";
+import TaskDetailModal from '../TaskDetailModal.jsx';
+import { useAuth } from '../../context/authContext.jsx';
 import { motion } from "framer-motion";
-import TaskActionsBar from './tasktable/TaskActionsBar';
-import TaskFilterControls from './tasktable/components/TaskFilterControls';
-import TaskViewModeToggle from './tasktable/components/TaskViewModeToggle';
-import TaskTableHeader from './tasktable/components/TaskTableHeader';
-import TaskTableRow from './tasktable/components/TaskTableRow';
-import TaskEmptyState from './tasktable/components/TaskEmptyState';
+import TaskActionsBar from './TaskActionsBar.jsx';
+import TaskFilterControls from './components/TaskFilterControls.jsx';
+import TaskViewModeToggle from './components/TaskViewModeToggle.jsx';
+import TaskTableHeader from './components/TaskTableHeader.jsx';
+import TaskTableRow from './components/TaskTableRow.jsx';
+import TaskEmptyState from './components/TaskEmptyState.jsx';
 import { Search, User, Building2, Layout, Calendar } from 'lucide-react';
 
 const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {

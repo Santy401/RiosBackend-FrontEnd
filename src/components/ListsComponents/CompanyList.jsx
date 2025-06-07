@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import { companyService } from "../../services/companyService";
 import CreateCompanyModal from "../CreateComponents/CreateCompanyModal";
-import "../styles/CompanyList.css";
+import "./styles/CompanyList.css";
 import ConfirmModal from "../common/ConfirmModal";
 import { showToast } from "../common/ToastNotification";
 import { motion, AnimatePresence } from "framer-motion";
