@@ -22,6 +22,7 @@ body {
   padding: 15px;
   border-right: 1px solid #ffffff;
   transition: width 0.3s ease, opacity 0.3s ease;
+  border-right: 1px solid #ddd;
 }
 
 .asideNv.hidden {

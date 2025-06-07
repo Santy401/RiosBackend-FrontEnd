@@ -4,6 +4,10 @@
 
 .user-list-header {
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
 }
 
 .header-top {
@@ -14,9 +18,10 @@
 }
 
 .create-button {
-  background-color: #4c77af;
+  background-color: var(--button-color);
   color: white;
   border: none;
+  width: 160px;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -35,6 +40,7 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 .users-grid {
@@ -132,7 +138,10 @@
 .loading,
 .error {
   text-align: center;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
+  font-size: 1.2em;
   color: #666;
 }
 

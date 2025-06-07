@@ -1,4 +1,4 @@
-.lists-page-container {
+l.lists-page-container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -33,6 +33,151 @@
   font-size: 14px;
 }
 
+.lists-page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lists-header {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.lists-header h2 {
+  color: #000;
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.lists-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.lists-tabs button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+.lists-tabs button:hover {
+  background: #e0e0e0;
+}
+
+.lists-tabs button.active {
+  background: var(--button-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.lists-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+  margin-right: 40px;
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+  height: 88vh;
+}
+
+.lists-container .list-content {
+  margin-top: 1rem;
+}
+
+.lists-container .list-empty {
+  text-align: center;
+  padding: 2rem 0;
+  color: #666;
+}
+
+.lists-container .list-empty h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.lists-container .list-empty button {
+  background: var(--button-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lists-container .list-empty button:hover {
+  background: #0d1a51;
+}
+
+.lists-container .list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.lists-container .list-table th,
+.lists-container .list-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.lists-container .list-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.lists-container .list-table td {
+  color: #666;
+}
+
+.lists-container .list-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lists-container .list-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lists-container .list-actions button.edit {
+  background: #2196f3;
+  color: white;
+}
+
+.lists-container .list-actions button.delete {
+  background: #f44336;
+  color: white;
+}
+
+.lists-container .list-actions button:hover {
+  opacity: 0.9;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .tabs {
   display: flex;
   gap: 10px;
@@ -57,7 +202,7 @@
 }
 
 .tab-button.active {
-  color: #2196f3;
+  color: var(--button-color);
   background-color: #e3f2fd;
 }
 

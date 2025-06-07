@@ -113,20 +113,19 @@ const AreaList = () => {
   );
 
   if (loading) return <motion.div
-    className="loadingArea"
-    initial={{ opacity: 0, y: -100 }}
+    className="no-areas"
+    initial={{ opacity: 0, y: 100 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 2, ease: "easeOut" }}
+    transition={{ duration: 1, ease: "easeOut" }}
   >
     Cargando áreas...
   </motion.div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error) return <div className="no-areas">{error}</div>;
 
   return (
     <div className="area-list-container">
       <div className="area-list-header">
         <div className="header-top">
-          <h2>Lista de Áreas</h2>
           <motion.button
             initial={{ opacity: 0, scale: .8 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -4,6 +4,8 @@
 
 .area-list-header {
   margin-bottom: 20px;
+  align-items: center;
+  display: flex;
 }
 
 .header-top {
@@ -17,6 +19,7 @@
   background-color: #4c77af;
   color: white;
   border: none;
+  text-align: center;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;

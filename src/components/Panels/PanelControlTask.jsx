@@ -185,7 +185,7 @@ const PanelControlTask = () => {
   }
 
   return (
-    <div className="wontrol">
+    <div className="control">
       <div className="panel-header">
         <h1>Panel De Tareas</h1>
         <motion.button

@@ -102,14 +102,20 @@ const UserList = () => {
     );
   });
 
-  if (loading) return <div className="loading">Cargando usuarios...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <motion.div
+    className="no-users"
+    initial={{ opacity: 0, y: 100 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, ease: "easeOut" }}
+  >
+    Cargando usuarios...
+  </motion.div>;
+  if (error) return <div className="no-users">{error}</div>;
 
   return (
     <div className="user-list-container">
       <div className="user-list-header">
         <div className="header-top">
-          <h2>Lista de Usuarios</h2>
           <motion.button
             initial={{ opacity: 0, scale: .8 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -254,3 +254,12 @@ tr {
   color: #ddd;
   border-bottom: 1px solid #0f141d;
 }
+
+.control {
+  margin-right: 50px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}

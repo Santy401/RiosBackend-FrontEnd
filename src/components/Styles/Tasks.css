@@ -1,0 +1,59 @@
+.tasks-container {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  margin-right: 39.8px;
+  margin-top: 20px;
+}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.admin-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.admin-info h1 {
+  margin: 0;
+}
+
+.admin-info .icon {
+  font-size: 15px;
+  color: #666;
+  scale: 0.8;
+}
+
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.time-info .icon {
+  font-size: 15px;
+  color: #666;
+}
+
+.tasks-header span {
+  color: #333;
+}
+
+.tasks-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}

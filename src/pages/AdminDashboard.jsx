@@ -1,4 +1,5 @@
 import "../styles/adminAside.css";
+import "../pages/styles/ListsPage.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";

@@ -123,10 +123,10 @@ const CompanyList = () => {
   };
 
   if (loading) return <motion.div
-    initial={{ opacity: 0, y: -100 }}
+    initial={{ opacity: 0, y: 100 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 2, ease: "easeOut" }}
-    className="loading">
+    transition={{ duration: 1, ease: "easeOut" }}
+    className="no-companies">
     Cargando empresas...
   </motion.div>;
   if (error) return <div className="error">{error}</div>;
@@ -135,7 +135,6 @@ const CompanyList = () => {
     <div className="company-list-container">
       <div className="company-list-header">
         <div className="header-top">
-          <h2>Lista de Empresas</h2>
           <motion.button
             initial={{ opacity: 0, scale: .8 }}
             animate={{ opacity: 1, scale: 1 }}
