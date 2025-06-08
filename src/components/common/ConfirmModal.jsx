@@ -20,7 +20,7 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
             className="confirm-button confirm"
             onClick={onConfirm}
           >
-            Eliminar
+            Si
           </motion.button>
           <motion.button
             initial={{ opacity: 0, scale: .8}}
@@ -31,7 +31,7 @@ const ConfirmModal = ({ message, onConfirm, onCancel }) => {
             className="confirm-button cancel"
             onClick={onCancel}
           >
-            Cancelar
+            No
           </motion.button>
         </div>
       </motion.div>

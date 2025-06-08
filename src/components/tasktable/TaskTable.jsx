@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import "./styles/TaskTable.css";
 import TaskDetailModal from '../TaskDetailModal.jsx';
 import { useAuth } from '../../context/authContext.jsx';
+import { Listbox } from '@headlessui/react';
 import { motion } from "framer-motion";
 import TaskActionsBar from './TaskActionsBar.jsx';
 import TaskFilterControls from './components/TaskFilterControls.jsx';
@@ -10,7 +11,7 @@ import TaskViewModeToggle from './components/TaskViewModeToggle.jsx';
 import TaskTableHeader from './components/TaskTableHeader.jsx';
 import TaskTableRow from './components/TaskTableRow.jsx';
 import TaskEmptyState from './components/TaskEmptyState.jsx';
-import { Search, User, Building2, Layout, Calendar } from 'lucide-react';
+import { Search, User, Building2, Layout, Calendar, Eye, Pencil, Trash2 } from 'lucide-react';
 
 const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const { user } = useAuth();
@@ -341,7 +342,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       }}
                     >
                       <option value="in_progress">En Progreso</option>
-                      <option value="completed">Completada</option>
+                      <option value="completed">Completad</option>
                     </select>
                   </div>
                   <div className="list-item-content">
@@ -462,17 +463,30 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                         <label>{task.title}</label>
                       </td>
                       <td>
-                        <select
-                          className={getStatusClass(task.status)}
+                        <Listbox
                           value={task.status}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            onStatusChange(task.id, e.target.value);
+                          onChange={(value) => {
+                            onStatusChange(task.id, value);
                           }}
                         >
-                          <option value="in_progress">En Progreso</option>
-                          <option value="completed">Completada</option>
-                        </select>
+                          <Listbox.Button className={getStatusClass(task.status)}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              {task.status === 'in_progress' ? 'En Progreso' : task.status === 'completed' ? 'Completada' : ''}
+                            </span>
+                          </Listbox.Button>
+                          <Listbox.Options className="listbox-options" style={{ position: 'absolute' }} unmount={false}>
+                            <Listbox.Option value="in_progress" className="listbox-option">
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                En Progreso
+                              </span>
+                            </Listbox.Option>
+                            <Listbox.Option value="completed" className="listbox-option">
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                Completada
+                              </span>
+                            </Listbox.Option>
+                          </Listbox.Options>
+                        </Listbox>
                       </td>
                       <td>
                         <div className="task-observation">
@@ -496,7 +510,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       <td>{task.Areas?.nombre_area}</td>
                       <td>{formatDate(task.createdAt)}</td>
                       <td>
-                        {task.dueDate ? formatDate(task.dueDate) : '-'}
+                        {task.due_date ? formatDate(task.due_date) : '-'}
                       </td>
                       {isAdmin && (
                         <td>
@@ -509,7 +523,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                               className="detail-button"
                               title="Ver detalles"
                             >
-                              <i className="fa-solid fa-eye"></i>
+                              <Eye className="icon" />
                             </button>
                             <button
                               onClick={(e) => {
@@ -519,14 +533,14 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                               className="edit-button"
                               title="Editar tarea"
                             >
-                              <i className="fa-solid fa-pen-to-square"></i>
+                              <Pencil className="icon" />
                             </button>
                             <button
                               onClick={(e) => handleDeleteClick(e, task)}
                               className="delete-button"
                               title="Eliminar tarea"
                             >
-                              <i className="fa-solid fa-trash"></i>
+                              <Trash2 className="icon" />
                             </button>
                           </div>
                         </td>

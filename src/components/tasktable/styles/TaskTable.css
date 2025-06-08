@@ -112,36 +112,45 @@
   .edit-button,
   .delete-button,
   .detail-button {
-    padding: 6px;
-    min-width: 32px;
-    height: 32px;
+    min-width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     border-radius: 5px;
     border: none;
     cursor: pointer;
     justify-content: center;
-    margin-left: 2px;
+    margin-left: 1px;
+    background-color: transparent;
+    transition: all 0.2s ease;
   }
   
   .edit-button {
-    background-color: #ffee00;
     color: #000;
+    transition: all 0.2s ease;
+  }
+  .edit-button:hover {
+    transform: scale(1.1);
   }
   
   .delete-button {
-    background-color: #ff4444;
-    color: white;
+    color: #000;
+    transition: all 0.2s ease;
   }
-  
-  .edit-button:hover {
-    background-color: #ffc800;
-    transform: translateY(-1px);
-  }
-  
+
   .delete-button:hover {
-    background-color: #f7eded;
-    transform: translateY(-1px);
+    transform: scale(1.1);
+    color: red;
+  }
+  
+  .detail-button {
+    color: #000;
+    transition: all 0.2s ease;
+  }
+
+  .detail-button:hover {
+    transform: scale(1.1);
+    color: blue;
   }
   
   .status-badge {
@@ -159,12 +168,12 @@
   
   .status-badge.completed {
     background-color: #00c851;
-    color: white;
+    color: #000;
   }
   
   .status-badge.in-progress {
     background-color: #33b5e5;
-    color: white;
+    color: #000;
   }
   
   .task-checkbox {
@@ -182,9 +191,11 @@
   }
   
   .completed-task {
-    text-decoration: line-through;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 1);
     color: #666;
+    font-style: italic;
+    font-weight: 500;
+    opacity: 0.8;
   }
   
   .completed-task td {
@@ -254,13 +265,12 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
-    background-color: #4caf50;
-    color: white;
+    color: #000;
+    background-color: transparent; 
   }
   
   .detail-button:hover {
-    background-color: #45a049;
-    transform: translateY(-1px);
+    transform: scale(1.1);
   }
   
   .task-table th:nth-child(1),
@@ -838,7 +848,7 @@
     flex: 1;
     min-width: 200px;
   }
-  /* Agrega esto a tu archivo TaskTable.css */
+
   .listbox-container {
     position: relative;
     z-index: 10;

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import TaskActionsBar from '../TaskActionsBar';
 
 const TaskTableRow = ({
   task,

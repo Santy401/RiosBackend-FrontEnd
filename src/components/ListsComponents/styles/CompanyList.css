@@ -93,13 +93,11 @@
 }
 
 .edit-button {
-  background-color: #ffc107;
   color: #000;
 }
 
 .delete-button {
-  background-color: #dc3545;
-  color: white;
+  color: #000;
 }
 
 .company-card-content {
