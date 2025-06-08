@@ -22,6 +22,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
   const taskFilters = [
     { value: 'all', label: 'Todas' },
     { value: 'completed', label: 'Completadas' },
+    { value: 'in_progress', label: 'En Progreso' },
   ];
 
   const userFilters = [
@@ -42,7 +43,9 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
   const filteredTaskData = taskFilter === 'all'
     ? formattedTaskData
-    : formattedTaskData.filter(item => taskFilter === 'completed' ? item.name === 'Completadas' : item.name === 'En Progreso');
+    : taskFilter === 'completed'
+      ? formattedTaskData.filter(item => item.name === 'Completadas')
+      : formattedTaskData.filter(item => item.name === 'En Progreso');
 
   const selectedUserData = userFilter === 'role'
     ? users.byRole || {}
