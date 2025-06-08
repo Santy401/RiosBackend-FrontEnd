@@ -4,7 +4,7 @@ import { useAuth } from "../context/authContext.jsx";
 import "../styles/stylesLogin.css";
 import { motion } from "framer-motion";
 import { toast } from 'react-toastify';
-
+import { ArrowRight } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -68,15 +68,14 @@ const Login = () => {
           <motion.button 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-            whileTap={{ scale: 0.7 }}
+            whileHover={{ scale: .9, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+            whileTap={{ scale: 1 }}
             transition={{ duration: 0.1, ease: "easeInOut" }}
             type="submit"
           >
-            Entrar
+            Iniciar Sesión <ArrowRight />
           </motion.button>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
       </motion.form>
     </div>
   );
