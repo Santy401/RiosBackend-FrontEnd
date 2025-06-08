@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { BarChart2, PieChart as PieIcon, LineChart as LineIcon, AlertTriangle } from 'lucide-react';
 
-const TaskAnalytics = ({ tasks = { pending: 0, in_progress: 0, completed: 0 }, users = { byRole: {}, byDepartment: {} } }) => {
+const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byRole: {}, byDepartment: {} } }) => {
   const [taskChartType, setTaskChartType] = useState('pie');
   const [userChartType, setUserChartType] = useState('bar');
   const [taskFilter, setTaskFilter] = useState('all');
@@ -22,19 +22,16 @@ const TaskAnalytics = ({ tasks = { pending: 0, in_progress: 0, completed: 0 }, u
   const taskFilters = [
     { value: 'all', label: 'Todas' },
     { value: 'completed', label: 'Completadas' },
-    { value: 'pending', label: 'Pendientes' }
   ];
 
   const taskData = {
     in_progress: tasks.in_progress || 0,
     completed: tasks.completed || 0,
-    pending: tasks.pending || 0
   };
 
   const formattedTaskData = [
     { name: 'En Progreso', value: taskData.in_progress },
     { name: 'Completadas', value: taskData.completed },
-    { name: 'Pendientes', value: taskData.pending }
   ];
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
