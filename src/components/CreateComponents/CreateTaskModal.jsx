@@ -17,6 +17,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
       dueDate: "",
       status: "in_progress",
       createdAt: new Date().toISOString(),
+      dueDate: new Date().toISOString(),
     }
   );
 
@@ -174,7 +175,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
                 <input
                   type="datetime-local"
                   name="dueDate"
-                  value={formData.dueDate}
+                  value={formData.dueate}
                   onChange={handleChange}
                   required
                 />

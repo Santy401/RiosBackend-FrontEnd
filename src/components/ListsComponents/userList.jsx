@@ -89,10 +89,6 @@ const UserList = () => {
     }
   };
 
-
-
-
-
   const filteredUsers = (Array.isArray(users) ? users : []).filter((user) => {
     const searchText = searchQuery.toLowerCase();
     return (
@@ -121,7 +117,7 @@ const UserList = () => {
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
             whileTap={{ scale: 0.8 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
             className="create-button"
             onClick={() => setShowCreateModal(true)}
           >
@@ -156,7 +152,7 @@ const UserList = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
                     whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    transition={{ duration: 0.1, ease: "easeOut" }}
                     onClick={() => handleEditUser(user)}
                     className="edit-button"
                     title="Editar usuario"
@@ -168,7 +164,7 @@ const UserList = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
                     whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    transition={{ duration: 0.1, ease: "easeOut" }}
                     onClick={() => handleDeleteClick(user)}
                     className="delete-button"
                     title="Eliminar usuario"

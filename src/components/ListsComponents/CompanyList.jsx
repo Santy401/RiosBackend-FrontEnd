@@ -140,7 +140,7 @@ const CompanyList = () => {
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
             whileTap={{ scale: 0.8 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
             className="create-button"
             onClick={() => setShowCreateModal(true)}
           >
@@ -178,7 +178,7 @@ const CompanyList = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.3, delay: index * 0.07 }} // delay progresivo
+                transition={{ duration: 0.1, delay: index * 0.07 }} // delay progresivo
                 className={`company-card ${selectedCompany?.id === company.id ? "expanded" : ""
                   }`}
                 onClick={() => handleCardClick(company)}
@@ -195,7 +195,7 @@ const CompanyList = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
                       whileTap={{ scale: 0.8 }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      transition={{ duration: 0.1, ease: "easeOut" }}
                       onClick={() => handleEditCompany(company)}
                       className="edit-button"
                       title="Editar empresa"
@@ -207,7 +207,7 @@ const CompanyList = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
                       whileTap={{ scale: 0.8 }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      transition={{ duration: 0.1, ease: "easeOut" }}
                       onClick={() => handleDeleteClick(company)}
                       className="delete-button"
                       title="Eliminar empresa"
@@ -237,7 +237,7 @@ const CompanyList = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.1 }}
                       >
                         <p className="company-phone">
                           <i className="fa-solid fa-phone"></i>

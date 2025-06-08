@@ -190,15 +190,16 @@ const PanelControlTask = () => {
         <h1>Panel De Tareas</h1>
         <motion.button
           className="create-button"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: .8 }}
+          animate={{ opacity: 1, scale: 1 }}
           whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
           whileTap={{ scale: 0.9 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
+          transition={{ duration: 0.1, ease: "easeOut" }}
           onClick={() => {
             setEditingTask(null);
             setShowCreateModal(true);
           }}
+          style={{ width: "fit-content" }}
         >
           <i className="fa-solid fa-plus"></i> Crear Tarea
         </motion.button>

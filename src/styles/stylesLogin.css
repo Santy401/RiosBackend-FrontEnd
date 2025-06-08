@@ -10,13 +10,12 @@ body {
 }
 
 .formLogin {
-    background-color: var(--panel-color);
+    scale: 1;
+    background-color: transparent;
     padding: 20px;
     display: flex;
     flex-direction: column;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
-                0 1px 3px rgba(0, 0, 0, 0.06);
     border-radius: 15px;
     width: 100%;
     max-width: 300px;
