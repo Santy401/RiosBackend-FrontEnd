@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  PieChart, Pie, Cell, 
-  LineChart, Line, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
-} from 'recharts';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import {
+  PieChart, Pie, Cell,
+  LineChart, Line, BarChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 
-const TaskAnalytics = ({ tasks = [], users = [] }) => {
-  // Estados para los filtros
-  const [taskFilter, setTaskFilter] = useState('all');
-  const [userFilter, setUserFilter] = useState('all');
-  
+const TaskAnalytics = ({ tasks = { pending: 0, in_progress: 0, completed: 0 }, users = { byRole: {}, byDepartment: {} } }) => {
   // Estados para los tipos de gráficos
   const [taskChartType, setTaskChartType] = useState('pie');
   const [userChartType, setUserChartType] = useState('line');
+
+  // Estados para los filtros (nuevos)
+  const [taskFilter, setTaskFilter] = useState('all');
+  const [userFilter, setUserFilter] = useState('byRole');
 
   // Opciones de gráficos disponibles
   const chartTypes = [
@@ -22,28 +22,24 @@ const TaskAnalytics = ({ tasks = [], users = [] }) => {
     { value: 'line', label: 'Gráfico de Línea' }
   ];
 
-  // Filtros para tareas
+  // Opciones de filtros para tareas
   const taskFilters = [
     { value: 'all', label: 'Todas las tareas' },
-    { value: 'in_progress', label: 'En Progreso' },
-    { value: 'completed', label: 'Completadas' }
+    { value: 'completed', label: 'Solo completadas' },
+    { value: 'pending', label: 'Solo pendientes' }
   ];
 
-  // Filtros para usuarios
+  // Opciones de filtros para usuarios
   const userFilters = [
-    { value: 'all', label: 'Todos los días' },
-    { value: '7d', label: 'Últimos 7 días' },
-    { value: '30d', label: 'Últimos 30 días' }
+    { value: 'byRole', label: 'Por Rol' },
+    { value: 'byDepartment', label: 'Por Departamento' }
   ];
 
   // Colores para los gráficos
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
-  // Filtrar tareas según el filtro seleccionado
-  const filteredTasks = taskFilter === 'all' ? tasks : tasks.filter(task => task.status === taskFilter);
-
   // Verificar si hay datos
-  if (!tasks || !Array.isArray(tasks) || !users || !Array.isArray(users)) {
+  if (typeof tasks !== 'object' || typeof users !== 'object') {
     return (
       <div className="analytics-card">
         <h3>No hay datos disponibles</h3>
@@ -52,128 +48,77 @@ const TaskAnalytics = ({ tasks = [], users = [] }) => {
     );
   }
 
-  // Datos para el gráfico de tareas
-  const taskStatusData = [
-    { name: 'En Progreso', value: filteredTasks.filter(task => task?.status === 'in_progress').length || 0 },
-    { name: 'Completadas', value: filteredTasks.filter(task => task?.status === 'completed').length || 0 },
-    { name: 'Total', value: filteredTasks.length }
+  // Procesar datos de tareas
+  const taskData = {
+    in_progress: tasks.in_progress || 0,
+    completed: tasks.completed || 0,
+    pending: tasks.pending || 0
+  };
+
+  // Procesar datos de usuarios
+  const userData = {
+    byRole: users.byRole || {},
+    byDepartment: users.byDepartment || {}
+  };
+
+  // Preparar datos para gráficos de tareas
+  const formattedTaskData = [
+    { name: 'En Progreso', value: taskData.in_progress },
+    { name: 'Completadas', value: taskData.completed },
+    { name: 'Pendientes', value: taskData.pending }
   ];
 
-  // Datos para el gráfico de usuarios
-  const generateUserData = () => {
-    const data = [];
-    const now = new Date();
-    const daysToShow = userFilter === 'all' ? 30 : userFilter === '7d' ? 7 : 30;
+  // Preparar datos para gráficos de usuarios según el filtro seleccionado
+  const userChartData = userFilter === 'byRole'
+    ? Object.entries(userData.byRole).map(([role, count]) => ({ name: role, value: count }))
+    : Object.entries(userData.byDepartment).map(([dept, count]) => ({ name: dept, value: count }));
 
-    for (let i = daysToShow - 1; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(now.getDate() - i);
-      const dateStr = date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
-      
-      const usersCreated = users.filter(user => {
-        try {
-          const userDate = new Date(user.createdAt);
-          return userDate.getDate() === date.getDate() &&
-                 userDate.getMonth() === date.getMonth() &&
-                 userDate.getFullYear() === date.getFullYear();
-        } catch (error) {
-          console.error('Error parsing user date:', error);
-          return false;
-        }
-      }).length;
-
-      data.push({ name: dateStr, users: usersCreated });
-    }
-
-    return data;
-  };
-
-  const userCreationData = generateUserData();
-
-  // Tooltip personalizado para tareas
-  const CustomTaskTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      const total = filteredTasks.length;
-      const percentage = (payload[0].value / total * 100).toFixed(1);
-      
-      return (
-        <div className="custom-tooltip" style={{
-          backgroundColor: '#fff',
-          padding: '10px',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>{payload[0].name}</p>
-          <p style={{ margin: '3px 0' }}><strong>Tareas:</strong> {payload[0].value}</p>
-          <p style={{ margin: '3px 0' }}><strong>Porcentaje:</strong> {percentage}%</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Tooltip personalizado para usuarios
-  const CustomUserTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip" style={{
-          backgroundColor: '#fff',
-          padding: '10px',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>{label}</p>
-          <p style={{ margin: '3px 0' }}><strong>Usuarios creados:</strong> {payload[0].value}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Renderizar gráfico de tareas según el tipo seleccionado
+  // Función para renderizar gráfico de tareas
   const renderTaskChart = () => {
-    switch(taskChartType) {
+    const dataToShow = taskFilter === 'all'
+      ? formattedTaskData
+      : formattedTaskData.filter(item => item.name.toLowerCase().includes(taskFilter));
+
+    switch (taskChartType) {
       case 'pie':
         return (
           <PieChart>
             <Pie
-              data={taskStatusData}
+              data={dataToShow}
               cx="50%"
               cy="50%"
-              labelLine={false}
-              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              innerRadius={60}
               outerRadius={80}
               fill="#8884d8"
+              paddingAngle={5}
               dataKey="value"
             >
-              {taskStatusData.map((entry, index) => (
+              {dataToShow.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip content={<CustomTaskTooltip />} />
+            <Tooltip />
             <Legend />
           </PieChart>
         );
       case 'bar':
         return (
-          <BarChart data={taskStatusData}>
+          <BarChart data={dataToShow}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={<CustomTaskTooltip />} />
+            <Tooltip />
             <Legend />
             <Bar dataKey="value" fill="#8884d8" />
           </BarChart>
         );
       case 'line':
         return (
-          <LineChart data={taskStatusData}>
+          <LineChart data={dataToShow}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={<CustomTaskTooltip />} />
+            <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="value" stroke="#8884d8" />
           </LineChart>
@@ -183,49 +128,50 @@ const TaskAnalytics = ({ tasks = [], users = [] }) => {
     }
   };
 
-  // Renderizar gráfico de usuarios según el tipo seleccionado
+  // Función para renderizar gráfico de usuarios
   const renderUserChart = () => {
-    switch(userChartType) {
+    switch (userChartType) {
       case 'pie':
         return (
           <PieChart>
             <Pie
-              data={userCreationData}
+              data={userChartData}
               cx="50%"
               cy="50%"
-              labelLine={false}
+              innerRadius={60}
               outerRadius={80}
               fill="#82ca9d"
-              dataKey="users"
+              paddingAngle={5}
+              dataKey="value"
             >
-              {userCreationData.map((entry, index) => (
+              {userChartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip content={<CustomUserTooltip />} />
+            <Tooltip />
             <Legend />
           </PieChart>
         );
       case 'bar':
         return (
-          <BarChart data={userCreationData}>
+          <BarChart data={userChartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={<CustomUserTooltip />} />
+            <Tooltip />
             <Legend />
-            <Bar dataKey="users" fill="#82ca9d" />
+            <Bar dataKey="value" fill="#82ca9d" />
           </BarChart>
         );
       case 'line':
         return (
-          <LineChart data={userCreationData}>
+          <LineChart data={userChartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip content={<CustomUserTooltip />} />
+            <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="users" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="value" stroke="#82ca9d" />
           </LineChart>
         );
       default:
@@ -352,8 +298,15 @@ const TaskAnalytics = ({ tasks = [], users = [] }) => {
 };
 
 TaskAnalytics.propTypes = {
-  tasks: PropTypes.array.isRequired,
-  users: PropTypes.array.isRequired,
+  tasks: PropTypes.shape({
+    pending: PropTypes.number,
+    in_progress: PropTypes.number,
+    completed: PropTypes.number
+  }),
+  users: PropTypes.shape({
+    byRole: PropTypes.objectOf(PropTypes.number),
+    byDepartment: PropTypes.objectOf(PropTypes.number)
+  })
 };
 
 export default TaskAnalytics;

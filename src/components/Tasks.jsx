@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, Calendar, Clock } from 'lucide-react';
 import TaskAnalytics from './tasktable/components/TaskAnalytics';
+import { taksAnalyticsService, usersAnalyticsService } from '../services/analyticsService';
 import './Tasks.css';
 import './tasktable/components/TaskAnalytics.css';
 
@@ -36,30 +37,55 @@ const Tasks = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const [tasks, setTasks] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [tasks, setTasks] = useState({
+    pending: 0,
+    in_progress: 0,
+    completed: 0
+  });
+  
+  const [users, setUsers] = useState({
+    byRole: {},
+    byDepartment: {}
+  });
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulación de datos - en producción estos vendrían de una API
-    const mockTasks = [
-      { id: 1, status: 'in_progress', title: 'Tarea 1' },
-      { id: 2, status: 'in_progress', title: 'Tarea 2' },
-      { id: 3, status: 'completed', title: 'Tarea 3' },
-      { id: 4, status: 'in_progress', title: 'Tarea 4' },
-      { id: 5, status: 'completed', title: 'Tarea 5' },
-    ];
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Obtener datos de tareas y usuarios
+        const [taskData, userData] = await Promise.all([
+          taksAnalyticsService.getAnalytics(),
+          usersAnalyticsService.getAnalytics()
+        ]);
 
-    const mockUsers = [
-      { id: 1, name: 'Usuario 1', createdAt: '2025-05-27T00:00:00' },
-      { id: 2, name: 'Usuario 2', createdAt: '2025-05-28T00:00:00' },
-      { id: 3, name: 'Usuario 3', createdAt: '2025-05-29T00:00:00' },
-      { id: 4, name: 'Usuario 4', createdAt: '2025-05-30T00:00:00' },
-      { id: 5, name: 'Usuario 5', createdAt: '2025-05-31T00:00:00' },
-    ];
+        // Asegurarse de que los datos tengan la estructura correcta
+        const formattedTasks = {
+          pending: taskData.taskStatus?.pending || 0,
+          in_progress: taskData.taskStatus?.in_progress || 0,
+          completed: taskData.taskStatus?.completed || 0
+        };
 
-    // Asegurar que los datos sean arrays
-    setTasks(Array.isArray(mockTasks) ? mockTasks : []);
-    setUsers(Array.isArray(mockUsers) ? mockUsers : []);
+        const formattedUsers = {
+          byRole: userData.userStats?.byRole || {},
+          byDepartment: userData.userStats?.byDepartment || {}
+        };
+
+        setTasks(formattedTasks);
+        setUsers(formattedUsers);
+      } catch (error) {
+        console.error('Error al cargar datos:', error);
+        setError('Error al cargar los datos. Por favor, inténtalo de nuevo.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -67,10 +93,10 @@ const Tasks = () => {
       <div className="tasks-header">
         <div className="admin-info">
           <h1>Dashboard</h1>
-           <div className="time-info">
-           <Clock className="icon" />
-           <span>{currentTime.toLocaleTimeString()}</span>
-           </div>
+          <div className="time-info">
+            <Clock className="icon" />
+            <span>{currentTime.toLocaleTimeString()}</span>
+          </div>
           <div className="date-info">
             <Calendar className="icon" />
             <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
@@ -78,10 +104,16 @@ const Tasks = () => {
         </div>
       </div>
       <div className="tasks-content">
-        <TaskAnalytics tasks={tasks} users={users} />
+        {loading ? (
+          <div>Cargando datos...</div>
+        ) : error ? (
+          <div className="error-message">{error}</div>
+        ) : (
+          <TaskAnalytics tasks={tasks} users={users} />
+        )}
       </div>
     </div>
-  )
+  );
 };
 
 export default Tasks;

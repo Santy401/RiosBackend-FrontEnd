@@ -95,3 +95,4 @@ export const areasAPI = {
   fetch: () => api.get('/areas'),
   save: (areas) => api.post('/areas', areas),
 };
+
