@@ -11,7 +11,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
   const [taskChartType, setTaskChartType] = useState('pie');
   const [userChartType, setUserChartType] = useState('bar');
   const [taskFilter, setTaskFilter] = useState('all');
-  const [userFilter, setUserFilter] = useState('all');
+  const [userFilter, setUserFilter] = useState('role');
 
   const chartTypes = [
     { value: 'pie', label: 'Torta', icon: <PieIcon size={16} /> },
@@ -22,6 +22,11 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
   const taskFilters = [
     { value: 'all', label: 'Todas' },
     { value: 'completed', label: 'Completadas' },
+  ];
+
+  const userFilters = [
+    { value: 'role', label: 'Por Rol' },
+    { value: 'department', label: 'Por Departamento' },
   ];
 
   const taskData = {
@@ -40,9 +45,11 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
     ? formattedTaskData
     : formattedTaskData.filter(item => item.name.toLowerCase().includes(taskFilter));
 
-  const allUserData = [
-    ...Object.entries(users.byRole || {}).map(([name, value]) => ({ name, value }))
-  ];
+  const selectedUserData = userFilter === 'role'
+    ? users.byRole || {}
+    : users.byDepartment || {};
+
+  const allUserData = Object.entries(selectedUserData).map(([name, value]) => ({ name, value }));
 
   const renderChartMessage = () => (
     <div style={{ textAlign: 'center', color: '#999', marginTop: '100px' }}>
@@ -161,9 +168,14 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
       <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
           <h3>Usuarios</h3>
-          <select value={userChartType} onChange={(e) => setUserChartType(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
-            {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-          </select>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <select value={userFilter} onChange={(e) => setUserFilter(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+              {userFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+            <select value={userChartType} onChange={(e) => setUserChartType(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+              {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+          </div>
         </div>
         <div style={{ height: '300px' }}>
           <ResponsiveContainer width="100%" height="100%">
