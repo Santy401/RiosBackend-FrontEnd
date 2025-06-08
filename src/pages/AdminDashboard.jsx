@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Inbox, LayoutDashboard, ListChecks, ListPlus, Bolt, ChevronDown } from "lucide-react";
 import { toast } from 'react-toastify';
 import Icon from "../assets/Logo.png";
+import Notifications from "./Nofications.jsx";
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -89,6 +90,8 @@ const AdminDashboard = () => {
             {renderListContent()}
           </div>
         );
+      case "notifications":
+        return <Notifications />;
       default:
         return null;
     }
