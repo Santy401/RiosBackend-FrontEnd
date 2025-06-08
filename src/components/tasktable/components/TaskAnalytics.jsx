@@ -26,7 +26,6 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
   const userFilters = [
     { value: 'role', label: 'Por Rol' },
-    { value: 'department', label: 'Por Departamento' },
   ];
 
   const taskData = {
