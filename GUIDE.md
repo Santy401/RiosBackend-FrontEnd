@@ -10,7 +10,7 @@
 
 ### Semana 2: Funcionalidades Principales
 - [ ] Sistema de plantillas para tareas
-- [ ] Conectar Graficas con la base de datos
+- [x] Conectar Graficas con la base de datos
 - [ ] Sistema de sub-tareas
 - [ ] Sistema de priorización básico
 - [ ] Exportación a PDF/Excel básico

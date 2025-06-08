@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 
 const TaskViewModeToggle = ({ viewMode, setViewMode }) => {
   const viewModeButtons = [
-    { mode: 'cards', icon: 'fa-th-large', title: 'Ver como tarjetas' },
-    { mode: 'list', icon: 'fa-list', title: 'Ver como lista' },
+    { mode: 'cards', icon: 'fa-list', title: 'Ver como lista' },
+    { mode: 'list', icon: 'fa-th-large', title: 'Ver como tarjetas' },
   ];
 
   return (
