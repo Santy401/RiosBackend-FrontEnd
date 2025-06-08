@@ -27,6 +27,7 @@ const Notifications = () => {
     const saved = localStorage.getItem('removedNotifications');
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
+  const [selectedFilter, setSelectedFilter] = useState('all');
 
   const notificationTypes = {
     TASK: 'tarea',
@@ -179,15 +180,45 @@ const Notifications = () => {
       <h2><Bell className="inline-icon" /> Notificaciones</h2>
       
       <div className="notifications-filters">
-        <button className="filter-button active">Todas</button>
-        <button className="filter-button"><ClipboardList size={16} /> Tareas</button>
-        <button className="filter-button"><User size={16} /> Usuarios</button>
-        <button className="filter-button"><Building size={16} /> Empresas</button>
-        <button className="filter-button"><Map size={16} /> Áreas</button>
+        <button 
+          className={`filter-button ${selectedFilter === 'all' ? 'active' : ''}`} 
+          onClick={() => setSelectedFilter('all')}
+        >
+          Todas
+        </button>
+        <button 
+          className={`filter-button ${selectedFilter === 'task' ? 'active' : ''}`} 
+          onClick={() => setSelectedFilter('task')}
+        >
+          <ClipboardList size={16} /> Tareas
+        </button>
+        <button 
+          className={`filter-button ${selectedFilter === 'user' ? 'active' : ''}`} 
+          onClick={() => setSelectedFilter('user')}
+        >
+          <User size={16} /> Usuarios
+        </button>
+        <button 
+          className={`filter-button ${selectedFilter === 'company' ? 'active' : ''}`} 
+          onClick={() => setSelectedFilter('company')}
+        >
+          <Building size={16} /> Empresas
+        </button>
+        <button 
+          className={`filter-button ${selectedFilter === 'area' ? 'active' : ''}`} 
+          onClick={() => setSelectedFilter('area')}
+        >
+          <Map size={16} /> Áreas
+        </button>
       </div>
 
       <div className="notifications-list">
-        {notifications.map((notification) => (
+        {notifications
+          .filter(notification => 
+            selectedFilter === 'all' || 
+            notification.type === notificationTypes[selectedFilter.toUpperCase()]
+          )
+          .map((notification) => (
           <div 
             key={notification.id}
             className={`notification-item ${notification.status === 'read' ? 'read' : ''}`}
@@ -207,6 +238,7 @@ const Notifications = () => {
               {notification.icon}
             </div>
             <div className="notification-content">
+                
               <div className="notification-header">
                 <span className="notification-title">{notification.title}</span>
                 <span className="notification-timestamp">
@@ -220,9 +252,15 @@ const Notifications = () => {
           </div>
         ))}
       </div>
-      {notifications.length === 0 && (
+      {notifications
+          .filter(notification => 
+            selectedFilter === 'all' || 
+            notification.type === notificationTypes[selectedFilter.toUpperCase()]
+          ).length === 0 && (
         <div className="no-notifications">
-          <Check size={20} /> No hay notificaciones recientes
+          <Check size={20} /> {selectedFilter === 'all' 
+            ? 'No hay notificaciones recientes'
+            : `No hay notificaciones de ${notificationTypes[selectedFilter.toUpperCase()].toLowerCase()}s`}
         </div>
       )}
 
