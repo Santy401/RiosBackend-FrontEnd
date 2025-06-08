@@ -108,3 +108,15 @@
   max-width: 600px;
   text-align: center;
 }
+
+.loading-notifications {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  font-size: 1.2rem;
+}
+
+.loading-notifications .animate-spin {
+  animation: spin 1s linear infinite;
+}

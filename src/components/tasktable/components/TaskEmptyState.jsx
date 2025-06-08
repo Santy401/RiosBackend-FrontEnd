@@ -35,9 +35,9 @@ const TaskEmptyState = ({ tasks, searchQuery }) => {
   return (
     <motion.div 
       className="no-data-messagee"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.2 }}
     >
       {getMessage()}
     </motion.div>
