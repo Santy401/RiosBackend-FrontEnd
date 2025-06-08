@@ -42,7 +42,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
   const filteredTaskData = taskFilter === 'all'
     ? formattedTaskData
-    : formattedTaskData.filter(item => item.name.toLowerCase().includes(taskFilter));
+    : formattedTaskData.filter(item => taskFilter === 'completed' ? item.name === 'Completadas' : item.name === 'En Progreso');
 
   const selectedUserData = userFilter === 'role'
     ? users.byRole || {}
@@ -166,7 +166,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
       <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h3>Usuarios</h3>
+          <h3>Estado de Usuarios</h3>
           <div style={{ display: 'flex', gap: '10px' }}>
             <select value={userFilter} onChange={(e) => setUserFilter(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
               {userFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
