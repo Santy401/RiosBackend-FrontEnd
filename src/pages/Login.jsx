@@ -14,9 +14,12 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsAnimating(true);
     try {
       const user = await login(formData.email, formData.password);
       console.log("Login exitoso:", user);
@@ -25,6 +28,8 @@ const Login = () => {
       console.error("Error en login:", err);
       setError(err.message || "Error al iniciar sesión");
       toast.error(err.message || "Error al iniciar sesión");
+    } finally {
+      setIsAnimating(false);
     }
   };
 
@@ -39,11 +44,30 @@ const Login = () => {
   return (
     <div className="containerLogin">
       <motion.form
-        initial={{ opacity: 0, scale: .7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: .4, ease: "easeInOut" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.1 }}
         onSubmit={handleSubmit}
         className="formLogin"
+        exit={{
+          scale: 1.2,
+          opacity: 0,
+          transition: {
+            duration: 0.1,
+            ease: "easeOut"
+          }
+        }}
+        animate={isAnimating ? {
+          scale: 1.2,
+          opacity: 0,
+          transition: {
+            duration: 0.1,
+            ease: "easeOut"
+          }
+        } : {
+          scale: 1,
+          opacity: 1
+        }}
       >
         <h2>Inicia Sesión</h2>
         <div className="inputs-login">
@@ -70,7 +94,7 @@ const Login = () => {
             animate={{ opacity: 1 }}
             whileHover={{ scale: .9, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
             whileTap={{ scale: 1 }}
-            transition={{ duration: 0.1, ease: "easeInOut" }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             type="submit"
           >
             Iniciar Sesión <ArrowRight />
