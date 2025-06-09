@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import TaskTable from "../components/tasktable/TaskTable";
 import { taskService } from "../services/taskService";
-import "./styles/Dashboard.css";
+import "./Dashboard.css";
 import { toast } from 'react-toastify';
 
 const UserDashboard = () => {
