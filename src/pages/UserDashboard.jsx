@@ -86,7 +86,7 @@ const UserDashboard = () => {
 
   return (
     <div className="user-dashboard">
-      <header className="dashboard-header">
+      <header className="dashboard-header-user">
         <div>
           <h1>¡ Hola {user.name} !</h1><span style={{ fontStyle: "italic", paddingLeft: "10px", fontSize: "13px" }}>Esta Es Tu Bandeja De Tareas</span>
         </div>
@@ -103,7 +103,7 @@ const UserDashboard = () => {
           </button>
         </div>
       </header>
-      <main className="dashboard-content">
+      <main className="dashboard-content-user">
         <TaskTable
           tasks={tasks}
           onDeleteTask={handleDeleteTask}
