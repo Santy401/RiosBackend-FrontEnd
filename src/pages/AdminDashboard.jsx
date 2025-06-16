@@ -147,7 +147,7 @@ const AdminDashboard = () => {
             <div className="itemBar2">
               <LayoutDashboard />
               <span onClick={() => handleChangeComponent("dashboard")}>
-                Dashboard
+                Panel Grafico
               </span>
             </div>
           </div>
@@ -167,7 +167,7 @@ const AdminDashboard = () => {
             <div className="itemBar2">
               <ListChecks />
               <span onClick={() => handleChangeComponent("tasks")}>
-                Tasks
+                Tareas
               </span>
             </div>
           </div>
