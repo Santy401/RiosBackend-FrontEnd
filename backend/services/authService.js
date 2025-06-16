@@ -99,13 +99,13 @@ console.log('Contraseña almacenada en BD:', user.password);
 
 
 export const initializeAdminUser = async () => {
-  await User.destroy({ where: { email: 'admin@gmail.com' } });
+  await User.destroy({ where: { email: 'erios@riosbackend.com' } });
 
   console.log('Usuario admin eliminado, creando nuevo...');
 
   await User.create({
-    name: 'ADMIN',
-    email: 'admin@gmail.com',
+    name: 'Eduardo Rios',
+    email: 'erios@riosbackend.com',
     password: 'H2025c*',
     role: 'admin',
     protected: true,

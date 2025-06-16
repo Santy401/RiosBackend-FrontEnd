@@ -81,7 +81,7 @@ const UserDashboard = () => {
   }
 
   if (error) {
-    return <div className="error">{error}</div>;
+    return <div className="error">{error} <button onClick={() => navigate("/login")}>Inicia Sesión de nuevo</button></div>;
   }
 
   return (

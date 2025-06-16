@@ -27,7 +27,7 @@ const deleteUser = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    if (user.email === 'admin@gmail.com') {
+    if (user.email === 'erios@riosbackend.com') {
       return res.status(403).json({ error: '❌ No puedes eliminar al usuario admin' });
     }
 

@@ -146,32 +146,34 @@ const UserList = () => {
             >
               <div className="user-card-header">
                 <h3>{user.name}</h3>
-                <div className="user-actions">
-                  <motion.button
-                    initial={{ opacity: 0, scale: .8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-                    whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.1, ease: "easeOut" }}
-                    onClick={() => handleEditUser(user)}
-                    className="edit-button"
-                    title="Editar usuario"
-                  >
-                    <i className="fas fa-pen"></i>
-                  </motion.button>
-                  <motion.button
-                    initial={{ opacity: 0, scale: .8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-                    whileTap={{ scale: 0.8 }}
-                    transition={{ duration: 0.1, ease: "easeOut" }}
-                    onClick={() => handleDeleteClick(user)}
-                    className="delete-button"
-                    title="Eliminar usuario"
-                  >
-                    <i className="fas fa-trash"></i>
-                  </motion.button>
-                </div>
+                {user.email !== 'erios@riosbackend.com' && (
+                  <div className="user-actions">
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.1, ease: "easeOut" }}
+                      onClick={() => handleEditUser(user)}
+                      className="edit-button"
+                      title="Editar usuario"
+                    >
+                      <i className="fas fa-pen"></i>
+                    </motion.button>
+                    <motion.button
+                      initial={{ opacity: 0, scale: .8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                      whileTap={{ scale: 0.8 }}
+                      transition={{ duration: 0.1, ease: "easeOut" }}
+                      onClick={() => handleDeleteClick(user)}
+                      className="delete-button"
+                      title="Eliminar usuario"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </motion.button>
+                  </div>
+                )}
               </div>
               <div className="user-card-content">
                 <p className="user-email">
