@@ -131,11 +131,11 @@
 }
 
 .company-type[data-type="A"] i {
-  color: #4caf50; 
+  color: #4caf50;
 }
 
 .company-type[data-type="B"] i {
-  color: #2196f3; 
+  color: #2196f3;
 }
 
 .company-type[data-type="C"] i {
@@ -187,18 +187,23 @@
 .company-phone i {
   color: #4caf50;
 }
+
 .company-dian i {
   color: #2196f3;
 }
+
 .company-signature i {
   color: #9c27b0;
 }
+
 .company-software i {
   color: #ff9800;
 }
+
 .company-user i {
   color: #795548;
 }
+
 .company-server i {
   color: #607d8b;
 }
@@ -212,6 +217,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -279,6 +285,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }

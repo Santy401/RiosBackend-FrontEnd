@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import { companyService } from "../../services/companyService";
 import CreateCompanyModal from "../CreateComponents/CreateCompanyModal";
-import "./styles/CompanyList.css";
+import "./styles/CompanyTable.css";
 import ConfirmModal from "../common/ConfirmModal";
 import { showToast } from "../common/ToastNotification";
 import { motion, AnimatePresence } from "framer-motion";
@@ -115,9 +115,9 @@ const CompanyList = () => {
 
   const getCompanyTypeText = (type) => {
     const types = {
-      A: "Tipo A",
-      B: "Tipo B",
-      C: "Tipo C",
+      A: "A",
+      B: "B",
+      C: "C",
     };
     return types[type] || "No especificado";
   };
@@ -132,146 +132,95 @@ const CompanyList = () => {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div className="company-list-container">
-      <div className="company-list-header">
-        <div className="header-top">
-          <motion.button
-            initial={{ opacity: 0, scale: .8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-            whileTap={{ scale: 0.8 }}
-            transition={{ duration: 0.1, ease: "easeOut" }}
-            className="create-button"
-            onClick={() => setShowCreateModal(true)}
+    <>
+      <div className="company-list-container">
+        <div className="company-list-header">
+          <div className="header-top">
+            <motion.button
+              initial={{ opacity: 0, scale: .8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+              whileTap={{ scale: 0.8 }}
+              transition={{ duration: 0.1, ease: "easeOut" }}
+              className="create-button"
+              onClick={() => setShowCreateModal(true)}
+            >
+              <i className="fa-solid fa-plus"></i> Crear Empresa
+            </motion.button>
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar empresa..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <select
+            className="company-type-filter"
+            value={companyTypeFilter}
+            onChange={(e) => setCompanyTypeFilter(e.target.value)}
           >
-            <i className="fa-solid fa-plus"></i> Crear Empresa
-          </motion.button>
+            <option value="">Filtrar por tipo </option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
         </div>
-        <input
-          type="text"
-          placeholder="Buscar empresa..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
-        <select
-          className="company-type-filter"
-          value={companyTypeFilter}
-          onChange={(e) => setCompanyTypeFilter(e.target.value)}
-        >
-          <option value="">Filtrar por tipo </option>
-          <option value="A">Tipo A</option>
-          <option value="B">Tipo B</option>
-          <option value="C">Tipo C</option>
-        </select>
-      </div>
 
-      {filteredCompanies.length === 0 ? (
-        <div className="no-companies">No se encontraron empresas</div>
-      ) : (
-        <div className="companies-grid">
-          <AnimatePresence>
-            {filteredCompanies.map((company, index) => (
-              <motion.div
-                layout
-                key={user.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.1, delay: index * 0.07 }} // delay progresivo
-                className={`company-card ${selectedCompany?.id === company.id ? "expanded" : ""
-                  }`}
-                onClick={() => handleCardClick(company)}
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="company-card-header">
-                  <h3>{company.name}</h3>
-                  <div
-                    className="company-actions"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <motion.button
-                      initial={{ opacity: 0, scale: .8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-                      whileTap={{ scale: 0.8 }}
-                      transition={{ duration: 0.1, ease: "easeOut" }}
+        {filteredCompanies.length === 0 ? (
+          <div className="no-companies">No se encontraron empresas</div>
+        ) : (
+          <table className="companies-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>NIT</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Teléfono</th>
+                <th>Usuario</th>
+                <th>Servidor</th>
+                <th>Firma</th>
+                <th>DIAN</th>
+                <th>Software</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCompanies.map((company) => (
+                <tr key={company.id}>
+                  <td className="company-name">{company.name}</td>
+                  <td>{company.nit}</td>
+                  <td>{company.email || "Sin correo"}</td>
+                  <td className="company-type">{getCompanyTypeText(company.companyType)}</td>
+                  <td>{company.cellphone || "No especificado"}</td>
+                  <td>{company.user || "No especificado"}</td>
+                  <td>{company.mailServer || "No especificado"}</td>
+                  <td>{company.legalSignature || "No especificado"}</td>
+                  <td>{company.dian || "No especificado"}</td>
+                  <td>{company.accountingSoftware || "No especificado"}</td>
+                  <td className="action-buttons">
+                    <button
+                      className="action-button edit-button"
                       onClick={() => handleEditCompany(company)}
-                      className="edit-button"
                       title="Editar empresa"
                     >
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </motion.button>
-                    <motion.button
-                      initial={{ opacity: 0, scale: .8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-                      whileTap={{ scale: 0.8 }}
-                      transition={{ duration: 0.1, ease: "easeOut" }}
+                      <i className="fa-solid fa-pen"></i>
+                    </button>
+                    <button
+                      className="action-button delete-button"
                       onClick={() => handleDeleteClick(company)}
-                      className="delete-button"
                       title="Eliminar empresa"
                     >
                       <i className="fa-solid fa-trash"></i>
-                    </motion.button>
-                  </div>
-                </div>
-                <div className="company-card-content">
-                  <p className="company-nit">
-                    <i className="fa-solid fa-id-card"></i>
-                    {company.nit}
-                  </p>
-                  <p className="company-email">
-                    <i className="fa-solid fa-envelope"></i>
-                    {company.email || "Sin correo"}
-                  </p>
-                  <p className="company-type" data-type={company.companyType}>
-                    <i className="fa-solid fa-building"></i>
-                    {getCompanyTypeText(company.companyType)}
-                  </p>
-
-                  <AnimatePresence>
-                    {selectedCompany?.id === company.id && (
-                      <motion.div
-                        className="company-expanded-details"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        <p className="company-phone">
-                          <i className="fa-solid fa-phone"></i>
-                          {company.cellphone || "No especificado"}
-                        </p>
-                        <p className="company-dian">
-                          <i className="fa-solid fa-file-invoice"></i>
-                          {company.dian || "No especificado"}
-                        </p>
-                        <p className="company-signature">
-                          <i className="fa-solid fa-signature"></i>
-                          {company.legalSignature || "No especificado"}
-                        </p>
-                        <p className="company-software">
-                          <i className="fa-solid fa-calculator"></i>
-                          {company.accountingSoftware || "No especificado"}
-                        </p>
-                        <p className="company-user">
-                          <i className="fa-solid fa-user"></i>
-                          {company.user || "No especificado"}
-                        </p>
-                        <p className="company-server">
-                          <i className="fa-solid fa-server"></i>
-                          {company.mailServer || "No especificado"}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      )}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
 
       {showCreateModal && (
         <CreateCompanyModal
@@ -292,10 +241,8 @@ const CompanyList = () => {
           onCancel={() => setShowConfirmModal(false)}
         />
       )}
-
-
-    </div>
-  );
+    </>
+  );;
 };
 
 export default CompanyList;

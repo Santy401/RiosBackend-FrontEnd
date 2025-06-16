@@ -16,8 +16,8 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!formData.nombre_area || !formData.departamento) {
-        throw new Error("Nombre del área y departamento son requeridos");
+      if (!formData.nombre_area) {
+        throw new Error("El nombre del área es requerido");
       }
 
       const areaData = {
@@ -49,7 +49,8 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="modal-create-task">
+          className="modal-create-task"
+          style={{ width: "fit-content", height: "fit-content" }}>
           <h2>{editArea ? "Editar Área" : "Crear Nueva Área"}</h2>
 
           <form onSubmit={handleSubmit}>
@@ -64,25 +65,7 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
               />
             </div>
 
-            <div className="form-group">
-              <label>Departamento:</label>
-              <input
-                type="text"
-                name="departamento"
-                value={formData.departamento}
-                onChange={handleChange}
-                required
-              />
-            </div>
 
-            <div className="form-group">
-              <label>Descripción:</label>
-              <textarea
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-              />
-            </div>
 
             <div className="button-group">
               <motion.button

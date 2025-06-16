@@ -204,16 +204,6 @@ const AreaList = () => {
                     </motion.button>
                   </div>
                 </div>
-                <div className="area-card-content">
-                  <p className="area-department">
-                    <i className="fa-solid fa-building"></i>
-                    {area.departamento}
-                  </p>
-                  <p className="area-description">
-                    <i className="fa-solid fa-align-left"></i>
-                    {area.descripcion || "Sin descripción"}
-                  </p>
-                </div>
               </motion.div>
             ))}
           </AnimatePresence>
