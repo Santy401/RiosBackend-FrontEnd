@@ -101,6 +101,13 @@ const AdminDashboard = () => {
     <div className="bigC">
       <aside className={`asideNv ${isSidebarVisible ? "" : "hidden"}`}>
         <div className="topItems">
+          <button
+            className="toggle-sidebar-btn"
+            onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+            title="Ocultar/Mostrar panel"
+          >
+            <i className={`fa-solid ${isSidebarVisible ? 'fa-arrow-left' : 'fa-arrow-right'}`} />
+          </button>
           <div
             className="header-container"
             onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -191,26 +198,47 @@ const AdminDashboard = () => {
       </aside>
 
       <main
+        className="overScroll"
         style={{
           overflowY: "scroll",
           height: "105vh",
           position: "relative",
           left: isSidebarVisible ? "20px" : "20px",
           width: isSidebarVisible ? "calc(100% - 0px)" : "100%",
-          transition: "all 0.3s ease",
+          transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
         }}
-        className="overScroll"
       >
-        <button
-          className="toggle-menu"
-          onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-        >
-          <i
-            className={`fa-solid ${isSidebarVisible ? "fa-arrow-left" : "fa-arrow-right"
-              }`}
-          ></i>
-        </button>
-
+        {isSidebarVisible ? null : (
+          <div
+            style={{
+              opacity: 1,
+              transition: "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
+            }}
+          >
+            <button
+              className="show-sidebar-btn"
+              onClick={() => setIsSidebarVisible(true)}
+              style={{
+                position: 'absolute',
+                left: '7px',
+                top: '20px',
+                zIndex: 1000,
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '100px',
+                padding: '11px 12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                scale: '.8'
+              }}
+            >
+              <i className={`fa-solid ${isSidebarVisible ? 'fa-arrow-left' : 'fa-arrow-right'}`} style={{ fontSize: '20px', color: 'white' }}/>
+            </button>
+          </div>
+        )}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeComponent}
