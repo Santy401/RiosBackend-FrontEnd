@@ -15,9 +15,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
     console.log("Usuario no tiene permisos, redirigiendo"); 
     return user.role === "admin" ? (
-      <Navigate to="/dashboard-admin" />
+      <Navigate to="/login" />
     ) : (
-      <Navigate to="/dashboard-user" />
+      <Navigate to="/login" />
     );
   }
 

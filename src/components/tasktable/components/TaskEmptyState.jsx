@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import "../styles/TaskActionsBar.css";
 import { motion } from 'framer-motion';
-import { ClipboardList } from 'lucide-react';
+import DontTasks from '../../../assets/svg/DontTasks.svg';
 
 const TaskEmptyState = ({ tasks, searchQuery }) => {
   const hasTasks = tasks.length > 0;
@@ -11,22 +11,21 @@ const TaskEmptyState = ({ tasks, searchQuery }) => {
     if (!hasTasks) {
       return (
         <>
-          <ClipboardList size={34} color="#888" />
-          <span>No hay tareas disponibles</span>
+          <img src={DontTasks} alt="No Tasks" className='DontTasks'/>
         </>
       );
     }
     if (hasSearch) {
       return (
         <>
-          <ClipboardList size={34} color="#888" />
+          <img src={DontTasks} alt="No Tasks" className='DontTasks'/>
           <span>Tarea No Encontrada</span>
         </>
       );
     }
     return (
       <>
-        <ClipboardList size={34} color="#888" />
+        <img src={DontTasks} alt="No Tasks" className='DontTasks'/>
         <span>No hay tareas que coincidan con los criterios de búsqueda</span>
       </>
     );

@@ -4,7 +4,6 @@ import AdminDashboard from "../pages/AdminDashboard.jsx";
 import UserDashboard from "../pages/UserDashboard.jsx";
 import PrivateRoute from "./privateRoute.jsx";
 
-// eslint-disable-next-line react/prop-types
 const AppRoutes = ({ user, loading, onLogin, onLogout }) => {
   if (loading) {
     return <div>Cargando...</div>; 
@@ -16,7 +15,6 @@ const AppRoutes = ({ user, loading, onLogin, onLogout }) => {
         path="/"
         element={
           user ? (
-            // eslint-disable-next-line react/prop-types
             <Navigate to={`/${user.role}`} />
           ) : (
             <Login onLogin={onLogin} />
@@ -26,7 +24,6 @@ const AppRoutes = ({ user, loading, onLogin, onLogout }) => {
       <Route
         path="/admin"
         element={
-          // eslint-disable-next-line react/prop-types
           <PrivateRoute role={user?.role === "admin"}>
             <AdminDashboard onLogout={onLogout} />
           </PrivateRoute>
@@ -35,7 +32,6 @@ const AppRoutes = ({ user, loading, onLogin, onLogout }) => {
       <Route
         path="/user"
         element={
-          // eslint-disable-next-line react/prop-types
           <PrivateRoute role={user?.role === "user"}>
             <UserDashboard onLogout={onLogout} />
           </PrivateRoute>

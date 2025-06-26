@@ -248,9 +248,9 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
         {isAdmin && (
           <div className="task-counters" style={{ marginBottom: '10px', paddingRight: '10px' }}>
             <span className="counter in-progress-counter" style={{ paddingRight: '10px' }}>
-              <span className='name-title'>Tareas</span>
+              <span className='name-title'>Total</span>
               <div className='counter-count'>
-                <span>{filteredTasks.length}</span>
+                <span className='counter-number'>{filteredTasks.length}</span>
               </div>
             </span>
           </div>

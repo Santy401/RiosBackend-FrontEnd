@@ -5,7 +5,8 @@ import CreateCompanyModal from "../CreateComponents/CreateCompanyModal";
 import "./styles/CompanyTable.css";
 import ConfirmModal from "../common/ConfirmModal";
 import { showToast } from "../common/ToastNotification";
-import { motion, AnimatePresence } from "framer-motion";
+import DontCompany from "../../assets/svg/DontCompany.svg";
+import { motion } from "framer-motion";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -168,8 +169,11 @@ const CompanyList = () => {
         </div>
 
         {filteredCompanies.length === 0 ? (
-          <div className="no-companies">No se encontraron empresas</div>
+          <div className="no-companies">
+            <img src={DontCompany} alt="No se encontraron empresas" />
+          </div>
         ) : (
+          <div style={{ overflowX: "auto" }}>
           <table className="companies-table">
             <thead>
               <tr>
@@ -219,7 +223,8 @@ const CompanyList = () => {
               ))}
             </tbody>
           </table>
-        )}
+          </div>
+          )}
       </div>
 
       {showCreateModal && (

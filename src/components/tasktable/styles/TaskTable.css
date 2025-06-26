@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 .task-tables-container {
     display: flex;
     background-color: #fff;
@@ -5,7 +7,7 @@
     gap: 20px;
     border-radius: 10px;
     position: relative;
-    top: 20px;
+    top: 4px;
     left: 5px;
     margin: -4px 0px 30px 0px;
   }
@@ -497,6 +499,7 @@
     display: flex;
     flex-direction: row;
     width: fit-content;
+    scale: .9;
     padding: 10px;
   }
   .task-counters span {
@@ -519,11 +522,14 @@
     align-items: center;
     margin-left: 10px;
     font-size: .7rem;
-    background-color: #f8f9fa;
     padding: 4px 8px;
-    border: 1px solid #ddd;
     cursor: default;
   
+  }
+  .counter-number {
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: 'Bebas Neue', cursive;
   }
   
   /*----- TASK LIST MODE-----*/

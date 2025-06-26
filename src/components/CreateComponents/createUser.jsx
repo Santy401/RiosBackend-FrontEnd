@@ -15,7 +15,6 @@ const CreateUser = ({ onClose, onSave, editUser = null }) => {
     }
   );
   const [errors, setErrors] = useState({});
-  // eslint-disable-next-line no-unused-vars
   const { user } = useAuth();
 
   const validateForm = () => {

@@ -179,3 +179,10 @@
   padding: 2rem;
   color: #555;
 }
+
+.no-areas img {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  bottom: 40px;
+}

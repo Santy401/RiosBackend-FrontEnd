@@ -46,7 +46,6 @@ const PanelControlTask = () => {
     if (user?.id) {
       loadTasks();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleCreateTask = async (taskData) => {

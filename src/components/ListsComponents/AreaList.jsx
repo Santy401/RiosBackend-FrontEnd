@@ -6,6 +6,7 @@ import { useAuth } from "../../context/authContext";
 import ConfirmModal from "../common/ConfirmModal.jsx";
 import { showToast } from "../common/ToastNotification.jsx";
 import { motion, AnimatePresence } from "framer-motion";
+import DontArea from "../../assets/svg/DontArea.svg";
 
 const AreaList = () => {
   const [areas, setAreas] = useState([]);
@@ -149,7 +150,9 @@ const AreaList = () => {
       </div>
 
       {filteredAreas.length === 0 ? (
-        <div className="no-areas">No se encontraron áreas</div>
+        <div className="no-areas">
+          <img src={DontArea} alt="No se encontraron áreas" />
+        </div>
       ) : (
         <motion.div
           className="areas-grid"

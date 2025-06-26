@@ -80,7 +80,7 @@ console.log('Contraseña almacenada en BD:', user.password);
       email: user.email,
       role: user.role,
     },
-    // eslint-disable-next-line no-undef
+    
     process.env.JWT_SECRET,
     { expiresIn: '24h' }
   );

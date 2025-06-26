@@ -85,11 +85,24 @@
 
 .no-data-messagee {
   display: flex;
+  flex-direction: column;
   font-size: 1.2rem;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   text-align: center;
   border-radius: 8px;
-  margin: 2rem 0;
+}
+
+.no-data-messagee span {
+  position: relative;
+  bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.DontTasks {
+  width: 400px;
+  height: 400px;
 }

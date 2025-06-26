@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { userService } from "../services/userService.js";
 
-// eslint-disable-next-line react/prop-types
 const TaskForm = ({ onSubmit }) => {
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({

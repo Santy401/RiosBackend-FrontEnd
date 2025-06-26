@@ -31,7 +31,7 @@
   - Agregar PropTypes a componentes principales
   - Validar tipos de props
   - Documentar propiedades requeridas
-- [ ] Eliminar los eslint-disable-next-line innecesarios
+- [x] Eliminar los eslint-disable-next-line innecesarios
   - Revisar y corregir warnings de ESLint
   - Implementar soluciones para los problemas
   - Mantener solo las deshabilitaciones necesarias

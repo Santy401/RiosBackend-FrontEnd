@@ -98,7 +98,7 @@ const TaskFilterControls = ({
         ) : (
           <input
             type="text"
-            placeholder="Buscar..."
+            placeholder="Busca Tareas"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-inputt"

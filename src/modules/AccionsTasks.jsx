@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 const DropdownMenu = ({ taskId, onEdit, onDelete, onShowDetails, onComplete }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
