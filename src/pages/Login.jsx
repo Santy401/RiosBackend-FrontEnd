@@ -45,18 +45,6 @@ const Login = () => {
     <div className="containerLogin">
       <motion.form
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.1 }}
-        onSubmit={handleSubmit}
-        className="formLogin"
-        exit={{
-          scale: 1.2,
-          opacity: 0,
-          transition: {
-            duration: 0.1,
-            ease: "easeOut"
-          }
-        }}
         animate={isAnimating ? {
           scale: 1.2,
           opacity: 0,
@@ -65,9 +53,20 @@ const Login = () => {
             ease: "easeOut"
           }
         } : {
+          opacity: 1,
           scale: 1,
-          opacity: 1
+          transition: { duration: 0.1 }
         }}
+        exit={{
+          scale: 1.2,
+          opacity: 0,
+          transition: {
+            duration: 0.1,
+            ease: "easeOut"
+          }
+        }}
+        onSubmit={handleSubmit}
+        className="formLogin"
       >
         <h2>Inicia Sesión</h2>
         <div className="inputs-login">
