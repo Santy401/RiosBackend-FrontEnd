@@ -112,7 +112,7 @@ const Notifications = () => {
           type: notificationTypes.USER,
           title: `Nuevo usuario: ${user.name}`,
           description: `Rol: ${user.role}`,
-          timestamp: user.createdAt,
+          timestamp: new Date().toISOString(),
           status: 'active',
           icon: getNotificationIcon(notificationTypes.USER),
           color: getNotificationColor(notificationTypes.USER)
@@ -136,7 +136,7 @@ const Notifications = () => {
           type: notificationTypes.AREA,
           title: `Nueva área: ${area.nombre_area}`,
           description: `Departamento: ${area.departamento}`,
-          timestamp: area.createdAt,
+          timestamp: new Date().toISOString(),
           status: 'active',
           icon: getNotificationIcon(notificationTypes.AREA),
           color: getNotificationColor(notificationTypes.AREA)
@@ -169,7 +169,16 @@ const Notifications = () => {
     const newSet = new Set([...removedNotifications, notificationId]);
     setRemovedNotifications(newSet);
     localStorage.setItem('removedNotifications', JSON.stringify(Array.from(newSet)));
-    toast.success('Notificación eliminada');
+    toast('Notificación eliminada', {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   if (loading) return <div className="loading-notifications"><Clock className="animate-spin" /> Cargando notificaciones...</div>;
@@ -177,7 +186,7 @@ const Notifications = () => {
 
   return (
     <div className="notifications-container">
-      <h2><Bell className="inline-icon" /> Notificaciones</h2>
+      <h2>Notificaciones</h2>
       
       <div className="notifications-filters">
         <button 
