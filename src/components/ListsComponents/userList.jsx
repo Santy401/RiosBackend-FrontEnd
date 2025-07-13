@@ -99,12 +99,11 @@ const UserList = () => {
   });
 
   if (loading) return <motion.div
-    className="no-users"
-    initial={{ opacity: 0, y: 100 }}
-    animate={{ opacity: 1, y: 0 }}
+    className="loadingArea"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
     transition={{ duration: 1, ease: "easeOut" }}
   >
-    Cargando usuarios...
   </motion.div>;
   if (error) return <div className="no-users">{error}</div>;
 

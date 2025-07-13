@@ -5,6 +5,82 @@
     --text-primary-color: #1c1c1c;
     --panel-color: #fefeff;
     --button-color: #007bff;
+    --border-color: #ddd;
+
+    --border-color-table: #ddd;
+
+    --filter-att: invert(100%);
+
+    --Active-color-bar: #f1f1f1;
+
+    --Modal-bg-color: #f1f1f1;
+}
+
+
+/* Estilos para el modo oscuro */
+.dark-theme {
+  --slide-bar-color: #161616;
+  --background-color-dark: #1B1B1D;
+  --text-primary-color-dark: #fefeff;
+  --panel-color: #202022;
+  --button-color-dark: #007bff;
+  --border-color: #202020;
+
+  --bg-th-table: #29292B;
+  --border-color-table: #353436;
+  --bg-tr-table: #202022;
+  --color-text-table: #999999f5;
+
+  --filter-att: invert(0%);
+
+  --Active-color-bar: #26262A;
+
+  --Modal-bg-color: #1B1B1D;
+  --Input-bg-color: #5b5b5be5;
+  --Planceholder-color: #e6e6e6;
+
+  --Card-bg-color: #28282b;
+
+  --edit-button-color: #ffa500b5;
+  --delete-button-color: #ff000082;
+
+  --text-color-gray: #c1c1c1;
+  --text-color-withe-dark: #fefeff;
+
+  --panel-color-hover: #26262A;
+}
+
+/* Aplicar estilos de modo oscuro a la aplicación */
+.dark-theme body {
+  background-color: var(--background-color-dark);
+  color: var(--text-primary-color-dark);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-theme .preferences-container {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.dark-theme .switch-Mode {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.dark-theme .switch-label {
+  color: var(--text-color);
+}
+
+.dark-theme .slider {
+  background-color: #555;
+}
+
+.dark-theme input:checked + .slider {
+  background-color: #4CAF50;
 }
 
 html {

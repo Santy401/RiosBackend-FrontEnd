@@ -72,7 +72,7 @@ const TaskActionsBar = ({
               {statusToChange === 'in_progress' ? 'En Progreso' : statusToChange === 'completed' ? 'Completada' : 'Cambiar Estado...'}
             </span>
           </Listbox.Button>
-          <Listbox.Options className="listbox-options" style={{ position: 'absolute' }} unmount={false}>
+          <Listbox.Options className="listbox-options" style={{ position: 'fixed' }} unmount={false}>
             <Listbox.Option value="" className="listbox-option">
               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 Cambiar Estado...

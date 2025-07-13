@@ -17,8 +17,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
 
-
-
   const searchOptions = [
     { value: 'all', icon: <Search size={16} color="#888" />, label: 'Buscar en todo' },
     { value: 'user', icon: <User size={16} color="#3b82f6" />, label: 'Usuario' },

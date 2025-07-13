@@ -180,9 +180,9 @@ const PanelControlTask = () => {
   }
 
   if (loading) {
-    return <div className="loading">Cargando tareas...</div>;
+    return <div class="loader"></div>;
   }
-
+  
   return (
     <div className="control">
       <div className="panel-header">

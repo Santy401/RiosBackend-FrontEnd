@@ -9,21 +9,33 @@ import AreaList from "../components/ListsComponents/AreaList.jsx";
 import DashboardAdmin from "./DashboardAdmin.jsx";
 import Tasks from "../components/Tasks.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { Inbox, LayoutDashboard, ListChecks, ListPlus, Bolt, ChevronDown } from "lucide-react";
+import { Inbox, LayoutDashboard, ListChecks, ListPlus, Settings, LogOut, ChevronDown, PanelRightClose } from "lucide-react";
 import { toast } from 'react-toastify';
 import Icon from "../assets/Logo.png";
 import Notifications from "./Nofications.jsx";
+import Preferences from "./Preferences.jsx";
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [activeList, setActiveList] = useState("users");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    toast.success('¡Bienvenido! Interactuas como Administrador');
+    toast.success('¡Bienvenido! Administrador', {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light',
+    });
   }, []);
 
   const handleChangeComponent = (Component) => {
@@ -92,6 +104,8 @@ const AdminDashboard = () => {
         );
       case "notifications":
         return <Notifications />;
+      case "preferences":
+        return <Preferences />;
       default:
         return null;
     }
@@ -106,18 +120,14 @@ const AdminDashboard = () => {
             onClick={() => setIsSidebarVisible(!isSidebarVisible)}
             title="Ocultar/Mostrar panel"
           >
-            <i className={`fa-solid ${isSidebarVisible ? 'fa-arrow-left' : 'fa-arrow-right'}`} />
+            <PanelRightClose />
           </button>
           <div
             className="header-container"
-            onClick={() => setIsDropdownOpen((prev) => !prev)}
           >
-            <h5>
-              <img src={Icon} alt="Logo" style={{ width: "26px", filter: "invert(100%)" }} /> RiosTask
+            <h5 className="text-logo">
+              <img src={Icon} alt="Logo" className="logo" /> RiosTask
             </h5>
-            <ChevronDown
-              className={`dropdown-icon ${isDropdownOpen ? "rotate" : ""}`}
-            />
           </div>
 
           <AnimatePresence>
@@ -151,16 +161,16 @@ const AdminDashboard = () => {
 
         <div className="itemsMedie">
           <div className={activeComponent === "dashboard" ? "active" : ""}>
-            <div className="itemBar2">
+            <div className={activeComponent === "dashboard" ? "" : "itemBar2"}>
               <LayoutDashboard />
               <span onClick={() => handleChangeComponent("dashboard")}>
-                Panel Grafico
+                Inicio
               </span>
             </div>
           </div>
 
           <div className={activeComponent === "notifications" ? "active" : ""}>
-            <div className="itemBar2">
+            <div className={activeComponent === "notifications" ? "" : "itemBar2"}>
               <Inbox />
               <span onClick={() => handleChangeComponent("notifications")}>
                 Notificaciones
@@ -171,7 +181,7 @@ const AdminDashboard = () => {
           <div className="divider"></div>
 
           <div className={activeComponent === "tasks" ? "active" : ""}>
-            <div className="itemBar2">
+            <div className={activeComponent === "tasks" ? "" : "itemBar2"}>
               <ListChecks />
               <span onClick={() => handleChangeComponent("tasks")}>
                 Tareas
@@ -180,7 +190,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className={activeComponent === "lists" ? "active" : ""}>
-            <div className="itemBar2">
+            <div className={activeComponent === "lists" ? "" : "itemBar2"}>
               <ListPlus />
               <span onClick={() => handleChangeComponent("lists")}>
                 Listas
@@ -190,11 +200,36 @@ const AdminDashboard = () => {
         </div>
 
         <div className="bottomItems">
-          <label className="labelBottom">Configuración</label>
-          <button>
-            <Bolt className="bolt" /> Preferencias
-          </button>
+        <div className="content-user-info" onClick={() => setIsOpen(!isOpen)}>
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                className="user-dropdown"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+              >
+                <p onClick={() => handleChangeComponent("preferences")}><Settings className="icon-user" />Preferencias</p>
+                <p onClick={logout}><LogOut className="icon-user" />Cerrar sesión</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="Content-user-info-rw"><img src="https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740" alt="UserProfile" className="user-image" />
+            <div className="content-details-user">
+              <span className="Name-user">{user?.name || 'Usuario'}</span>
+              <span className="Email-user">{user?.email || 'usuario@ejemplo.com'}</span>
+            </div>
+            <div className="arrows">
+              <ChevronDown className="arrow-icon" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s ease' }} />
+            </div>
+          </div>
         </div>
+        </div>
+
       </aside>
 
       <main
@@ -235,7 +270,7 @@ const AdminDashboard = () => {
                 scale: '.8'
               }}
             >
-              <i className={`fa-solid ${isSidebarVisible ? 'fa-arrow-left' : 'fa-arrow-right'}`} style={{ fontSize: '20px', color: 'white' }}/>
+              <i className={`fa-solid ${isSidebarVisible ? 'fa-arrow-left' : 'fa-arrow-right'}`} style={{ fontSize: '20px', color: 'white' }} />
             </button>
           </div>
         )}

@@ -1,6 +1,6 @@
 .company-list-container {
   padding: 20px;
-  background: white;
+  background: transparent;
   border-radius: 10px;
   margin-top: 20px;
   height: 65.2vh;
@@ -9,7 +9,6 @@
 .company-list-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -40,14 +39,16 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 20px;
   margin-right: 20px;
 }
 
 .company-type-filter {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  background-color: var(--background-color-dark);
+  border: 2px solid var(--border-color-table);
   border-radius: 4px;
+  color: var(--text-primary-color-dark);
+  cursor: pointer;
   font-size: 14px;
   width: 150px;
 }
@@ -56,6 +57,10 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+}
+
+.companies-table thead {
+  background-color: var(--panel-color);
 }
 
 .companies-table thead th {
@@ -71,10 +76,6 @@
   padding: 12px;
   border-bottom: 1px solid #dee2e6;
   vertical-align: middle;
-}
-
-.companies-table tbody tr:hover {
-  background-color: #f8f9fa;
 }
 
 .companies-table tbody tr:last-child td {
@@ -94,6 +95,32 @@
 .action-buttons {
   display: flex;
   gap: 8px;
+  position: relative;
+}
+
+.listbox-options-company {
+  position: absolute;
+  z-index: 10;
+  background: var(--panel-color);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid var(--border-color-table);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-top: 4px;
+}
+
+.listbox-option-company {
+  width: 114px;
+  justify-content: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.listbox-option-company:hover {
+  background-color: var(--bg-th-table);
 }
 
 .action-button {
@@ -110,7 +137,7 @@
 }
 
 .edit-button {
-  color: #4c77af;
+  color: var(--edit-button-color);
 }
 
 .edit-button:hover {
@@ -135,7 +162,6 @@
   color: #666;
   border-radius: 8px;
   position: relative;
-  bottom: 50px;
   margin: 20px 0;
 }
 
@@ -149,6 +175,15 @@
   position: relative;
   bottom: 20px;
   color: #333;
+}
+
+.loaderCompanies {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: -20%;
+  align-items: center;
+  height: 70vh;
 }
 
 .loading {

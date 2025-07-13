@@ -13,16 +13,30 @@ body {
 
 .asideNv {
   position: relative;
-  background-color: #fff;
+  background-color: var(--slide-bar-color);
   width: 210px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   height: 100vh;
-  padding: 15px;
-  border-right: 1px solid #ffffff;
+  border-right: 2px solid var(--border-color);
   transition: width 0.3s ease, opacity 0.3s ease;
-  border-right: 1px solid #ddd;
+}
+
+.logo {
+  filter: var(--filter-att);
+  width: 26px;
+}
+
+.text-logo {
+  color: var(--text-primary-color-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .asideNv.hidden {
@@ -88,16 +102,10 @@ main.collapsed {
 }
 
 .itemBar1 {
-  border-bottom: 1px solid #ecedee;
+  border-bottom: 2px solid var(--border-color);
   position: relative;
-  left: -15px;
-  width: 272px;
-  margin-top: 5px;
-}
-
-.itemBar2 {
-  display: flex;
-  align-items: center;
+  width: 100%;
+  margin-top: 5px;  
 }
 
 .searchAlignIcon {
@@ -134,10 +142,43 @@ main.collapsed {
   left: -2px;
 }
 
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+
 .itemsMedie div.active {
-  color: #007bff !important;
-  font-weight: 500;
-  transform: translateX(3%);
+  color: var(--text-primary-color-dark) !important;
+  background-color: var(--Active-color-bar);
+  padding: 10px 16px;
+  border-radius: 12px 0 12px 0;
+  animation: bubbleFloat 3s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+  transition: all 0.3s ease, border 0s;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 5px 15px rgba(18, 18, 22, 0.2);
+  border: 1px solid var(--border-color);
+}
+
+
+
+.active div {
+  display: flex;
+  align-items: center;
+}
+
+.active {
+  margin: 10px 0 20px 0;
 }
 
 .itemsMedie {
@@ -145,7 +186,15 @@ main.collapsed {
   color: #98a2b3;
 }
 
-.itemsMedie div {
+.itemBar2 {
+  margin-left: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.itemsMedie {
   margin-top: 20px;
   font-size: 16px;
   transition: 200ms;
@@ -174,13 +223,11 @@ main.collapsed {
 }
 
 .bottomItems {
-  border-top: 2px solid #ecedee;
   display: flex;
   flex-direction: column;
-  margin-bottom: 35px;
   position: absolute;
   bottom: 1%;
-  width: 90%;
+  width: 100%;
 }
 
 .bottomItems button {
@@ -190,7 +237,7 @@ main.collapsed {
   border: none;
   width: 60%;
   cursor: pointer;
-  color: #000;
+  color: var(--text-primary-color-dark);
   margin-top: 10px;
   font-size: 14px;
   transition: 500ms;
@@ -207,7 +254,6 @@ main.collapsed {
 
 .asideNv {
   transition: width 0.3s ease, opacity 0.3s ease;
-  background-color: #ffffff;
   overflow: hidden;
 }
 
@@ -227,8 +273,8 @@ main.collapsed {
 
 .topItems {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  flex-direction: row-reverse;
 }
 
 .itemBar0 {
@@ -242,17 +288,6 @@ main.collapsed {
 
 .itemBar0:hover {
   background-color: rgba(255, 255, 255, 0.1);
-}
-
-.header-container h5 {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-right: 10px;
-  color: #000;
-  font-size: 1.2rem;
-  font-weight: 600;
 }
 
 .itemBar0 {
@@ -300,7 +335,7 @@ main.collapsed {
 .header-container {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: default;
   width: 100%;
   padding: 10px;
 }
@@ -330,17 +365,15 @@ main.collapsed {
 .divider {
   display: flex;
   width: 100%;
-  height: 1px;
-  background-color: #ecedee;
+  height: 2px;
+  background-color: var(--border-color);
 }
 
 .toggle-sidebar-btn {
-  position: absolute;
-  top: 18px;
-  right: 10px;
+  position: relative;
   z-index: 10;
-  background-color: #007bff;
-  color: white;
+  background-color: transparent;
+  color: var(--text-primary-color-dark);
   border: none;
   scale: .8;
   padding: 10px;
@@ -350,14 +383,108 @@ main.collapsed {
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: rotate(180deg);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .toggle-sidebar-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.2);
+  color: var(--text-primary-color-dark);
+  transform: scale(1.1), rotate(180deg);
 }
 
 .toggle-sidebar-btn i {
   font-size: 20px;
+}
+
+.content-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  border: 2px solid var(--border-color);
+  padding: 10px;
+  margin-right: 6px;
+  margin-left: 6px;
+  scale: 1;
+  border-radius: 10px;
+}
+.Content-user-info-rw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.content-details-user {
+  display: flex;
+  flex-direction: column;
+  max-width: 150px;
+  overflow: hidden;
+}
+
+.content-details-user span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.content-details-user span:nth-child(1) {
+  font-weight: bold;
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+}
+
+.content-details-user span:nth-child(2) {
+  color: var(--text-color-gray);
+  font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+}
+.content-details-user span:nth-child(1) {
+  font-weight: bold;
+  font-size: .9rem;
+}
+.content-details-user span:nth-child(2) {
+  color: var(--text-color-gray);
+  font-size: 12px;
+}
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-dropdown {
+  position: relative;
+  scale: 1;
+  background-color: transparent;
+  color: var(--text-primary-color-dark);
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 1000;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: -6px;
+  margin-top: 4px;
+  cursor: pointer;
+  color: var(--text-primary-color-dark);
+}
+
+.user-dropdown p {
+  display: flex;
+  align-items: center;
+  color: var(--text-color-withe-dark);
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.user-dropdown p:hover {
+  color: var(--text-color-gray);
+}
+
+.icon-user {
+  scale: .8;
+  color: var(--text-color-gray);
+  margin-right: 5px;
 }

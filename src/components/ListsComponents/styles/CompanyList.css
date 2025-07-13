@@ -5,6 +5,7 @@
 .company-list-header {
   display: flex;
   margin-bottom: 20px;
+  align-items: baseline;
 }
 
 .header-top {
@@ -34,7 +35,6 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 20px;
   margin-right: 20px;
 }
 
@@ -93,11 +93,11 @@
 }
 
 .edit-button {
-  color: #000;
+  color: var(--edit-button-color);
 }
 
 .delete-button {
-  color: #000;
+  color: var(--delete-button-color);
 }
 
 .company-card-content {

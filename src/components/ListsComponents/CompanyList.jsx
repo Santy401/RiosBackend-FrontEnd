@@ -7,6 +7,7 @@ import ConfirmModal from "../common/ConfirmModal";
 import { showToast } from "../common/ToastNotification";
 import DontCompany from "../../assets/svg/DontCompany.svg";
 import { motion } from "framer-motion";
+import { Listbox } from '@headlessui/react';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -116,20 +117,16 @@ const CompanyList = () => {
 
   const getCompanyTypeText = (type) => {
     const types = {
-      A: "A",
-      B: "B",
-      C: "C",
+      A: "Tipo A",
+      B: "Tipo B",
+      C: "Tipo C",
     };
     return types[type] || "No especificado";
   };
 
-  if (loading) return <motion.div
-    initial={{ opacity: 0, y: 100 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, ease: "easeOut" }}
-    className="no-companies">
-    Cargando empresas...
-  </motion.div>;
+  if (loading) return <div
+   className="loader loaderCompanies">
+  </div>;
   if (error) return <div className="error">{error}</div>;
 
   return (
@@ -156,25 +153,36 @@ const CompanyList = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <select
-            className="company-type-filter"
-            value={companyTypeFilter}
-            onChange={(e) => setCompanyTypeFilter(e.target.value)}
-          >
-            <option value="">Filtrar por tipo </option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </select>
-        </div>
+          <div className="header-Listbox">
+          <Listbox value={companyTypeFilter} onChange={setCompanyTypeFilter}>
+            <Listbox.Button className="company-type-filter">
+              {companyTypeFilter || 'Filtrar por tipo'}
+            </Listbox.Button>
+            <Listbox.Options className="listbox-options-company">
+              <Listbox.Option value="" className="listbox-option-company">
+                Filtrar por tipo
+              </Listbox.Option>
+              <Listbox.Option value="A" className="listbox-option-company">
+                Tipo A
+              </Listbox.Option>
+              <Listbox.Option value="B" className="listbox-option-company">
+                Tipo B
+              </Listbox.Option>
+              <Listbox.Option value="C" className="listbox-option-company">
+                Tipo C
+              </Listbox.Option>
+            </Listbox.Options>
+          </Listbox>
+          </div>
+            </div>
 
         {filteredCompanies.length === 0 ? (
           <div className="no-companies">
             <img src={DontCompany} alt="No se encontraron empresas" />
           </div>
         ) : (
-          <div style={{ overflowX: "auto" }}>
-          <table className="companies-table">
+          <div style={{ overflowX: "auto", width: "100%" }} className="task-list-container">
+          <table className="task-table">
             <thead>
               <tr>
                 <th>Nombre</th>

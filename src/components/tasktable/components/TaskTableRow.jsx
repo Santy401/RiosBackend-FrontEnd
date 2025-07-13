@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { Checkbox } from '@headlessui/react';
 
 const TaskTableRow = ({
   task,
@@ -33,12 +34,15 @@ const TaskTableRow = ({
     >
       {viewMode === 'cards' && (
         <td>
-          <input
-            type="checkbox"
+          <Checkbox
             checked={selectedTasks.has(task.id)}
             onChange={() => handleSelectTask(task.id)}
             className="task-checkbox"
-          />
+          >
+            <svg viewBox="0 0 14 14" fill="none">
+              <path d="M3 8L6 11L11 3.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Checkbox>
         </td>
       )}
       <td>{task.title}</td>
@@ -54,7 +58,7 @@ const TaskTableRow = ({
           {task.observation || '-'}
         </div>
         {expandedTask === task.id && task.observation && (
-          <div className="observation-expanded">{task.observation}</div>
+          <div className="observation-expanded"></div>
         )}
       </td>
       <td>{task.assignedUser?.name}</td>

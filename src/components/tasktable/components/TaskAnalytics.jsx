@@ -147,39 +147,39 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '20px' }}>
-      <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+    <div className="task-analytics-container">
+      <div className="analytics-card">
+        <div className="analytics-header">
           <h3>Estado de Tareas</h3>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <select value={taskFilter} onChange={(e) => setTaskFilter(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+          <div className="filters-container">
+            <select className="filter-select" value={taskFilter} onChange={(e) => setTaskFilter(e.target.value)}>
               {taskFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
-            <select value={taskChartType} onChange={(e) => setTaskChartType(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+            <select className="filter-select" value={taskChartType} onChange={(e) => setTaskChartType(e.target.value)}>
               {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
           </div>
         </div>
-        <div style={{ height: '300px' }}>
+        <div className="recharts-responsive-container">
           <ResponsiveContainer width="100%" height="100%">
             {renderTaskChart()}
           </ResponsiveContainer>
         </div>
       </div>
 
-      <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+      <div className="analytics-card">
+        <div className="analytics-header">
           <h3>Estado de Usuarios</h3>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <select value={userFilter} onChange={(e) => setUserFilter(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+          <div className="filters-container">
+            <select className="filter-select" value={userFilter} onChange={(e) => setUserFilter(e.target.value)}>
               {userFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
-            <select value={userChartType} onChange={(e) => setUserChartType(e.target.value)} style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}>
+            <select className="filter-select" value={userChartType} onChange={(e) => setUserChartType(e.target.value)}>
               {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
           </div>
         </div>
-        <div style={{ height: '300px' }}>
+        <div className="recharts-responsive-container">
           <ResponsiveContainer width="100%" height="100%">
             {renderUserChart()}
           </ResponsiveContainer>

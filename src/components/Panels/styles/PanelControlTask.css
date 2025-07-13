@@ -4,10 +4,17 @@
   border-radius: 10px;
 }
 
+.loading-task-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .user-profile-image {
-  width: 30px; 
-  height: 30px; 
-  border-radius: 50%; 
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .topBox {
@@ -31,6 +38,7 @@
   cursor: pointer;
   transition: 200ms ease;
 }
+
 .topBox button:hover {
   transform: translateY(-2px);
   background-color: #537eda;
@@ -40,16 +48,19 @@
   display: flex;
   flex-direction: column;
 }
+
 .alignItemsL h4 {
   margin: 0 0 0 10px;
   font-size: 16px;
 }
+
 .activity span {
   margin-left: 10px;
   font-size: 13px;
   color: #98a2b3;
   cursor: default;
 }
+
 .MediunBox {
   padding: 15px 20px;
   justify-content: space-between;
@@ -57,6 +68,7 @@
   display: flex;
   border-bottom: 1px solid #c1c2c469;
 }
+
 .MediunBox span:nth-child(1) {
   background-color: rgba(185, 71, 71, 0.562);
   padding: 6px;
@@ -65,12 +77,14 @@
   border-radius: 5px;
   margin-right: 10px;
 }
+
 .MediunBox span:nth-child(2) {
   background-color: #e9e9e9;
   padding: 5px 10px;
   border-radius: 6px;
   border: 1px solid #b9b9b9;
 }
+
 .fa-spinner {
   color: #f7f7f7;
 }
@@ -117,6 +131,8 @@
 .task-table {
   width: 100%;
   border-collapse: collapse;
+  z-index: 8;
+  overflow: auto;
 }
 
 .task-table th,
@@ -133,7 +149,7 @@
 }
 
 .task-table thead {
-  background-color: #fcfcfd;
+  background-color: var(--panel-color);
 }
 
 .table-container {
@@ -141,13 +157,14 @@
 }
 
 .task-table th {
-  background-color: #f2f2f2;
+  background-color: var(--panel-color);
   text-align: center;
 }
 
 tr {
   color: #667085;
   font-size: 14px;
+  background-color: #333;
 }
 
 .priority {
@@ -204,7 +221,6 @@ tr {
 
 .task-table {
   width: 100%;
-
   border-collapse: collapse;
 }
 
@@ -224,11 +240,13 @@ tr {
 .dropdown {
   position: relative;
 }
+
 .dropbtn {
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
+
 .dropdown-content {
   position: absolute;
   left: -280%;
@@ -240,6 +258,7 @@ tr {
   flex-direction: column;
   z-index: 2;
 }
+
 .dropdown-content button {
   margin-top: 5px;
   font-size: 11px;
@@ -249,6 +268,7 @@ tr {
   cursor: pointer;
   transition: 300ms;
 }
+
 .dropdown-content button:hover {
   transform: translateY(-1px);
   color: #ddd;
@@ -257,8 +277,8 @@ tr {
 
 .control {
   margin-right: 50px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: var(--panel-color);
+  border: 1px solid var(--border-color);
   padding: 20px;
   margin-top: 20px;
   border-radius: 10px;

@@ -17,7 +17,16 @@ const UserDashboard = () => {
   useEffect(() => {
     if (user) {
       loadTasks();
-      toast.success('¡Bienvenido! Interactuas como Usuario');
+      toast.success('¡Bienvenido! Usuario', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light',
+      });
     } else {
       navigate("/login");
     }

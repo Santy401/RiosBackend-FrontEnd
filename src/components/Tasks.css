@@ -1,10 +1,10 @@
 .tasks-container {
   padding: 20px;
-  background: white;
+  background: var(--panel-color);
   border-radius: 8px;
   margin-right: 39.8px;
   margin-top: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color-table);
   height: 90vh;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .tasks-content {
-  background: white;
+  background: var(--panel-color);
   border-radius: 8px;
   padding: 20px;
 }

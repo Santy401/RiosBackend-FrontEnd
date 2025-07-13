@@ -113,14 +113,10 @@ const AreaList = () => {
       area.descripcion?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (loading) return <motion.div
-    className="no-areas"
-    initial={{ opacity: 0, y: 100 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, ease: "easeOut" }}
+  if (loading) return <div
+    className="loader loadingArea"
   >
-    Cargando áreas...
-  </motion.div>;
+  </div>;
   if (error) return <div className="no-areas">{error}</div>;
 
   return (

@@ -2,7 +2,7 @@
 
 .task-tables-container {
     display: flex;
-    background-color: #fff;
+    background-color: var(--panel-color);
     flex-direction: column;
     gap: 20px;
     border-radius: 10px;
@@ -23,6 +23,7 @@
   .view-toggle-btn {
     display: flex;
     align-items: center;
+    display: none;
     justify-content: center;
     width: 40px;
     height: 40px;
@@ -43,8 +44,7 @@
   }
   
   .task-section {
-    background: white;
-    border-radius: 8px;
+    background: var(--panel-color);
     overflow: hidden;
   }
   
@@ -96,13 +96,13 @@
   }
   
   .task-table th {
-    background-color: #fff;
+    background-color: var(--panel-color);
     font-weight: 600;
     color: #444;
   }
   
   .task-table tr:hover {
-    background-color: #f8f9fa;
+    background-color: var(--panel-color);
   }
   
   .task-actions {
@@ -128,7 +128,7 @@
   }
   
   .edit-button {
-    color: #000;
+    color: var(--edit-button-color);
     transition: all 0.2s ease;
   }
   .edit-button:hover {
@@ -136,7 +136,7 @@
   }
   
   .delete-button {
-    color: #000;
+    color: var(--delete-button-color);
     transition: all 0.2s ease;
   }
 
@@ -179,12 +179,33 @@
   }
   
   .task-checkbox {
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    border: 2px solid #ddd;
+    background-color: transparent;
+    cursor: pointer;
     transition: all 0.2s ease;
+  }
+  
+  .task-checkbox[data-checked] {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  .task-checkbox svg {
+    width: 12px;
+    height: 12px;
+    stroke: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .task-checkbox[data-checked] svg {
+    opacity: 1;
   }
   
   .task-checkbox:checked {
@@ -195,9 +216,8 @@
   .completed-task {
     background-color: rgba(0, 0, 0, 1);
     color: #666;
-    font-style: italic;
     font-weight: 500;
-    opacity: 0.8;
+    opacity: 0.4;
   }
   
   .completed-task td {
@@ -209,19 +229,19 @@
   }
   
   .status-in-progress {
-    background-color: #cce5ff;
-    color: #004085;
-    border: none;
+    background-color: #007dff1a;
+    border: 1px solid blue;
+    color: #007bff;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 10px;
   }
   
   .status-completed {
-    background-color: #d4edda;
-    color: #155724;
-    border: none;
+    background-color: #00ca301f;
+    border: 1px solid green;
+    color: #00ff3a;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 10px;
   }
   
   .completed-section {
@@ -318,21 +338,6 @@
     cursor: pointer;
   }
   
-  .observation-expanded {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    white-space: normal;
-    min-width: 200px;
-    max-width: 300px;
-  }
-  
   tr.expanded {
     background-color: #f8f9fa;
   }
@@ -344,8 +349,8 @@
   .task-table th {
     text-align: left;
     padding: 12px;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
+    background-color: var(--panel-color);
+    border-bottom: 2px solid var(--border-color);
   }
   
   .task-table td {
@@ -381,6 +386,11 @@
     display: flex;
     flex-direction: column;
     background: var(--panel-color);
+    border: 3px solid var(--border-color-table);
+    border-radius: 10px;
+    position: relative;
+    max-width: fit-content;
+  overflow: auto;
   }
   
   .task-list-item {
@@ -456,15 +466,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #495057;
-    font-size: 0.9rem;
-  }
-  
-  .observation-expanded {
-    margin-top: 8px;
-    padding: 10px;
-    background: #f8fafb;
-    border-radius: 6px;
     color: #495057;
     font-size: 0.9rem;
   }
@@ -559,14 +560,9 @@
   
   .task-table tr {
     transition: all 0.2s ease;
-  }
-  
-  .task-table tr:hover {
-    background: #f8fafb;
-  }
-  
-  .task-table tr.expanded {
-    background: #f8fafb;
+    color: var(--color-text-table);
+    background-color: var(--bg-tr-table);
+    border-bottom: 1px solid var(--border-color);
   }
   
   .task-table td {
@@ -652,15 +648,6 @@
     color: #495057;
     font-size: 0.9rem;
     cursor: pointer;
-  }
-  
-  .task-table td.task-observation .observation-expanded {
-    margin-top: 8px;
-    padding: 10px;
-    background: #f8fafb;
-    border-radius: 6px;
-    color: #495057;
-    font-size: 0.9rem;
   }
   
   .task-list-header {
@@ -848,11 +835,20 @@
   
   .search-inputt {
     padding: 8px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+    border: 2px solid var(--border-color-table);
+    border-radius: 5px;
     font-size: 14px;
     flex: 1;
     min-width: 200px;
+    background-color: var(--panel-color);
+    color: var(--text-primary-color-dark);
+  }
+  .search-inputt:focus {
+    outline: none;
+    border-color: var(--button-color);
+  }
+  .search-inputt::placeholder {
+    color: var(--text-primary-color-dark);
   }
 
   .listbox-container {
@@ -865,9 +861,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 2px solid var(--border-color-table);
     border-radius: 4px;
-    background: white;
+    background: var(--panel-color);
     cursor: pointer;
     transition: border-color 0.2s;
   }
@@ -878,15 +874,15 @@
   
   .listbox-button:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--button-color);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   }
   
   .listbox-options {
     position: fixed;
     margin-top: 4px;
-    background: white;
-    border: 1px solid #ddd;
+    background: var(--panel-color);
+    border: 2px solid var(--border-color-table);
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     width: auto;
@@ -905,28 +901,29 @@
   }
   
   .listbox-option:hover {
-    background-color: #f5f5f5;
+    background-color: var(--bg-th-table);
   }
   
   .listbox-option[aria-selected="true"] {
-    background-color: #ebf4ff;
-    color: #3b82f6;
+    background-color: var(--bg-th-table);
+    color: var(--button-color);
   }
   
   .task-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--panel-color);
   }
   
   .task-table th {
-    background-color: #f8f9fa;
+    background-color: var(--bg-th-table);
     padding: 12px;
     text-align: left;
     font-weight: 600;
     border-left: none;
     border-right: none;
     border-top: none;
+   color: var(--color-text-table);
   }
   
   .task-table td {
@@ -937,39 +934,15 @@
   }
   
   .task-table tr:hover {
-    background-color: #f8f9fa;
+    background-color: var(--panel-color);
   }
   
   .task-table tr.completed-task {
-    background-color: #f8f9fa;
-  }
-  
-  .task-table tr.expanded {
-    background-color: #f0f2f5;
-  }
-  
-  .task-table .task-observation {
-    position: relative;
-  }
-  
-  .task-table .observation-expanded {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    padding: 8px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 10;
+    background-color: var(--panel-color);
   }
   
   .task-table .select-all-checkbox,
   .task-table .task-checkbox {
     margin: 0;
     cursor: pointer;
-  }
-  
-  .task-table .task-checkbox {
-    margin-left: 8px;
   }

@@ -43,7 +43,7 @@ l.lists-page-container {
 }
 
 .lists-header h2 {
-  color: #000;
+  color: var(--text-primary-color-dark);
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 600;
@@ -57,37 +57,40 @@ l.lists-page-container {
 }
 
 .lists-tabs button {
-  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
-  background: #f5f5f5;
-  color: #666;
+  background: var(--panel-color);
+  color: var(--text-primary-color-dark);
   cursor: pointer;
+  border: 2px solid var(--border-color-table);
   transition: all 0.3s ease;
   font-weight: 500;
   min-width: 120px;
+  margin: 0;
   text-align: center;
 }
 
 .lists-tabs button:hover {
-  background: #e0e0e0;
+  background: var(--panel-color-hover);
 }
 
 .lists-tabs button.active {
   background: var(--button-color);
   color: white;
+  border: none;
+  height: 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .lists-container {
-  background: white;
+  background: var(--panel-color);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   min-height: 400px;
   margin-right: 40px;
   margin-top: 20px;
-  border: 1px solid #e0e0e0;
+  border: 2px solid var(--border-color);
   height: 88vh;
 }
 
@@ -110,7 +113,7 @@ l.lists-page-container {
   background: var(--button-color);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;

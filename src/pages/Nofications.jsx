@@ -170,14 +170,14 @@ const Notifications = () => {
     setRemovedNotifications(newSet);
     localStorage.setItem('removedNotifications', JSON.stringify(Array.from(newSet)));
     toast('Notificación eliminada', {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light',
     });
   };
 
