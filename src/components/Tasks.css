@@ -55,6 +55,8 @@
 }
 
 .tasks-content {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   background: var(--panel-color);
   border-radius: 8px;
   padding: 20px;

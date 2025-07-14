@@ -14,8 +14,19 @@ const deleteUser = async (id) => {
   return await User.destroy({ where: { id } });
 };
 
+const updateUser = async (id, userData) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  return await user.update(userData);
+};
+
+
 export default {
   getAllUsers,
   createUser,
   deleteUser,
+  updateUser,
 };

@@ -14,6 +14,13 @@
     --Active-color-bar: #f1f1f1;
 
     --Modal-bg-color: #f1f1f1;
+
+      --panel-color-calendar: #4860D6;
+      --accent-color-calendar: #6366f1; /* Por ejemplo, un morado bonito */
+      --accent-soft-calendar: #e0e7ff;
+      --text-color-calendar: #111827;
+      --text-muted-calendar: #6b7280;
+      --bt-color-calendar: #111;
 }
 
 

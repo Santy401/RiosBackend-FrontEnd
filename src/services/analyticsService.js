@@ -17,7 +17,8 @@ export const taksAnalyticsService = {
           in_progress: tasks.filter(task => task.status === 'in_progress').length,
           completed: tasks.filter(task => task.status === 'completed').length,
           pending: tasks.filter(task => task.status === 'pending').length
-        }
+        },
+        tasks: tasks,
       };
 
       return stats;

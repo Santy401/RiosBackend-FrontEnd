@@ -3,9 +3,12 @@ import { User, Calendar, Clock } from 'lucide-react';
 import TaskAnalytics from './tasktable/components/TaskAnalytics';
 import { taksAnalyticsService, usersAnalyticsService } from '../services/analyticsService';
 import './Tasks.css';
+import { useAuth } from '../context/authContext';
 import './tasktable/components/TaskAnalytics.css';
+import CalendarComponent from '../components/Calendar/Calendar';
 
 const Tasks = () => {
+  const { user } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [dayOfWeek, setDayOfWeek] = useState('');
   const [dayOfMonth, setDayOfMonth] = useState('');
@@ -63,12 +66,15 @@ const Tasks = () => {
           usersAnalyticsService.getAnalytics()
         ]);
 
-        // Asegurarse de que los datos tengan la estructura correcta
+        // Estructuracion De Datos Para La Grafica
         const formattedTasks = {
           pending: taskData.taskStatus?.pending || 0,
           in_progress: taskData.taskStatus?.in_progress || 0,
-          completed: taskData.taskStatus?.completed || 0
+          completed: taskData.taskStatus?.completed || 0,
+          list: taskData.tasks || []
         };
+
+        console.log("Lista recibida:", formattedTasks.list);        
 
         const formattedUsers = {
           byRole: userData.userStats?.byRole || {},
@@ -89,29 +95,32 @@ const Tasks = () => {
   }, []);
 
   return (
-    <div className="tasks-container">
-      <div className="tasks-header">
-        <div className="admin-info">
-          <h1>Dashboard</h1>
-          <div className="time-info">
+    <div>
+      <div className='header-items-tasks'>
+        <div className='header-items-tasks-text'>
+          <label>Hola, {user.name}</label>
+          <span>¿Listo Para Desempeñar tus tareas?</span>
+        </div>
+        <div className="time-info">
             <Clock className="icon" />
             <span>{currentTime.toLocaleTimeString()}</span>
           </div>
-          <div className="date-info">
-            <Calendar className="icon" />
-            <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
-          </div>
+        <div className='header-items-tasks-date'>
+        <Calendar className="icon" />
+        <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
         </div>
       </div>
+    <div className="tasks-container">
       <div className="tasks-content">
         {loading ? (
           <div>Cargando datos...</div>
         ) : error ? (
           <div className="error-message">{error}</div>
         ) : (
-          <TaskAnalytics tasks={tasks} users={users} />
+            <TaskAnalytics tasks={tasks} users={users} />
         )}
       </div>
+    </div>
     </div>
   );
 };

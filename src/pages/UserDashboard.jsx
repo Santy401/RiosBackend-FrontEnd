@@ -97,9 +97,9 @@ const UserDashboard = () => {
     <div className="user-dashboard">
       <header className="dashboard-header-user">
         <div>
-          <h1>¡ Hola {user.name} !</h1><span style={{ fontStyle: "italic", paddingLeft: "10px", fontSize: "13px" }}>Esta Es Tu Bandeja De Tareas</span>
+          <h1>¡ Hola {user.name} !</h1>
         </div>
-        <div className="user-info" style={{ display: "flex", alignItems: "center" }}>
+        <div className="user-info">
           <span style={{ marginRight: "20px" }}>{user.email}</span>
           <button
             onClick={() => {

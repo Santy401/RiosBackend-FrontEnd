@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { format, subDays } from 'date-fns';
 import {
   PieChart, Pie, Cell,
   LineChart, Line, BarChart, Bar,
@@ -15,19 +16,38 @@ import './TaskAnalytics.css';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
-const historicalData = [
-  { name: 'Lun', completadas: 2, en_progreso: 4 },
-  { name: 'Mar', completadas: 3, en_progreso: 3 },
-  { name: 'Mié', completadas: 5, en_progreso: 2 },
-  { name: 'Jue', completadas: 4, en_progreso: 3 },
-  { name: 'Vie', completadas: 6, en_progreso: 1 },
-  { name: 'Sáb', completadas: 2, en_progreso: 2 },
-  { name: 'Dom', completadas: 0, en_progreso: 1 },
-];
+const getChartDataFromTasks = (taskList) => {
+  const days = 7;
+  const data = [];
 
-const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 } }) => {
+  for (let i = days - 1; i >= 0; i--) {
+    const date = subDays(new Date(), i);
+    const dayName = format(date, 'EEE');
+    const dayStr = format(date, 'yyyy-MM-dd');
+
+    const completadas = taskList.filter(t =>
+      t.status === 'completed' && format(new Date(t.createdAt), 'yyyy-MM-dd') === dayStr
+    ).length;
+    
+    const en_progreso = taskList.filter(t =>
+      t.status === 'in_progress' && format(new Date(t.createdAt), 'yyyy-MM-dd') === dayStr
+    ).length;
+    
+    data.push({
+      name: dayName,
+      completadas,
+      en_progreso
+    });
+  }
+
+  return data;
+};
+
+const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0, list: [] } }) => {
   const [taskChartType, setTaskChartType] = useState('line');
   const [taskFilter, setTaskFilter] = useState('all');
+
+  const historicalData = getChartDataFromTasks(tasks.list || []);
 
   const chartTypes = [
     { value: 'pie', label: 'Torta', icon: <PieIcon size={16} /> },
@@ -64,7 +84,8 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 } }) => {
 
   const renderTaskChart = () => {
     if (
-      (taskChartType !== 'line' && (filteredTaskData.length === 0 || filteredTaskData.every(d => d.value === 0)))
+      taskChartType !== 'line' &&
+      (filteredTaskData.length === 0 || filteredTaskData.every(d => d.value === 0))
     ) {
       return renderChartMessage();
     }
@@ -169,7 +190,13 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 } }) => {
 TaskAnalytics.propTypes = {
   tasks: PropTypes.shape({
     in_progress: PropTypes.number,
-    completed: PropTypes.number
+    completed: PropTypes.number,
+    list: PropTypes.arrayOf(
+      PropTypes.shape({
+        status: PropTypes.string,
+        created_at: PropTypes.string
+      })
+    )
   })
 };
 
