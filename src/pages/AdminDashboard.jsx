@@ -1,6 +1,7 @@
 import "../styles/adminAside.css";
 import "../pages/styles/ListsPage.css";
-import { useState, useEffect } from "react";
+import "./styles/NotificationBell.css";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
 import UserList from "../components/ListsComponents/userList.jsx";
@@ -10,12 +11,16 @@ import DashboardAdmin from "./DashboardAdmin.jsx";
 import Tasks from "../components/Tasks.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { Inbox, LayoutDashboard, ListChecks, ListPlus, Settings, LogOut, ChevronDown, PanelRightClose } from "lucide-react";
+import { Bell } from "lucide-react";
 import { toast } from 'react-toastify';
 import Icon from "../assets/Logo.png";
 import Notifications from "./Nofications.jsx";
 import Preferences from "./Preferences.jsx";
 
 const AdminDashboard = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const notificationsRef = useRef(null);
   const [activeComponent, setActiveComponent] = useState("dashboard");
   const [activeList, setActiveList] = useState("users");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -49,10 +54,27 @@ const AdminDashboard = () => {
     setActiveList(listType);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (showNotifications && notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [showNotifications]);
 
   const renderListContent = () => {
     switch (activeList) {
@@ -127,6 +149,35 @@ const AdminDashboard = () => {
           >
             <h5 className="text-logo">
               <img src={Icon} alt="Logo" className="logo" /> RiosTask
+              <div className="notification-container" ref={notificationsRef}>
+                <button 
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="notification-bell"
+                >
+                  <Bell />
+                  {unreadCount > 0 && (
+                    <span className="notification-badge">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </button>
+                {showNotifications && (
+                  <div className="floating-notifications">
+                    <div className="notification-header">
+                      <strong>Notificaciones</strong>
+                      <button 
+                        onClick={() => setShowNotifications(false)}
+                        className="close-button"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="notification-content">
+                      <Notifications onUpdateUnreadCount={setUnreadCount} />
+                    </div>
+                  </div>
+                )}
+              </div>
             </h5>
           </div>
 
@@ -165,15 +216,6 @@ const AdminDashboard = () => {
               <LayoutDashboard />
               <span onClick={() => handleChangeComponent("dashboard")}>
                 Inicio
-              </span>
-            </div>
-          </div>
-
-          <div className={activeComponent === "notifications" ? "active" : ""}>
-            <div className={activeComponent === "notifications" ? "" : "itemBar2"}>
-              <Inbox />
-              <span onClick={() => handleChangeComponent("notifications")}>
-                Notificaciones
               </span>
             </div>
           </div>

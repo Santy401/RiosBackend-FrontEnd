@@ -1,278 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/authContext';
-import areaService from '../services/areaService';
-import companyService from '../services/companyService';
-import taskService from '../services/taskService';
-import userService from '../services/userService';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { 
-  Bell, 
-  ClipboardList, 
-  User, 
-  Building, 
-  Map, 
-  X,
-  Check,
-  AlertCircle,
-  Clock
+import {
+  Bell, ClipboardList, User, Building, Map, X, Check,
 } from 'lucide-react';
 import './styles/Notifications.css';
 
-const Notifications = () => {
+const Notifications = ({ onUpdateUnreadCount }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [removedNotifications, setRemovedNotifications] = useState(() => {
-    const saved = localStorage.getItem('removedNotifications');
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  });
   const [selectedFilter, setSelectedFilter] = useState('all');
 
-  const notificationTypes = {
-    TASK: 'tarea',
-    USER: 'usuario',
-    COMPANY: 'empresa',
-    AREA: 'área'
-  };
+  // Filtros disponibles
+  const filters = [
+    { id: 'all', label: 'Todas', icon: <Bell size={16} /> },
+    { id: 'task', label: 'Tareas', icon: <ClipboardList size={16} /> },
+    { id: 'user', label: 'Usuarios', icon: <User size={16} /> },
+    { id: 'company', label: 'Empresas', icon: <Building size={16} /> },
+    { id: 'area', label: 'Áreas', icon: <Map size={16} /> }
+  ];
 
-  const getNotificationIcon = (type) => {
-    switch (type) {
-      case notificationTypes.TASK:
-        return <ClipboardList size={20} />;
-      case notificationTypes.USER:
-        return <User size={20} />;
-      case notificationTypes.COMPANY:
-        return <Building size={20} />;
-      case notificationTypes.AREA:
-        return <Map size={20} />;
-      default:
-        return <Bell size={20} />;
-    }
-  };
-
-  const getNotificationColor = (type) => {
-    switch (type) {
-      case notificationTypes.TASK:
-        return '#2563eb';
-      case notificationTypes.USER:
-        return '#10b981';
-      case notificationTypes.COMPANY:
-        return '#8b5cf6';
-      case notificationTypes.AREA:
-        return '#f59e0b';
-      default:
-        return '#64748b';
-    }
-  };
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit',
-      month: 'short',
-      day: '2-digit'
-    });
-  };
-
-  const loadNotifications = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Get all relevant data for notifications
-      const [tasks, users, companies, areas] = await Promise.all([
-        taskService.getAllTasks(),
-        userService.getAllUsers(),
-        companyService.getAllCompanies(),
-        areaService.getAllAreas()
-      ]);
-
-      // Filter out default admin user
-      const filteredUsers = users.filter(user => user.role !== 'admin' || user.name !== 'admin');
-
-      // Create notifications based on the data
-      const newNotifications = [
-        // Task notifications
-        ...tasks.map(task => ({
-          id: `task-${task.id}`,
-          type: notificationTypes.TASK,
-          title: `Nueva tarea: ${task.title}`,
-          description: `Asignada a ${task.assigned_to.name} en ${task.company.name}`,
-          timestamp: task.createdAt,
-          status: task.status,
-          icon: getNotificationIcon(notificationTypes.TASK),
-          color: getNotificationColor(notificationTypes.TASK)
-        })).filter(taskNotif => !removedNotifications.has(taskNotif.id)),
-
-        // User notifications
-        ...filteredUsers.map(user => ({
-          id: `user-${user.id}`,
-          type: notificationTypes.USER,
-          title: `Nuevo usuario: ${user.name}`,
-          description: `Rol: ${user.role}`,
-          timestamp: new Date().toISOString(),
-          status: 'active',
-          icon: getNotificationIcon(notificationTypes.USER),
-          color: getNotificationColor(notificationTypes.USER)
-        })).filter(userNotif => !removedNotifications.has(userNotif.id)),
-
-        // Company notifications
-        ...companies.map(company => ({
-          id: `company-${company.id}`,
-          type: notificationTypes.COMPANY,
-          title: `Nueva empresa: ${company.name}`,
-          description: `Tipo: ${company.companyType}`,
-          timestamp: company.createdAt,
-          status: 'active',
-          icon: getNotificationIcon(notificationTypes.COMPANY),
-          color: getNotificationColor(notificationTypes.COMPANY)
-        })).filter(companyNotif => !removedNotifications.has(companyNotif.id)),
-
-        // Area notifications
-        ...areas.map(area => ({
-          id: `area-${area.id_area}`,
-          type: notificationTypes.AREA,
-          title: `Nueva área: ${area.nombre_area}`,
-          description: `Departamento: ${area.departamento}`,
-          timestamp: new Date().toISOString(),
-          status: 'active',
-          icon: getNotificationIcon(notificationTypes.AREA),
-          color: getNotificationColor(notificationTypes.AREA)
-        })).filter(areaNotif => !removedNotifications.has(areaNotif.id))
-      ];
-
-      // Sort notifications by timestamp (newest first)
-      newNotifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-      setNotifications(newNotifications);
-    } catch (err) {
-      console.error('Error loading notifications:', err);
-      setError(err.message || 'Error al cargar las notificaciones');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Actualizar contador de no leídas cuando cambian las notificaciones
   useEffect(() => {
-    loadNotifications();
-  }, [removedNotifications]); // Se ejecuta cuando cambian las notificaciones eliminadas
+    if (onUpdateUnreadCount) {
+      const unread = notifications.filter(n => n.status === 'unread').length;
+      onUpdateUnreadCount(unread);
+    }
+  }, [notifications, onUpdateUnreadCount]);
 
-  const markAsRead = (notificationId) => {
-    setNotifications(notifications.map(notif => 
-      notif.id === notificationId ? { ...notif, status: 'read' } : notif
-    ));
+  // Simulación de carga de datos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const mockNotifications = [
+        {
+          id: 'task-1',
+          type: 'task',
+          title: 'Revisar documentación',
+          description: 'Documentación pendiente de revisión',
+          timestamp: new Date(),
+          status: 'unread'
+        },
+        {
+          id: 'user-1',
+          type: 'user',
+          title: 'Nuevo usuario registrado',
+          description: 'Juan Pérez se ha registrado',
+          timestamp: new Date(Date.now() - 3600000),
+          status: 'read'
+        }
+      ];
+      setNotifications(mockNotifications);
+      setLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const markAsRead = (id) => {
+    const updatedNotifications = notifications.map(n =>
+      n.id === id ? { ...n, status: 'read' } : n
+    );
+    setNotifications(updatedNotifications);
   };
 
-  const removeNotification = (notificationId) => {
-    const newSet = new Set([...removedNotifications, notificationId]);
-    setRemovedNotifications(newSet);
-    localStorage.setItem('removedNotifications', JSON.stringify(Array.from(newSet)));
-    toast('Notificación eliminada', {
-      position: "bottom-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light',
-    });
+  const removeNotification = (id) => {
+    setNotifications(notifications.filter(n => n.id !== id));
   };
 
-  if (loading) return <div className="loading-notifications"><Clock className="animate-spin" /> Cargando notificaciones...</div>;
-  if (error) return <div className="error-notifications"><AlertCircle /> {error}</div>;
+  const filteredNotifications = notifications.filter(n =>
+    selectedFilter === 'all' || n.type === selectedFilter
+  );
+
+  if (loading) {
+    return (
+      <div className="loader-notifications">
+      </div>
+    );
+  }
 
   return (
-    <div className="notifications-container">
-      <h2>Notificaciones</h2>
-      
-      <div className="notifications-filters">
-        <button 
-          className={`filter-button ${selectedFilter === 'all' ? 'active' : ''}`} 
-          onClick={() => setSelectedFilter('all')}
-        >
-          Todas
-        </button>
-        <button 
-          className={`filter-button ${selectedFilter === 'task' ? 'active' : ''}`} 
-          onClick={() => setSelectedFilter('task')}
-        >
-          <ClipboardList size={16} /> Tareas
-        </button>
-        <button 
-          className={`filter-button ${selectedFilter === 'user' ? 'active' : ''}`} 
-          onClick={() => setSelectedFilter('user')}
-        >
-          <User size={16} /> Usuarios
-        </button>
-        <button 
-          className={`filter-button ${selectedFilter === 'company' ? 'active' : ''}`} 
-          onClick={() => setSelectedFilter('company')}
-        >
-          <Building size={16} /> Empresas
-        </button>
-        <button 
-          className={`filter-button ${selectedFilter === 'area' ? 'active' : ''}`} 
-          onClick={() => setSelectedFilter('area')}
-        >
-          <Map size={16} /> Áreas
-        </button>
-      </div>
-
-      <div className="notifications-list">
-        {notifications
-          .filter(notification => 
-            selectedFilter === 'all' || 
-            notification.type === notificationTypes[selectedFilter.toUpperCase()]
-          )
-          .map((notification) => (
-          <div 
-            key={notification.id}
-            className={`notification-item ${notification.status === 'read' ? 'read' : ''}`}
-            onClick={() => markAsRead(notification.id)}
-          >
-            <button 
-              className="delete-button" 
-              onClick={(e) => {
-                e.stopPropagation();
-                removeNotification(notification.id);
-              }}
-              title="Eliminar notificación"
+    <div className="minimal-notifications">
+      <div className="minimal-header">
+        <div className="minimal-filters">
+          {filters.map(filter => (
+            <button
+              key={filter.id}
+              className={`minimal-filter ${selectedFilter === filter.id ? 'activee' : ''}`}
+              onClick={() => setSelectedFilter(filter.id)}
+              title={filter.label}
             >
-              <X size={18} />
+              {filter.icon}
             </button>
-            <div className="notification-icon" style={{ color: notification.color }}>
-              {notification.icon}
-            </div>
-            <div className="notification-content">
-                
-              <div className="notification-header">
-                <span className="notification-title">{notification.title}</span>
-                <span className="notification-timestamp">
-                  {formatTimestamp(notification.timestamp)}
-                </span>
-              </div>
-              <div className="notification-description">
-                {notification.description}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      {notifications
-          .filter(notification => 
-            selectedFilter === 'all' || 
-            notification.type === notificationTypes[selectedFilter.toUpperCase()]
-          ).length === 0 && (
-        <div className="no-notifications">
-          <Check size={20} /> {selectedFilter === 'all' 
-            ? 'No hay notificaciones recientes'
-            : `No hay notificaciones de ${notificationTypes[selectedFilter.toUpperCase()].toLowerCase()}s`}
+          ))}
         </div>
-      )}
+      </div>
 
+      <div className="minimal-list">
+        {filteredNotifications.length > 0 ? (
+          filteredNotifications.map(notification => (
+            <div
+              key={notification.id}
+              className={`minimal-item ${notification.status}`}
+              onClick={() => markAsRead(notification.id)}
+            >
+              <div className="minimal-icon">
+                {filters.find(f => f.id === notification.type)?.icon}
+              </div>
+              <div className="minimal-content">
+                <div className="minimal-main">
+                  <span className="minimal-title">{notification.title}</span>
+                  <button
+                    className="minimal-close"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeNotification(notification.id);
+                    }}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                <div className="minimal-description">{notification.description}</div>
+                <div className="minimal-time">
+                  {new Date(notification.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="minimal-empty">
+            <Check size={16} />
+            No hay notificaciones
+          </div>
+        )}
+      </div>
     </div>
   );
 };
