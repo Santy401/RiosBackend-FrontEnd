@@ -5,13 +5,29 @@ import {
   LineChart, Line, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { BarChart2, PieChart as PieIcon, LineChart as LineIcon, AlertTriangle } from 'lucide-react';
+import {
+  BarChart2,
+  PieChart as PieIcon,
+  LineChart as LineIcon,
+  AlertTriangle
+} from 'lucide-react';
+import './TaskAnalytics.css';
 
-const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byRole: {}, byDepartment: {} } }) => {
-  const [taskChartType, setTaskChartType] = useState('pie');
-  const [userChartType, setUserChartType] = useState('bar');
+const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
+
+const historicalData = [
+  { name: 'Lun', completadas: 2, en_progreso: 4 },
+  { name: 'Mar', completadas: 3, en_progreso: 3 },
+  { name: 'Mié', completadas: 5, en_progreso: 2 },
+  { name: 'Jue', completadas: 4, en_progreso: 3 },
+  { name: 'Vie', completadas: 6, en_progreso: 1 },
+  { name: 'Sáb', completadas: 2, en_progreso: 2 },
+  { name: 'Dom', completadas: 0, en_progreso: 1 },
+];
+
+const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 } }) => {
+  const [taskChartType, setTaskChartType] = useState('line');
   const [taskFilter, setTaskFilter] = useState('all');
-  const [userFilter, setUserFilter] = useState('role');
 
   const chartTypes = [
     { value: 'pie', label: 'Torta', icon: <PieIcon size={16} /> },
@@ -25,10 +41,6 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
     { value: 'in_progress', label: 'En Progreso' },
   ];
 
-  const userFilters = [
-    { value: 'role', label: 'Por Rol' },
-  ];
-
   const taskData = {
     in_progress: tasks.in_progress || 0,
     completed: tasks.completed || 0,
@@ -39,35 +51,36 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
     { name: 'Completadas', value: taskData.completed },
   ];
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
-
   const filteredTaskData = taskFilter === 'all'
     ? formattedTaskData
-    : taskFilter === 'completed'
-      ? formattedTaskData.filter(item => item.name === 'Completadas')
-      : formattedTaskData.filter(item => item.name === 'En Progreso');
-
-  const selectedUserData = userFilter === 'role'
-    ? users.byRole || {}
-    : users.byDepartment || {};
-
-  const allUserData = Object.entries(selectedUserData).map(([name, value]) => ({ name, value }));
+    : formattedTaskData.filter(item => item.name.toLowerCase().includes(taskFilter));
 
   const renderChartMessage = () => (
-    <div style={{ textAlign: 'center', color: '#999', marginTop: '100px' }}>
+    <div className="flex flex-col items-center justify-center h-full">
       <AlertTriangle size={48} />
-      <p>No hay datos suficientes para este filtro.</p>
+      <p className="text-gray-500">No hay datos suficientes para este filtro.</p>
     </div>
   );
 
   const renderTaskChart = () => {
-    if (filteredTaskData.length === 0 || filteredTaskData.every(d => d.value === 0)) return renderChartMessage();
+    if (
+      (taskChartType !== 'line' && (filteredTaskData.length === 0 || filteredTaskData.every(d => d.value === 0)))
+    ) {
+      return renderChartMessage();
+    }
 
     switch (taskChartType) {
       case 'pie':
         return (
           <PieChart>
-            <Pie data={filteredTaskData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" paddingAngle={5} dataKey="value">
+            <Pie
+              data={filteredTaskData}
+              cx="50%" cy="50%"
+              innerRadius={60}
+              outerRadius={80}
+              paddingAngle={5}
+              dataKey="value"
+            >
               {filteredTaskData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
@@ -84,61 +97,33 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="value" fill="#8884d8" />
+            <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]} />
           </BarChart>
         );
       case 'line':
         return (
-          <LineChart data={filteredTaskData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
+          <LineChart data={historicalData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+            <XAxis dataKey="name" stroke="#666" />
+            <YAxis stroke="#666" />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const renderUserChart = () => {
-    if (allUserData.length === 0 || allUserData.every(u => u.value === 0)) return renderChartMessage();
-
-    switch (userChartType) {
-      case 'pie':
-        return (
-          <PieChart>
-            <Pie data={allUserData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" paddingAngle={5} dataKey="value">
-              {allUserData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        );
-      case 'bar':
-        return (
-          <BarChart data={allUserData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" fill="#82ca9d" />
-          </BarChart>
-        );
-      case 'line':
-        return (
-          <LineChart data={allUserData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+            <Line
+              type="monotone"
+              dataKey="completadas"
+              stroke="#82ca9d"
+              strokeWidth={3}
+              dot={{ r: 5 }}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="en_progreso"
+              stroke="#8884d8"
+              strokeWidth={3}
+              dot={{ r: 5 }}
+              activeDot={{ r: 8 }}
+            />
           </LineChart>
         );
       default:
@@ -148,42 +133,34 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
   return (
     <div className="task-analytics-container">
-      <div className="analytics-card">
-        <div className="analytics-header">
-          <h3>Estado de Tareas</h3>
-          <div className="filters-container">
-            <select className="filter-select" value={taskFilter} onChange={(e) => setTaskFilter(e.target.value)}>
-              {taskFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            <select className="filter-select" value={taskChartType} onChange={(e) => setTaskChartType(e.target.value)}>
-              {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
-        </div>
-        <div className="recharts-responsive-container">
-          <ResponsiveContainer width="100%" height="100%">
-            {renderTaskChart()}
-          </ResponsiveContainer>
+      <div className="analytics-header">
+        <h3>Estado de Tareas</h3>
+        <div className="filters-container">
+          <select
+            className="filter-select"
+            value={taskFilter}
+            onChange={(e) => setTaskFilter(e.target.value)}
+          >
+            {taskFilters.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+          <select
+            className="filter-select"
+            value={taskChartType}
+            onChange={(e) => setTaskChartType(e.target.value)}
+          >
+            {chartTypes.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
         </div>
       </div>
 
-      <div className="analytics-card">
-        <div className="analytics-header">
-          <h3>Estado de Usuarios</h3>
-          <div className="filters-container">
-            <select className="filter-select" value={userFilter} onChange={(e) => setUserFilter(e.target.value)}>
-              {userFilters.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            <select className="filter-select" value={userChartType} onChange={(e) => setUserChartType(e.target.value)}>
-              {chartTypes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
-        </div>
-        <div className="recharts-responsive-container">
-          <ResponsiveContainer width="100%" height="100%">
-            {renderUserChart()}
-          </ResponsiveContainer>
-        </div>
+      <div className="chart-container">
+        <ResponsiveContainer width="100%" height="100%">
+          {renderTaskChart()}
+        </ResponsiveContainer>
       </div>
     </div>
   );
@@ -191,13 +168,8 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0 }, users = { byR
 
 TaskAnalytics.propTypes = {
   tasks: PropTypes.shape({
-    pending: PropTypes.number,
     in_progress: PropTypes.number,
     completed: PropTypes.number
-  }),
-  users: PropTypes.shape({
-    byRole: PropTypes.objectOf(PropTypes.number),
-    byDepartment: PropTypes.objectOf(PropTypes.number)
   })
 };
 
