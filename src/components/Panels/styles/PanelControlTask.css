@@ -133,6 +133,12 @@
   border-collapse: collapse;
   z-index: 8;
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.task-table::webkit-scrollbar {
+  width: 0;
 }
 
 .task-table th,
