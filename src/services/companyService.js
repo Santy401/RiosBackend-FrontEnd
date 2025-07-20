@@ -25,43 +25,33 @@ export const companyService = {
     }
   },
 
-  createCompany: async (companyData) => {
-    try {
-      const config = getAuthHeaders();
-      const response = await api.post('/companies', companyData, config);
-      
-      if (response?.data?.company || response?.data) {
-        const createdCompany = response.data.company || response.data;
-        console.log('✅ Company created successfully:', createdCompany);
-        return createdCompany;
-      }
-      
-      return response.data;
+// En companyService.js (frontend)
+createCompany: async (companyData) => {
+  try {
+    const config = getAuthHeaders();
+    const response = await api.post('/companies', companyData, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear empresa:", error);
+    throw error;
+  }
+}, 
 
-    } catch (error) {
-      console.warn('Warning during company creation:', error.message);
-      
-      return {
-        ...companyData,
-        id: Date.now(),
-        message: '✅ Empresa creada exitosamente'
-      };
-    }
-  },
-
-  updateCompany: async (id, companyData) => {
-    try {
-      const config = getAuthHeaders();
-      const response = await api.put(`/companies/${id}`, companyData, config);
-      return response.data;
-      
-    } catch (error) {
-      console.error("Error en updateCompany:", error);
-      throw new Error(
-        error.response?.data?.message || "Error al actualizar la empresa"
-      );
-    }
-  },
+updateCompany: async (id, companyData) => {
+  try {
+    console.log('Datos que se enviarán al backend para actualizar:', companyData);
+    const config = getAuthHeaders();
+    const response = await api.put(`/companies/${id}`, companyData, config);
+    
+    // Asegurémonos de que la respuesta tenga los datos correctos
+    console.log('Respuesta del backend:', response.data);
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar empresa:", error);
+    throw error;
+  }
+},
 
   deleteCompany: async (id) => {
     try {

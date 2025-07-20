@@ -8,6 +8,7 @@ import { showToast } from "../common/ToastNotification";
 import DontCompany from "../../assets/svg/DontCompany.svg";
 import { motion } from "framer-motion";
 import { Listbox } from '@headlessui/react';
+import { Info } from 'lucide-react';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -20,6 +21,7 @@ const CompanyList = () => {
   const { user } = useAuth();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
+  const [visiblePasswords, setVisiblePasswords] = useState({});
 
   const [companyTypeFilter, setCompanyTypeFilter] = useState("");
 
@@ -35,6 +37,13 @@ const CompanyList = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = (companyId) => {
+    setVisiblePasswords(prev => ({
+      ...prev,
+      [companyId]: !prev[companyId]
+    }));
   };
 
   useEffect(() => {
@@ -68,6 +77,16 @@ const CompanyList = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      const companies = await companyService.getAllCompanies();
+      console.log("🧾 Empresas recibidas:", companies);
+      setCompanies(companies);
+    };
+
+    fetchCompanies();
+  }, []);
 
   const handleEditCompany = async (updatedCompany) => {
     try {
@@ -125,7 +144,7 @@ const CompanyList = () => {
   };
 
   if (loading) return <div
-   className="loader loaderCompanies">
+    className="loader loaderCompanies">
   </div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -154,27 +173,27 @@ const CompanyList = () => {
             className="search-input"
           />
           <div className="header-Listbox">
-          <Listbox value={companyTypeFilter} onChange={setCompanyTypeFilter}>
-            <Listbox.Button className="company-type-filter">
-              {companyTypeFilter || 'Filtrar por tipo'}
-            </Listbox.Button>
-            <Listbox.Options className="listbox-options-company">
-              <Listbox.Option value="" className="listbox-option-company">
-                Filtrar por tipo
-              </Listbox.Option>
-              <Listbox.Option value="A" className="listbox-option-company">
-                Tipo A
-              </Listbox.Option>
-              <Listbox.Option value="B" className="listbox-option-company">
-                Tipo B
-              </Listbox.Option>
-              <Listbox.Option value="C" className="listbox-option-company">
-                Tipo C
-              </Listbox.Option>
-            </Listbox.Options>
-          </Listbox>
+            <Listbox value={companyTypeFilter} onChange={setCompanyTypeFilter}>
+              <Listbox.Button className="company-type-filter">
+                {companyTypeFilter || 'Filtrar por tipo'}
+              </Listbox.Button>
+              <Listbox.Options className="listbox-options-company">
+                <Listbox.Option value="" className="listbox-option-company">
+                  Filtrar por tipo
+                </Listbox.Option>
+                <Listbox.Option value="A" className="listbox-option-company">
+                  Tipo A
+                </Listbox.Option>
+                <Listbox.Option value="B" className="listbox-option-company">
+                  Tipo B
+                </Listbox.Option>
+                <Listbox.Option value="C" className="listbox-option-company">
+                  Tipo C
+                </Listbox.Option>
+              </Listbox.Options>
+            </Listbox>
           </div>
-            </div>
+        </div>
 
         {filteredCompanies.length === 0 ? (
           <div className="no-companies">
@@ -182,57 +201,70 @@ const CompanyList = () => {
           </div>
         ) : (
           <div style={{ overflowX: "auto", width: "100%" }} className="task-list-container">
-          <table className="task-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>NIT</th>
-                <th>Email</th>
-                <th>Tipo</th>
-                <th>Teléfono</th>
-                <th>Usuario</th>
-                <th>Servidor</th>
-                <th>Firma</th>
-                <th>DIAN</th>
-                <th>Software</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCompanies.map((company) => (
-                <tr key={company.id}>
-                  <td className="company-name">{company.name}</td>
-                  <td>{company.nit}</td>
-                  <td>{company.email || "Sin correo"}</td>
-                  <td className="company-type">{getCompanyTypeText(company.companyType)}</td>
-                  <td>{company.cellphone || "No especificado"}</td>
-                  <td>{company.user || "No especificado"}</td>
-                  <td>{company.mailServer || "No especificado"}</td>
-                  <td>{company.legalSignature || "No especificado"}</td>
-                  <td>{company.dian || "No especificado"}</td>
-                  <td>{company.accountingSoftware || "No especificado"}</td>
-                  <td className="action-buttons">
-                    <button
-                      className="action-button edit-button"
-                      onClick={() => handleEditCompany(company)}
-                      title="Editar empresa"
-                    >
-                      <i className="fa-solid fa-pen"></i>
-                    </button>
-                    <button
-                      className="action-button delete-button"
-                      onClick={() => handleDeleteClick(company)}
-                      title="Eliminar empresa"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
+            <table className="task-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>NIT</th>
+                  <th>Clave del Correo</th>
+                  <th>Tipo</th>
+                  <th>Correo</th>
+                  <th>Usuario</th>
+                  <th>Clave Dian</th>
+                  <th>NIT</th>
+                  <th>Software</th>
+                  <th>Firma Electrónica</th>
+                  <th>Servidor</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredCompanies.map((company) => (
+                  <tr key={company.id}>
+                    <td className="company-name">{company.name}</td>
+                    <td>{company.nit}</td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(company.id)}
+                        title={visiblePasswords[company.id] ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      >
+                        {visiblePasswords[company.id] ?
+                          company.password || "Sin contraseña" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td className="company-type">{getCompanyTypeText(company.companyType)}</td>
+                    <td>{company.email || "Sin correo"}</td>
+                    <td>{company.user || "No especificado"}</td>
+                    <td>{company.dian || "No especificado"}</td>
+                    <td>{company.nit || "No especificado"}</td>
+                    <td>{company.accountingSoftware || "No especificado"}</td>
+                    <td>{company.legalSignature || "No especificado"}</td>
+                    <td>{company.mailServer || "No especificado"}</td>
+                    <td className="action-buttons">
+                      <button
+                        className="action-button edit-button"
+                        onClick={() => handleEditCompany(company)}
+                        title="Editar empresa"
+                      >
+                        <i className="fa-solid fa-pen"></i>
+                      </button>
+                      <button
+                        className="action-button delete-button"
+                        onClick={() => handleDeleteClick(company)}
+                        title="Eliminar empresa"
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          )}
+        )}
       </div>
 
       {showCreateModal && (

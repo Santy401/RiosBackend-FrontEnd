@@ -8,7 +8,7 @@ const getAllCompanies = async () => {
   try {
     const companies = await Company.findAll({
       attributes: {
-        exclude: ['password', 'ccPassword', 'ssPassword', 'anotherPassword'],
+        exclude: ['ccPassword', 'ssPassword', 'anotherPassword'],
       },
       include: [
         { model: area, as: 'areas' },
@@ -49,8 +49,6 @@ const createCompany = async (companyData) => {
   }
 };
 
-
-
 const updateCompany = async (id, companyData) => {
   const company = await Company.findByPk(id);
   if (!company) {
@@ -69,7 +67,8 @@ const updateCompany = async (id, companyData) => {
     }
   }
 
-  return await company.update(companyData);
+  const updatedCompany = await company.update(companyData);
+  return updatedCompany;
 };
 
 const deleteCompany = async (id) => {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./styles/ModalAddTask.css";
-import { companyService } from "../../services/companyService";
 import { motion } from "framer-motion";
 
 const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies }) => {
@@ -40,39 +39,15 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      if (!formData.name || !formData.nit || !formData.email) {
-        throw new Error("Nombre, NIT y Email son campos obligatorios");
-      }
-
-      const companyData = {
-        ...formData,
-        id: editCompany?.id,
-        status: formData.status || "active",
-        companyType: formData.companyType || "A",
-      };
-
-      let savedCompany;
-
-      if (editCompany) {
-        savedCompany = await companyService.updateCompany(editCompany.id, companyData);
-      } else {
-        savedCompany = await companyService.createCompany(companyData);
-      }
-
-      if (!savedCompany || !savedCompany.id) {
-        console.error("Respuesta del servidor:", savedCompany);
-        throw new Error("Error en la respuesta del servidor");
-      }
-
-      await loadCompanies();
-      onSave(savedCompany);
+      console.log('Datos a enviar al backend:', formData);  // Log aquí
+      const response = await onSave(formData);
+      console.log('Respuesta del backend:', response);  // Log de la respuesta
       onClose();
-
     } catch (error) {
-      console.error("Error detallado:", error);
-      setError(error.message || "Error al procesar la operación");
+      console.error("Error al guardar:", error);
+      setError(error.message || "Error al guardar la empresa");
     } finally {
       setIsLoading(false);
     }
@@ -142,16 +117,6 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                 </div>
 
                 <div className="form-group">
-                  <label>Celular:</label>
-                  <input
-                    type="text"
-                    name="cellphone"
-                    value={formData.cellphone}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="form-group">
                   <label>Clave DIAN:</label>
                   <input
                     type="text"
@@ -162,7 +127,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                 </div>
 
                 <div className="form-group">
-                  <label>Firma Legal:</label>
+                  <label>Firma Electronica:</label>
                   <input
                     type="text"
                     name="legalSignature"
@@ -194,7 +159,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                 <div className="form-group">
                   <label>Clave Del Correo:</label>
                   <input
-                    type="password"
+                    type="text"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}

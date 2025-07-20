@@ -411,7 +411,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                     <th>Fecha Creación</th>
                     <th>Persona Asignada</th>
                     <th>Estado</th>
-                    {isAdmin && <th>Acciones</th>}
+                    {isAdmin && <th style={{ textAlign: 'center', width: '10px' }}>Acciones</th>}
                   </tr>
                 </thead>
                 <tbody>

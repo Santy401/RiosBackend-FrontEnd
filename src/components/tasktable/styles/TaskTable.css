@@ -88,7 +88,7 @@
   .task-table th,
   .task-table td {
     padding: 15px 12px;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -555,7 +555,7 @@
   .task-table th,
   .task-table td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     border-bottom: none;
   }
   

@@ -14,7 +14,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
       assigned_to: "",
       company_id: "",
       area_id: "",
-      due_date: new Date().toLocaleDateString('en-CA'),
+      due_date: "",
       status: "in_progress",
       createdAt: new Date().toISOString(),
     }
