@@ -51,66 +51,48 @@ const PanelControlTask = () => {
   const handleCreateTask = async (taskData) => {
     try {
       setIsCreating(true);
-
-      console.log(
-        "ID de tarea para actualización:",
-        editingTask ? editingTask.id : "ID no definido"
-      );
-
-      if (!taskData.title || !taskData.assigned_to) {
-        showToast("Por favor completa los campos obligatorios: Nombre y el asignado", "error");
-        return;
-      }
-
-      const formattedDueDate = taskData.dueDate
-        ? new Date(taskData.dueDate).toISOString().slice(0, 16)  // Esto es correcto si necesitas sólo año, mes, día, hora y minutos
-        : null;
-
-
+      
+      // Asegúrate de que la fecha esté en el formato correcto
       const formattedData = {
         ...taskData,
-        title: taskData.title || "Sin nombre",
-        assigned_to: String(taskData.assigned_to),
-        observation: taskData.observation || "Sin descripción",
-        company_id: taskData.company_id || "",
-        area_id: taskData.area_id || "",
-        dueDate: formattedDueDate,
-        updateAt: new Date().toISOString(),
-        status: taskData.status || "in_progress",
+        due_date: taskData.due_date // Ya viene en formato YYYY-MM-DD
       };
-
-      if (editingTask && editingTask.id) {
-        console.log("ID de tarea para actualización:", editingTask.id);
-        const updatedTask = await taskService.updateTask(
-          editingTask.id,
-          formattedData
-        );
-
-        if (updatedTask && updatedTask.task) {
-          console.log("Tarea actualizada correctamente:", updatedTask.task);
-        } else {
-          console.error("Respuesta inesperada del servidor:", updatedTask);
-        }
-
-        if (updatedTask && updatedTask.task) {
-          console.log("Tarea actualizada correctamente:", updatedTask.task);
-          setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-              task.id === updatedTask.task.id ? updatedTask.task : task
-            )
-          );
-        }
+  
+      console.log("📤 Datos del formulario:", {
+        ...formattedData,
+        due_date: formattedData.due_date,
+        due_date_type: typeof formattedData.due_date
+      });
+  
+      // Validaciones
+      if (!formattedData.title) throw new Error('El título es obligatorio');
+      if (!formattedData.assigned_to) throw new Error('La persona asignada es obligatoria');
+      if (!formattedData.due_date) throw new Error('La fecha límite es obligatoria');
+  
+      // Preparar datos
+      const taskToSave = {
+        ...formattedData,
+        due_date: formattedData.due_date // Ya viene en formato YYYY-MM-DD
+      };
+  
+      console.log("📤 Enviando al backend:", taskToSave);
+  
+      let result;
+      if (editingTask?.id) {
+        result = await taskService.updateTask(editingTask.id, taskToSave);
+        showToast("Tarea actualizada exitosamente", "success");
       } else {
-        const newTask = await taskService.createTask(formattedData);
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+        result = await taskService.createTask(taskToSave);
         showToast("Tarea creada exitosamente", "success");
       }
-
+  
       setShowCreateModal(false);
       loadTasks();
+      return result;
     } catch (error) {
-      console.error("Error al guardar tarea:", error);
-      showToast(error.response?.data?.message || "Error al guardar la tarea", "error");
+      console.error("❌ Error al guardar tarea:", error);
+      showToast(error.message || "Error al guardar la tarea", "error");
+      throw error;
     } finally {
       setIsCreating(false);
     }

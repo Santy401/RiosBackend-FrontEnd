@@ -25,6 +25,18 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
     { value: 'date', icon: <Calendar size={16} color="#ef4444" />, label: 'Fecha' },
   ];
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    // Sumar 1 día
+    date.setDate(date.getDate() + 1);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  };
+
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   const matchesField = (field, query) => {
@@ -165,45 +177,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
   const activeTasksCount = filteredTasks.filter((task) => task.status === 'in_progress').length;
   const completedTasksCount = filteredTasks.filter((task) => task.status === 'completed').length;
 
-  const formatDate = (dateString) => {
-    if (!dateString) return '-';
-
-    try {
-      const date = new Date(dateString);
-
-      if (!isNaN(date.getTime())) {
-        return date.toLocaleString('es-ES', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-      }
-
-      if (typeof dateString === 'string') {
-        const dateParts = dateString.split('T');
-        if (dateParts.length === 2) {
-          const dateOnly = dateParts[0];
-          const timeOnly = dateParts[1];
-          const [year, month, day] = dateOnly.split('-');
-          const [hour, minute] = timeOnly.split(':');
-          return `${day}/${month}/${year} ${hour}:${minute}`;
-        }
-
-        const datePartsDash = dateString.split('-');
-        if (datePartsDash.length === 3) {
-          return `${datePartsDash[2]}/${datePartsDash[1]}/${datePartsDash[0]}`;
-        }
-      }
-
-      return '-';
-    } catch (error) {
-      console.error('Error al formatear fecha:', error);
-      return '-';
-    }
-  };
-
   const getStatusClass = (status) => {
     const statusClasses = {
       in_progress: 'status-in-progress',
@@ -339,7 +312,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                         onStatusChange(task.id, e.target.value);
                       }}
                     >
-                      <option value="in_progress">En Progreso</option>
+                      <option value="in_progress">En Proceso</option>
                       <option value="completed">Completad</option>
                     </select>
                   </div>
@@ -380,7 +353,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                     </div>
                     <div className="list-item-row">
                       <span className="label">Fecha Límite:</span>
-                      <span>{formatDate(task.dueDate)}</span>
+                      <span>{formatDate(task.due_date)}</span>
                     </div>
                   </div>
                   {isAdmin && (
@@ -432,13 +405,12 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       />
                     </th>
                     <th>Título</th>
-                    <th>Estado</th>
-                    <th>Observación</th>
-                    <th>Usuario</th>
-                    <th>Empresa</th>
                     <th>Área</th>
-                    <th>Fecha Creación</th>
+                    <th>Empresa</th>
                     <th>Fecha Límite</th>
+                    <th>Fecha Creación</th>
+                    <th>Persona Asignada</th>
+                    <th>Estado</th>
                     {isAdmin && <th>Acciones</th>}
                   </tr>
                 </thead>
@@ -460,6 +432,11 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       <td>
                         <label>{task.title}</label>
                       </td>
+                      <td>{task.Areas?.nombre_area}</td>
+                      <td>{task.company?.name}</td>
+                      <td>{task.due_date ? formatDate(task.due_date) : '-'}</td>
+                      <td>{formatDate(task.createdAt)}</td>
+                      <td>{task.assignedUser?.name || '-'}</td>
                       <td>
                         <Listbox
                           value={task.status}
@@ -469,13 +446,13 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                         >
                           <Listbox.Button className={getStatusClass(task.status)}>
                             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              {task.status === 'in_progress' ? 'En Progreso' : task.status === 'completed' ? 'Completada' : ''}
+                              {task.status === 'in_progress' ? 'En Proceso' : task.status === 'completed' ? 'Completada' : ''}
                             </span>
                           </Listbox.Button>
                           <Listbox.Options className="listbox-options" style={{ position: 'absolute' }} unmount={false}>
                             <Listbox.Option value="in_progress" className="listbox-option">
                               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                En Progreso
+                                En Proceso
                               </span>
                             </Listbox.Option>
                             <Listbox.Option value="completed" className="listbox-option">
@@ -485,30 +462,6 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                             </Listbox.Option>
                           </Listbox.Options>
                         </Listbox>
-                      </td>
-                      <td>
-                        <div className="task-observation">
-                          <div
-                            className="observation-content"
-                            title={task.observation}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedTask(task);
-                            }}
-                          >
-                            {task.observation || '-'}
-                          </div>
-                          {expandedTask === task.id && task.observation && (
-                            <div className="observation-expanded">{task.observation}</div>
-                          )}
-                        </div>
-                      </td>
-                      <td>{task.assignedUser?.name}</td>
-                      <td>{task.company?.name}</td>
-                      <td>{task.Areas?.nombre_area}</td>
-                      <td>{formatDate(task.createdAt)}</td>
-                      <td>
-                        {task.due_date ? formatDate(task.due_date) : '-'}
                       </td>
                       {isAdmin && (
                         <td>
@@ -576,7 +529,7 @@ TaskTable.propTypes = {
         nombre_area: PropTypes.string
       }),
       createdAt: PropTypes.string,
-      dueDate: PropTypes.string
+      due_date: PropTypes.string
     })
   ).isRequired,
   onDeleteTask: PropTypes.func.isRequired,

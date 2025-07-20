@@ -11,7 +11,7 @@ const getAllTasks = async (user) => {
       include: [
         { model: User, as: 'assignedUser', attributes: ['id', 'name', 'email'] },
         { model: Company, as: 'company', attributes: ['id', 'name', 'nit'] },
-        { model: Areas, as: 'Areas', attributes: ['id_area', 'nombre_area', 'departamento', 'descripcion'] },
+        { model: Areas, as: 'Areas', attributes: ['id_area', 'nombre_area', 'departamento', 'descripcion'] }
       ],
       order: [['due_date', 'ASC']],
     });
@@ -24,24 +24,14 @@ const getAllTasks = async (user) => {
 
 const createTask = async (taskData) => {
   try {
-    if (!taskData.due_date) {
-      const today = new Date();
-      today.setDate(today.getDate() + 7); // 7 días después
-      taskData.due_date = today.toISOString(); // 💡 convertir a string ISO
-    } else {
-      taskData.due_date = new Date(taskData.due_date).toISOString(); // 💡 forzar el formato ISO
-    }
-
-    console.log("📝 Datos recibidos para crear tarea:", taskData);
+    // La fecha ya viene en el formato correcto (YYYY-MM-DD)
     const newTask = await Task.create(taskData);
-    console.log("✅ Tarea creada con éxito");
     return newTask;
   } catch (error) {
-    console.error("❌ Error al crear tarea:", error);
-    throw new Error("Error al crear tarea");
+    console.error("Error al crear tarea:", error);
+    throw error;
   }
 };
-
 
 const updateTask = async (id, taskData) => {
   const task = await Task.findByPk(id);
@@ -70,22 +60,16 @@ const deleteTask = async (id) => {
     console.log(`⚠️ Tarea con ID ${id} no encontrada para eliminar`);
     return { success: false, message: "Tarea no encontrada" };
   }
-  
-  // Opcional: Verificar si la tarea tiene dependencias
-  // (Esto depende de cómo está estructurada tu base de datos y la lógica de negocio)
 
   console.log(`🗑 Eliminando tarea con ID ${id}`);
   await task.destroy();
-  return { success: true, taskId: id }; 
+  return { success: true, taskId: id };
 };
 
-
-
-
-export default {
+module.exports = {
   getAllTasks,
   createTask,
   updateTask,
   updateTaskStatus,
-  deleteTask,
+  deleteTask
 };

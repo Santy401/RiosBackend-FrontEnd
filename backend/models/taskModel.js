@@ -28,6 +28,7 @@ const Task = sequelize.define(
         model: User,
         key: 'id',
       },
+      onDelete: 'CASCADE'
     },
     company_id: {
       type: DataTypes.INTEGER,
@@ -46,15 +47,15 @@ const Task = sequelize.define(
       },
     },    
     due_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
+      type: DataTypes.DATEONLY,  // Cambia de DATE a DATEONLY
+      allowNull: false,
       get() {
-        const dueDate = this.getDataValue('due_date');
-        return dueDate ? dueDate.toISOString().slice(0, 16) : null;
+        return this.getDataValue('due_date');
       },
       set(value) {
-        this.setDataValue('due_date', new Date(value));
-      },
+        if (!value) throw new Error('La fecha es obligatoria');
+        this.setDataValue('due_date', value.split('T')[0]); // Solo guarda la parte de la fecha
+      }
     },
     status: {
       type: DataTypes.STRING,

@@ -148,7 +148,7 @@ const AdminDashboard = () => {
             className="header-container"
           >
             <h5 className="text-logo">
-              <img src={Icon} alt="Logo" className="logo" /> RiosTask
+              <img src={Icon} alt="Logo" className="logo" /> RiosBackend
               <div className="notification-container" ref={notificationsRef}>
                 <button 
                   onClick={() => setShowNotifications(!showNotifications)}

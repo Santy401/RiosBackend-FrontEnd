@@ -58,7 +58,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0, list: [] } }) =
   const taskFilters = [
     { value: 'all', label: 'Todas' },
     { value: 'completed', label: 'Completadas' },
-    { value: 'in_progress', label: 'En Progreso' },
+    { value: 'in_progress', label: 'En Proceso' },
   ];
 
   const taskData = {
@@ -67,7 +67,7 @@ const TaskAnalytics = ({ tasks = { in_progress: 0, completed: 0, list: [] } }) =
   };
 
   const formattedTaskData = [
-    { name: 'En Progreso', value: taskData.in_progress },
+    { name: 'En Proceso', value: taskData.in_progress },
     { name: 'Completadas', value: taskData.completed },
   ];
 

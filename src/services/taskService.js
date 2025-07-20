@@ -59,7 +59,7 @@ export const taskService = {
       const requiredFields = [
         'title',
         'observation',
-        'dueDate',
+        'due_date',
         'assigned_to',
         'company_id',
         'area_id',
@@ -71,10 +71,16 @@ export const taskService = {
           throw new Error(`${field} es obligatorio`);
         }
       }
-
-      console.log('taskData:', taskData);
-
-      const response = await axios.post(`${API_URL}/tasks`, taskData, getAuthHeaders());
+  
+      const today = new Date().toLocaleDateString('en-CA'); // Usa formato YYYY-MM-DD
+      if (taskData.due_date && taskData.due_date < today) {
+        throw new Error('La fecha de vencimiento no puede ser anterior a hoy');
+      }
+  
+      const response = await axios.post(`${API_URL}/tasks`, {
+        ...taskData,
+        due_date: taskData.due_date // Ya viene en formato YYYY-MM-DD
+      }, getAuthHeaders());
       return response.data;
     } catch (error) {
       console.error('Error en createTask:', error);
@@ -87,29 +93,32 @@ export const taskService = {
       if (!id || typeof id !== 'number') {
         throw new Error('ID inválido para actualizar la tarea');
       }
-
+  
       if (!taskData || typeof taskData !== 'object' || Array.isArray(taskData)) {
         throw new Error('Datos de tarea inválidos');
       }
-
-      console.log('Datos de tarea a actualizar:', taskData);
-
+  
+      const today = new Date().toLocaleDateString('en-CA'); // Usa formato YYYY-MM-DD
+      if (taskData.due_date && taskData.due_date < today) {
+        throw new Error('La fecha de vencimiento no puede ser anterior a hoy');
+      }
+  
       const config = getAuthHeaders();
-      const response = await axios.put(`${API_URL}/tasks/${id}`, taskData, config);
-
+      const response = await axios.put(`${API_URL}/tasks/${id}`, {
+        ...taskData,
+        due_date: taskData.due_date // Ya viene en formato YYYY-MM-DD
+      }, config);
+  
       if (response.status !== 200) {
         throw new Error(`Error al actualizar la tarea, código de estado: ${response.status}`);
       }
-
-      console.log('Tarea actualizada correctamente:', response.data);
-
+  
       return response.data.task;
     } catch (error) {
       console.error('Error en updateTask:', error.response ? error.response.data : error.message);
-
       throw new Error(error.response?.data?.message || 'Error al actualizar la tarea');
     }
-  },
+  },  
 
   updateTaskStatus: async (id, status) => {
     try {

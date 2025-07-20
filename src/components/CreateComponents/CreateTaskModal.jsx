@@ -14,7 +14,7 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
       assigned_to: "",
       company_id: "",
       area_id: "",
-      dueDate: new Date().toISOString(),
+      due_date: new Date().toLocaleDateString('en-CA'),
       status: "in_progress",
       createdAt: new Date().toISOString(),
     }
@@ -53,28 +53,21 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (
-      !formData.title ||
-      !formData.observation ||
-      !formData.assigned_to ||
-      !formData.company_id ||
-      !formData.area_id ||
-      !formData.dueDate
-    ) {
-      alert("Todos los campos son obligatorios.");
+    
+    // Validar que la fecha exista
+    if (!formData.due_date) {
+      alert("Por favor seleccione una fecha límite");
       return;
     }
-
+  
+    // No necesitas el payload separado, usa directamente formData
     try {
       const response = await onSave(formData);
       console.log("Respuesta del servidor:", response);
-
       if (response && response.task) {
         console.log("Tarea creada/actualizada:", response.task);
         setFormData(response.task);
       }
-
       onClose();
     } catch (error) {
       console.error("Error al guardar la tarea:", error);
@@ -82,13 +75,21 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
     }
   };
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    console.log(`${name} actualizado:`, value);
+    if (name === 'due_date') {
+      // Mantén solo la fecha sin hora
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
   if (error) return <div className="error">{error}</div>;
 
@@ -170,24 +171,23 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
               </div>
 
               <div className="form-group">
-                <label>Fecha límite: *</label>
+              <label>Fecha límite: *</label>
                 <input
-                  type="datetime-local"
-                  name="dueDate"
-                  value={formData.dueate}
+                  type="date"
+                  name="due_date"
+                  value={formData.due_date}
                   onChange={handleChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Descripción: *</label>
+                <label>Descripción:</label>
                 <textarea
                   name="observation"
                   value={formData.observation}
                   onChange={handleChange}
                   rows="4"
-                  required
                 />
               </div>
 

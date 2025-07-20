@@ -75,7 +75,7 @@ const TaskTableRow = ({
             onStatusChange(task.id, e.target.value);
           }}
         >
-          <option value="in_progress">En Progreso</option>
+          <option value="in_progress">En Proceso</option>
           <option value="completed">Completada</option>
         </select>
       </td>

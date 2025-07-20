@@ -69,7 +69,7 @@ const TaskActionsBar = ({
         <Listbox value={statusToChange} onChange={setStatusToChange}>
           <Listbox.Button className="task-status-select">
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {statusToChange === 'in_progress' ? 'En Progreso' : statusToChange === 'completed' ? 'Completada' : 'Cambiar Estado...'}
+              {statusToChange === 'in_progress' ? 'En Proceso' : statusToChange === 'completed' ? 'Completada' : 'Cambiar Estado...'}
             </span>
           </Listbox.Button>
           <Listbox.Options className="listbox-options" style={{ position: 'fixed' }} unmount={false}>
@@ -80,7 +80,7 @@ const TaskActionsBar = ({
             </Listbox.Option>
             <Listbox.Option value="in_progress" className="listbox-option">
               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                En Progreso
+                En Proceso
               </span>
             </Listbox.Option>
             <Listbox.Option value="completed" className="listbox-option">

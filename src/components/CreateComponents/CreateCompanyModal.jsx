@@ -141,7 +141,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                 </div>
 
                 <div className="form-group">
-                  <label>DIAN:</label>
+                  <label>Clave DIAN:</label>
                   <input
                     type="text"
                     name="dian"
@@ -181,7 +181,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                 </div>
 
                 <div className="form-group">
-                  <label>Clave:</label>
+                  <label>Clave Del Correo:</label>
                   <input
                     type="password"
                     name="password"

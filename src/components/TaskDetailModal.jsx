@@ -98,7 +98,7 @@ const TaskDetailModal = ({ task, onClose }) => {
               {task.status === "pending"
                 ? "Pendiente"
                 : task.status === "in-progress"
-                ? "En progreso"
+                ? "En Proceso"
                 : task.status === "completed"
                 ? "Completada"
                 : "No iniciada"}
