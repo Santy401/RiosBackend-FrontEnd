@@ -96,7 +96,7 @@ const TaskDetailModal = ({ task, onClose }) => {
 
           <div className="detail-group">
             <label>Área:</label>
-            <p>{task.area?.nombre_area || "No especificada"}</p>
+            <p>{task.Areas?.nombre_area || "No especificada"}</p>
           </div>
 
           <div className="detail-group">
