@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./styles/ModalAddTask.css";
 import { useAuth } from "../../context/authContext";
@@ -14,6 +14,18 @@ const CreateUser = ({ onClose, onSave, editUser = null }) => {
       role: "user",
     }
   );
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const [errors, setErrors] = useState({});
   const { user } = useAuth();
 

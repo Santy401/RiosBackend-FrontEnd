@@ -20,6 +20,18 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
     }
   );
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+
   const [users, setUsers] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [areas, setAreas] = useState([]);

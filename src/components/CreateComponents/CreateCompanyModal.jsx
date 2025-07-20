@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./styles/ModalAddTask.css";
 import { companyService } from "../../services/companyService";
@@ -22,6 +22,17 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
     }
   );
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 

@@ -23,6 +23,17 @@ const TaskDetailModal = ({ task, onClose }) => {
   };
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         if (task.assigned_to) {
