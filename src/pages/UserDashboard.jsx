@@ -3,11 +3,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import TaskTable from "../components/tasktable/TaskTable";
+import CompanyList from "../components/ListsComponents/CompanyList";
 import { taskService } from "../services/taskService";
-import "./Dashboard.css";
 import { toast } from 'react-toastify';
+import "./Dashboard.css";
+import "./UserDashboard.css";
+import { LayoutGrid, Building2 } from 'lucide-react';
 
 const UserDashboard = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = ['tareas', 'empresas'];
   const navigate = useNavigate();
   const { logout, user } = useAuth();
   const [tasks, setTasks] = useState([]);
@@ -113,12 +118,53 @@ const UserDashboard = () => {
         </div>
       </header>
       <main className="dashboard-content-user">
-        <TaskTable
-          tasks={tasks}
-          onDeleteTask={handleDeleteTask}
-          onEditTask={() => { }}
-          onStatusChange={handleStatusChange}
-        />
+        <div 
+          className="slider-container"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {/* Slide de Tareas */}
+          <div className="slide slide-left">
+            <div className="panel-container">
+              <h2 className="section-title">
+                <LayoutGrid size={24} />
+                Mis Tareas
+              </h2>
+              <div className="task-table-container">
+                <TaskTable
+                  tasks={tasks}
+                  onDeleteTask={handleDeleteTask}
+                  onEditTask={() => {}}
+                  onStatusChange={handleStatusChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Slide de Empresas */}
+          <div className="slide slide-right">
+            <div className="panel-container">
+              <h2 className="section-title">
+                <Building2 size={24} />
+                Empresas
+              </h2>
+              <div className="company-table-container">
+                <CompanyList readOnly={true} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Navegación */}
+        <div className="navigation-buttons">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`nav-button ${currentSlide === index ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+              aria-label={`Ir a ${slides[index]}`}
+            />
+          ))}
+        </div>
       </main>
     </div>
   );

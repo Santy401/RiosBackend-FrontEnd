@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { Listbox } from '@headlessui/react';
 import { Info } from 'lucide-react';
 
-const CompanyList = () => {
+const CompanyList = ({ readOnly = false }) => {
   const [companies, setCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -151,49 +151,51 @@ const CompanyList = () => {
   return (
     <>
       <div className="company-list-container">
-        <div className="company-list-header">
-          <div className="header-top">
-            <motion.button
-              initial={{ opacity: 0, scale: .8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-              whileTap={{ scale: 0.8 }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
-              className="create-button"
-              onClick={() => setShowCreateModal(true)}
-            >
-              <i className="fa-solid fa-plus"></i> Crear Empresa
-            </motion.button>
+        {!readOnly && (
+          <div className="company-list-header">
+            <div className="header-top">
+              <motion.button
+                initial={{ opacity: 0, scale: .8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.1, ease: "easeOut" }}
+                className="create-button"
+                onClick={() => setShowCreateModal(true)}
+              >
+                <i className="fa-solid fa-plus"></i> Crear Empresa
+              </motion.button>
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar empresa..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            <div className="header-Listbox">
+              <Listbox value={companyTypeFilter} onChange={setCompanyTypeFilter}>
+                <Listbox.Button className="company-type-filter">
+                  {companyTypeFilter || 'Filtrar por tipo'}
+                </Listbox.Button>
+                <Listbox.Options className="listbox-options-company">
+                  <Listbox.Option value="" className="listbox-option-company">
+                    Filtrar por tipo
+                  </Listbox.Option>
+                  <Listbox.Option value="A" className="listbox-option-company">
+                    Tipo A
+                  </Listbox.Option>
+                  <Listbox.Option value="B" className="listbox-option-company">
+                    Tipo B
+                  </Listbox.Option>
+                  <Listbox.Option value="C" className="listbox-option-company">
+                    Tipo C
+                  </Listbox.Option>
+                </Listbox.Options>
+              </Listbox>
+            </div>
           </div>
-          <input
-            type="text"
-            placeholder="Buscar empresa..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <div className="header-Listbox">
-            <Listbox value={companyTypeFilter} onChange={setCompanyTypeFilter}>
-              <Listbox.Button className="company-type-filter">
-                {companyTypeFilter || 'Filtrar por tipo'}
-              </Listbox.Button>
-              <Listbox.Options className="listbox-options-company">
-                <Listbox.Option value="" className="listbox-option-company">
-                  Filtrar por tipo
-                </Listbox.Option>
-                <Listbox.Option value="A" className="listbox-option-company">
-                  Tipo A
-                </Listbox.Option>
-                <Listbox.Option value="B" className="listbox-option-company">
-                  Tipo B
-                </Listbox.Option>
-                <Listbox.Option value="C" className="listbox-option-company">
-                  Tipo C
-                </Listbox.Option>
-              </Listbox.Options>
-            </Listbox>
-          </div>
-        </div>
+        )}
 
         {filteredCompanies.length === 0 ? (
           <div className="no-companies">
@@ -244,20 +246,24 @@ const CompanyList = () => {
                     <td>{company.legalSignature || "No especificado"}</td>
                     <td>{company.mailServer || "No especificado"}</td>
                     <td className="action-buttons">
-                      <button
-                        className="action-button edit-button"
-                        onClick={() => handleEditCompany(company)}
-                        title="Editar empresa"
-                      >
-                        <i className="fa-solid fa-pen"></i>
-                      </button>
-                      <button
-                        className="action-button delete-button"
-                        onClick={() => handleDeleteClick(company)}
-                        title="Eliminar empresa"
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
+                      {!readOnly && (
+                        <div>
+                          <button
+                            className="action-button edit-button"
+                            onClick={() => handleEditCompany(company)}
+                            title="Editar empresa"
+                          >
+                            <i className="fa-solid fa-pen"></i>
+                          </button>
+                          <button
+                            className="action-button delete-button"
+                            onClick={() => handleDeleteClick(company)}
+                            title="Eliminar empresa"
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -287,7 +293,7 @@ const CompanyList = () => {
         />
       )}
     </>
-  );;
+  );
 };
 
 export default CompanyList;

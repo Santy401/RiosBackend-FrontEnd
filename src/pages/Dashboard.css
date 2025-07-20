@@ -5,6 +5,12 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.dashboard-content-user {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
 .dashboard-header-user {
   display: flex;
   justify-content: space-between;
