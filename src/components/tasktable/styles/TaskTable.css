@@ -130,29 +130,35 @@
   .edit-button {
     color: var(--edit-button-color);
     transition: all 0.2s ease;
+    background-color: transparent;
   }
   .edit-button:hover {
     transform: scale(1.1);
+    background-color: transparent;
   }
   
   .delete-button {
     color: var(--delete-button-color);
     transition: all 0.2s ease;
+    background-color: transparent;
   }
 
   .delete-button:hover {
     transform: scale(1.1);
-    color: red;
+    color: var(--delete-button-color);
+    background-color: transparent;
   }
   
   .detail-button {
-    color: #000;
+    color: var(--detail-button-color);
     transition: all 0.2s ease;
+      background-color: transparent;
   }
 
   .detail-button:hover {
     transform: scale(1.1);
-    color: blue;
+    color: var(--detail-button-color);
+    background-color: transparent;
   }
   
   .status-badge {
@@ -240,6 +246,7 @@
     background-color: #00ca301f;
     border: 1px solid green;
     color: #00ff3a;
+    opacity: 1 !important;
     padding: 4px 8px;
     border-radius: 10px;
   }
@@ -287,7 +294,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #000;
+    color: var(--detail-button-color);
     background-color: transparent; 
   }
   
@@ -632,6 +639,7 @@
   
   .task-table td.status-badge.status-completed {
     background: #e8f5e9;
+    opacity: 1 !important;
     color: #2e7d32;
   }
   
@@ -919,6 +927,7 @@
     background-color: var(--bg-th-table);
     padding: 12px;
     text-align: left;
+    text-align: center;
     font-weight: 600;
     border-left: none;
     border-right: none;

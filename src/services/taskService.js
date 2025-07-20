@@ -58,7 +58,6 @@ export const taskService = {
     try {
       const requiredFields = [
         'title',
-        'observation',
         'due_date',
         'assigned_to',
         'company_id',

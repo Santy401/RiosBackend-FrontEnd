@@ -49,8 +49,7 @@ const CreateAreaModal = ({ onClose, onSave, editArea = null }) => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="modal-create-task"
-          style={{ width: "fit-content", height: "fit-content" }}>
+          className="modal-create-task">
           <h2>{editArea ? "Editar Área" : "Crear Nueva Área"}</h2>
 
           <form onSubmit={handleSubmit}>

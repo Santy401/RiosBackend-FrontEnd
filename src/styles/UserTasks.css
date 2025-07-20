@@ -40,6 +40,7 @@
 
 .status-completed {
   background: #d4edda;
+  opacity: 1 !important;
   color: #155724;
 }
 

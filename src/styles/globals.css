@@ -13,6 +13,10 @@
 
     --Active-color-bar: #f1f1f1;
 
+    --edit-button-color: #ffa500b5;
+    --delete-button-color: #ff000082;
+    --detail-button-color: #004085;
+    
     --Modal-bg-color: #f1f1f1;
 
       --panel-color-calendar: #4860D6;
@@ -50,6 +54,7 @@
 
   --edit-button-color: #ffa500b5;
   --delete-button-color: #ff000082;
+  --detail-button-color: #004085;
 
   --text-color-gray: #c1c1c1;
   --text-color-withe-dark: #fefeff;

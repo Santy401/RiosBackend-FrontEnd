@@ -11,19 +11,15 @@ const TaskDetailModal = ({ task, onClose }) => {
   const [, setAreaData] = useState(null);
 
   const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleString("es-ES", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch (error) {
-      console.error("Error al formatear fecha:", error);
-      return dateString;
-    }
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    // Sumar 1 día
+    date.setDate(date.getDate() + 1);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
   };
 
   useEffect(() => {
@@ -75,7 +71,7 @@ const TaskDetailModal = ({ task, onClose }) => {
             <p>{task.title}</p>
           </div>
 
-         
+
 
           <div className="detail-group">
             <label>Asignado a:</label>
@@ -94,30 +90,38 @@ const TaskDetailModal = ({ task, onClose }) => {
 
           <div className="detail-group">
             <label>Estado:</label>
-            <span className={`status-badge ${task.status || "pending"}`} style={{maxWidth:"100px"}}>
+            <span className={`status-in-progress ${task.status || "status-completed"}`} style={{
+              maxWidth: "100px",
+              textAlign: "center",
+              ...(task.status === "completed" && {
+                backgroundColor: "#00ca301f",
+                color: "#00ff3a",
+                border: "1px solid green"
+              })
+            }}>
               {task.status === "pending"
                 ? "Pendiente"
                 : task.status === "in-progress"
-                ? "En Proceso"
-                : task.status === "completed"
-                ? "Completada"
-                : "No iniciada"}
+                  ? "En Proceso"
+                  : task.status === "completed"
+                    ? "Completada"
+                    : "En Proceso"}
             </span>
           </div>
 
           <div className="detail-group">
             <label>creado el</label>
-            <p style={{marginleft:"12px"}}>{formatDate(task.createdAt)}</p>
+            <p style={{ marginleft: "12px" }}>{formatDate(task.createdAt)}</p>
           </div>
 
           <div className="detail-group">
             <label>Fecha Limite</label>
-            <p>{formatDate(task.dueDate)}</p>
+            <p>{formatDate(task.due_date)}</p>
           </div>
 
-          <div className="detail-group" style={{display:"flex", flexDirection:"column"}}>
+          <div className="detail-group" style={{ display: "flex", flexDirection: "column" }}>
             <label>Descripción:</label>
-              <div className="descripcion-tarea"><p style={{width:"100%",position:" relative",letterSpacing:" 0.1px",lineHeight:" 25px", textAlign:"justify"}}>{task.observation || "Sin descripción"}</p></div>
+            <div className="descripcion-tarea"><p style={{ width: "100%", position: " relative", letterSpacing: " 0.1px", lineHeight: " 25px", textAlign: "justify" }}>{task.observation || "Sin descripción"}</p></div>
           </div>
         </div>
       </div>

@@ -96,10 +96,8 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
   return (
     <>
       <div className="backdrop">
-        <div>
           <motion.div
             className="modal-create-task"
-            style={{ position: "relative", right: "100px" }}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -214,7 +212,6 @@ const CreateTaskModal = ({ onClose, onSave, editTask = null }) => {
             </form>
           </motion.div>
         </div>
-      </div>
     </>
   );
 };
