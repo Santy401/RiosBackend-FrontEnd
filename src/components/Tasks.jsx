@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Clock } from 'lucide-react';
 import './Tasks.css';
 import { useAuth } from '../context/authContext';
@@ -54,7 +54,7 @@ const Tasks = () => {
       </div>
     <div className="tasks-container">
       <div className="tasks-content">
-            <div>Aqui va el contenido</div>
+        <div>HI MEn</div>
       </div>
     </div>
     </div>
