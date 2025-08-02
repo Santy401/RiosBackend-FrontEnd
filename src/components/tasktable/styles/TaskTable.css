@@ -304,12 +304,12 @@
   
   .task-table th:nth-child(1),
   .task-table td:nth-child(1) {
-    width: fit-content;
+    width: 30px;
   }
   
   .task-table th:nth-child(2),
   .task-table td:nth-child(2) {
-    min-width: fit-content;
+    width: 50px;
   }
   
   .task-table td {
@@ -367,7 +367,7 @@
     width: fit-content;
   }
   .task-table th:nth-child(3) {
-    width: fit-content;
+    width: 40px;
   }
   .task-table th:nth-child(4) {
     width: 10%;
