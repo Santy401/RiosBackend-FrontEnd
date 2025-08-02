@@ -105,4 +105,6 @@
 .DontTasks {
   width: 400px;
   height: 400px;
+  position: relative;
+  bottom: 60px;
 }

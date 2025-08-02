@@ -84,13 +84,12 @@
 /* Contenedores de tablas */
 .task-table-container,
 .company-table-container {
-  height: calc(100% - 3.5rem);
+  height: 390px;
   background: transparent;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
   padding: var(--spacing-6);
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 /* Navegación */

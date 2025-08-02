@@ -65,7 +65,7 @@
 }
 
 .confirm-button.cancel {
-  background-color: var(--Active-color-bar);
+  background-color: var(--Bt-modal-cancel);
   color: white;
 }
 

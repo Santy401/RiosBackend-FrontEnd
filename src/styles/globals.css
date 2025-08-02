@@ -12,23 +12,24 @@
     --filter-att: invert(100%);
 
     --Active-color-bar: #f1f1f1;
+    --Bt-modal-cancel: #717171;
 
-    --edit-button-color: #ffa500b5;
-    --delete-button-color: #ff000082;
+    --edit-button-color: #ffa500;
+    --delete-button-color: #f00;
     --detail-button-color: #004085;
     
     --Modal-bg-color: #f1f1f1;
 
-      --panel-color-calendar: #4860D6;
-      --accent-color-calendar: #6366f1; /* Por ejemplo, un morado bonito */
-      --accent-soft-calendar: #e0e7ff;
-      --text-color-calendar: #111827;
-      --text-muted-calendar: #6b7280;
-      --bt-color-calendar: #111;
+    --card-color-header: #f0f0f0;
+
+    --panel-color-calendar: #4860D6;
+    --accent-color-calendar: #6366f1; 
+    --accent-soft-calendar: #e0e7ff;
+    --text-color-calendar: #111827;
+    --text-muted-calendar: #6b7280;
+    --bt-color-calendar: #111;
 }
 
-
-/* Estilos para el modo oscuro */
 .dark-theme {
   --slide-bar-color: #161616;
   --background-color-dark: #1B1B1D;
@@ -51,6 +52,7 @@
   --Planceholder-color: #e6e6e6;
 
   --Card-bg-color: #28282b;
+  --Card-color-header: #35353569;
 
   --edit-button-color: #ffa500b5;
   --delete-button-color: #ff000082;
