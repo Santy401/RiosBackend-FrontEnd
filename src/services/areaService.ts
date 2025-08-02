@@ -1,5 +1,10 @@
 import api from "./api";
 
+interface Area {
+  id?: string;
+  nombre: string;
+}
+
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -14,24 +19,24 @@ const getAuthHeaders = () => {
 };
 
 export const areaService = {
-  getAllAreas: async () => {
+  getAllAreas: async (): Promise<Area[]> => {
     try {
       const config = getAuthHeaders();
-      const response = await api.get("/areas", config);
+      const response = await api.get<Area[]>("/areas", config);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error en getAllAreas:", error);
       throw new Error("Error al obtener las áreas");
     }
   },
 
-  createArea: async (areaData) => {
+  createArea: async (areaData: Area): Promise<Area> => {
     try {
       console.log("🟡 Enviando datos al backend:", JSON.stringify(areaData, null, 2));
       const config = getAuthHeaders();
-      const response = await api.post("/areas", areaData, config);
+      const response = await api.post<Area>("/areas", areaData, config);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("🔴 Error en createArea:", error.response?.data || error.message);
       throw new Error(
         error.response?.data?.error || "Error al crear el área"
@@ -39,12 +44,12 @@ export const areaService = {
     }
   },
 
-  updateArea: async (id, areaData) => {
+  updateArea: async (id: string, areaData: Area): Promise<Area> => {
     try {
       const config = getAuthHeaders();
-      const response = await api.put(`/areas/${id}`, areaData, config);
+      const response = await api.put<Area>(`/areas/${id}`, areaData, config);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error en updateArea:", error);
       throw new Error(
         error.response?.data?.message || "Error al actualizar el área"
@@ -52,12 +57,12 @@ export const areaService = {
     }
   },
 
-  deleteArea: async (id) => {
+  deleteArea: async (id: string): Promise<void> => {
     try {
       const config = getAuthHeaders();
       const response = await api.delete(`/areas/${id}`, config);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error en deleteArea:", error.response ? error.response.data : error.message);
       throw new Error(
         error.response?.data?.message || "Error al eliminar el área"
@@ -65,5 +70,6 @@ export const areaService = {
     }
   },
 };
+
 
 export default areaService;

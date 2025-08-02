@@ -29,9 +29,7 @@ api.interceptors.response.use(
       );
     }
 
-    // Verificar si el error es por token expirado
     if (error.response.status === 401 || error.response.status === 403) {
-      // Mostrar el componente de alerta
       const alertElement = document.createElement('div');
       document.body.appendChild(alertElement);
       const root = createRoot(alertElement);
