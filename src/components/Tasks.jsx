@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock } from 'lucide-react';
 import './Tasks.css';
 import { useAuth } from '../context/authContext';
 
@@ -41,20 +40,17 @@ const Tasks = () => {
       <div className='header-items-tasks'>
         <div className='header-items-tasks-text'>
           <label>Hola, {user.name}</label>
-          <span>¿Listo Para Desempeñar tus tareas?</span>
         </div>
         <div className="time-info">
-            <Clock className="icon" />
             <span>{currentTime.toLocaleTimeString()}</span>
           </div>
         <div className='header-items-tasks-date'>
-        <Calendar className="icon" />
-        <span>Hoy es {dayOfWeek}, {dayOfMonth} {month} {year}</span>
+        <span>{dayOfWeek}, {dayOfMonth} {month} {year}</span>
         </div>
       </div>
     <div className="tasks-container">
       <div className="tasks-content">
-        <div>HI MEn</div>
+        <div></div>
       </div>
     </div>
     </div>

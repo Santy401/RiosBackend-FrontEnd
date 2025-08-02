@@ -3,7 +3,6 @@
   background: var(--panel-color);
   border-radius: 8px;
   margin-right: 39.8px;
-  margin-top: 20px;
   border: 1px solid var(--border-color-table);
   height: 90vh;
 }
@@ -60,4 +59,18 @@
   background: var(--panel-color);
   border-radius: 8px;
   padding: 20px;
+}
+
+.header-items-tasks {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 39px;
+  cursor: default;
+  padding: 10px;
+  align-items: center;
+}
+
+.header-items-tasks-text {
+  display: flex;
+  flex-direction: column;
 }
