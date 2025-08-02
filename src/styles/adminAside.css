@@ -142,43 +142,60 @@ main.collapsed {
   left: -2px;
 }
 
-@keyframes bubbleFloat {
+@keyframes animatedGradient {
   0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateX(2px);
+    background-position: 0% center;
   }
   100% {
-    transform: translateY(0px);
+    background-position: 100% center;
   }
 }
 
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 
 .itemsMedie div.active {
   color: var(--text-primary-color-dark) !important;
-  background-color: var(--Active-color-bar);
+  background: linear-gradient(270deg, #006FE5, #a855f7, #55e);
+  background-size: 300% 100%;
+  background-position: 0% center;
   padding: 10px 16px;
-  border-radius: 12px 0 12px 0;
-  animation: bubbleFloat 3s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
-  transition: all 0.3s ease, border 0s;
+  border-radius: 9999px;
+  animation: bubbleFloat 5s ease-in-out infinite;
+  transition: 0.2s ease;
   display: flex;
   align-items: center;
   position: relative;
   z-index: 1;
   box-shadow: 0 5px 15px rgba(18, 18, 22, 0.2);
-  border: 1px solid var(--border-color);
 }
 
-
-
-.active div {
-  display: flex;
-  align-items: center;
+.itemsMedie div.active:hover,
+.itemsMedie div.active:focus {
+  animation: bubbleFloat 5s ease-in-out infinite,
+             animatedGradient 2s ease-in-out forwards;
+  color: white;
+  box-shadow: inset 0 0 10px rgba(168, 85, 247, 0.4);
 }
+
 
 .active {
-  margin: 10px 0 20px 0;
+  margin-bottom: 15px;
+}
+
+.active div {
+  color: white;
+  display: flex;
+  align-items: center;
 }
 
 .itemsMedie {
@@ -189,9 +206,9 @@ main.collapsed {
 .itemBar2 {
   margin-left: 10px;
   margin-bottom: 20px;
-  margin-top: 20px;
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 
 .itemsMedie {
@@ -208,6 +225,7 @@ main.collapsed {
 .itemsMedie div span {
   text-decoration: none;
   font-size: 15px;
+  width: 100%;
   margin-left: 5px;
   background-color: transparent;
   border: none;
@@ -366,6 +384,7 @@ main.collapsed {
   display: flex;
   width: 100%;
   height: 2px;
+  margin-bottom: 25px;
   background-color: var(--border-color);
 }
 
