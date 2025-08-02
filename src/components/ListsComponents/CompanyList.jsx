@@ -157,7 +157,7 @@ const CompanyList = ({ readOnly = false }) => {
               <motion.button
                 initial={{ opacity: 0, scale: .8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
+                whileHover={{ scale: 1, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
                 whileTap={{ scale: 0.8 }}
                 transition={{ duration: 0.1, ease: "easeOut" }}
                 className="create-button"
