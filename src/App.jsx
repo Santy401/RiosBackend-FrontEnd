@@ -4,12 +4,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import DashboardAdmin from "./pages/AdminDashboard";
-import DashboardUser from "./pages/UserDashboard";
-import Login from "./pages/Login";
-import "./styles/globals.css";
-import AreaList from "./components/ListsComponents/AreaList";
+import ProtectedRoute from "./ui/routes/ProtectedRoute";
+import DashboardAdmin from "./ui/pages/AdminDashboard";
+import DashboardUser from "./ui/pages/UserDashboard";
+import Login from "./ui/pages/Login";
+import "./ui/styles/globals.css";
+import AreaList from "./ui/components/ListsComponents/AreaList";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
