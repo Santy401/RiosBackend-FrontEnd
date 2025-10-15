@@ -141,7 +141,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
       } else if (searchBy.value === 'company') {
         matchesSearch = matchesField(task.company?.name, searchQuery);
       } else if (searchBy.value === 'area') {
-        matchesSearch = matchesField(task.Areas?.nombre_area, searchQuery);
+        matchesSearch = matchesField(task.area?.nombre_area, searchQuery);
       } else if (searchBy.value === 'date') {
         matchesSearch = matchesDateRange(task);
       }
@@ -432,7 +432,7 @@ const TaskTable = ({ tasks, onDeleteTask, onEditTask, onStatusChange }) => {
                       <td>
                         <label>{task.title}</label>
                       </td>
-                      <td>{task.Areas?.nombre_area}</td>
+                      <td>{task.area?.nombre_area || 'sin areas'}</td>
                       <td>{task.company?.name}</td>
                       <td>{task.due_date ? formatDate(task.due_date) : '-'}</td>
                       <td>{formatDate(task.createdAt)}</td>
@@ -525,7 +525,7 @@ TaskTable.propTypes = {
       company: PropTypes.shape({
         name: PropTypes.string
       }),
-      Areas: PropTypes.shape({
+      area: PropTypes.shape({
         nombre_area: PropTypes.string
       }),
       createdAt: PropTypes.string,
