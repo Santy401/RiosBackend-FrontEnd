@@ -133,18 +133,7 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                         required
                       />
                     </div>
-
-                    <div className="form-group">
-                      <label>Teléfono:</label>
-                      <input
-                        type="text"
-                        name="cellphone"
-                        value={formData.cellphone}
-                        onChange={handleChange}
-                      />
-                    </div>
                   </div>
-
                   <div className="form-row">
                     <div className="form-group">
                       <label>Cédula:</label>
@@ -152,16 +141,6 @@ const CreateCompanyModal = ({ onClose, onSave, editCompany = null, loadCompanies
                         type="text"
                         name="cedula"
                         value={formData.cedula}
-                        onChange={handleChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Tipo:</label>
-                      <input
-                        type="text"
-                        name="tipo"
-                        value={formData.tipo}
                         onChange={handleChange}
                       />
                     </div>
