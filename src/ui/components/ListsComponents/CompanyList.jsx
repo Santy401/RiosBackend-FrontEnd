@@ -213,10 +213,14 @@ const CompanyList = ({ readOnly = false }) => {
                   <th>Correo</th>
                   <th>Usuario</th>
                   <th>Clave Dian</th>
-                  <th>NIT</th>
                   <th>Software</th>
                   <th>Firma Electrónica</th>
                   <th>Servidor</th>
+                  <th>Cédula</th>
+                  <th>Contraseña</th>
+                  <th>Clave CC</th>
+                  <th>Clave SS</th>
+                  <th>Clave ICA</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -232,19 +236,89 @@ const CompanyList = ({ readOnly = false }) => {
                         title={visiblePasswords[company.id] ? "Ocultar contraseña" : "Mostrar contraseña"}
                       >
                         {visiblePasswords[company.id] ?
-                          company.password || "Sin contraseña" :
+                          company.claveCorreo || "Sin contraseña" :
                           "•••••••••••••••••"
                         }
                       </button>
                     </td>
-                    <td className="company-type">{getCompanyTypeText(company.companyType)}</td>
+                    <td className="company-type">{getCompanyTypeText(company.tipo)}</td>
                     <td>{company.email || "Sin correo"}</td>
-                    <td>{company.user || "No especificado"}</td>
-                    <td>{company.dian || "No especificado"}</td>
-                    <td>{company.nit || "No especificado"}</td>
-                    <td>{company.accountingSoftware || "No especificado"}</td>
-                    <td>{company.legalSignature || "No especificado"}</td>
-                    <td>{company.mailServer || "No especificado"}</td>
+                    <td>{company.usuario || "No especificado"}</td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-dian`)}
+                        title={visiblePasswords[`${company.id}-dian`] ? "Ocultar clave DIAN" : "Mostrar clave DIAN"}
+                      >
+                        {visiblePasswords[`${company.id}-dian`] ?
+                          company.dian || "Sin clave" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td>{company.softwareContable || "No especificado"}</td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-firma`)}
+                        title={visiblePasswords[`${company.id}-firma`] ? "Ocultar firma" : "Mostrar firma"}
+                      >
+                        {visiblePasswords[`${company.id}-firma`] ?
+                          company.firma || "Sin firma" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td>{company.servidorCorreo || "No especificado"}</td>
+                    <td>{company.cedula || "No especificado"}</td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-contraseña`)}
+                        title={visiblePasswords[`${company.id}-contraseña`] ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      >
+                        {visiblePasswords[`${company.id}-contraseña`] ?
+                          company.contraseña || "Sin contraseña" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-cc`)}
+                        title={visiblePasswords[`${company.id}-cc`] ? "Ocultar clave CC" : "Mostrar clave CC"}
+                      >
+                        {visiblePasswords[`${company.id}-cc`] ?
+                          company.claveCC || "Sin clave" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-ss`)}
+                        title={visiblePasswords[`${company.id}-ss`] ? "Ocultar clave SS" : "Mostrar clave SS"}
+                      >
+                        {visiblePasswords[`${company.id}-ss`] ?
+                          company.claveSS || "Sin clave" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="show-password-button"
+                        onClick={() => togglePasswordVisibility(`${company.id}-ica`)}
+                        title={visiblePasswords[`${company.id}-ica`] ? "Ocultar clave ICA" : "Mostrar clave ICA"}
+                      >
+                        {visiblePasswords[`${company.id}-ica`] ?
+                          company.claveICA || "Sin clave" :
+                          "•••••••••••••••••"
+                        }
+                      </button>
+                    </td>
                     <td className="action-buttons">
                       {!readOnly && (
                         <div>
