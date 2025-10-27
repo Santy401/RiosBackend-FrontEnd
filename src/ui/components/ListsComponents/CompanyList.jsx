@@ -241,7 +241,7 @@ const CompanyList = ({ readOnly = false }) => {
                         }
                       </button>
                     </td>
-                    <td className="company-type">{getCompanyTypeText(company.tipo)}</td>
+                    <td className="company-type">{getCompanyTypeText(company.companyType)}</td>
                     <td>{company.email || "Sin correo"}</td>
                     <td>{company.usuario || "No especificado"}</td>
                     <td>
